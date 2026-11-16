@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projetos — Orbita</title>
+  <meta name="description" content="Projetos selecionados da Orbita: estratégia, design e tecnologia em movimento.">
+  <meta name="theme-color" content="#f8f0ea">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Inter+Tight:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <section class="showcase" id="topo">
+    <canvas class="showcase__canvas" aria-hidden="true"></canvas>
+
+    <header class="nav">
+      <a class="logo" href="index.html" aria-label="Orbita — página inicial">
+        <svg class="logo__mark" viewBox="0 0 76 48" aria-hidden="true">
+          <ellipse cx="38" cy="24" rx="33" ry="12.5" transform="rotate(-27 38 24)" fill="none" stroke="currentColor" stroke-width="4.6"/>
+          <circle cx="50" cy="24" r="6.6" fill="currentColor"/>
+          <circle cx="7" cy="37" r="3.4" fill="currentColor"/>
+        </svg>
+        <span class="logo__word">ORBITA</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Principal">
+        <a href="index.html#estudio">Estúdio</a>
+        <a href="projetos.html" class="is-active" aria-current="page">Projetos</a>
+        <a href="#contato">Contato</a>
+      </nav>
+
+      <a class="pill" href="#contato">
+        Vamos conversar
+        <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M5 3h8v8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </header>
+
+    <div class="showcase__head">
+      <div>
+        <p class="hero__label">Projetos selecionados</p>
+        <h1 class="showcase__title">Ideias que <br>ganham forma.</h1>
+      </div>
+      <p class="showcase__lede">Estratégia, design e tecnologia em movimento.</p>
+    </div>
+
+    <div class="showcase__stage" aria-hidden="true"></div>
+
+    <ol class="projects">
+      <li>
+        <a class="project" href="#nexo" data-index="0">
+          <span class="project__num">01 /</span>
+          <span class="project__body">
+            <span class="project__name">NEXO</span>
+            <span class="project__type">Identidade e estratégia</span>
+          </span>
+          <span class="round-arrow" aria-hidden="true"><svg class="arrow" viewBox="0 0 16 16"><path d="M3 13 13 3M5 3h8v8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        </a>
+      </li>
+      <li>
+        <a class="project" href="#fluxo" data-index="1">
+          <span class="project__num">02 /</span>
+          <span class="project__body">
+            <span class="project__name">FLUXO</span>
+            <span class="project__type">Experiência digital</span>
+          </span>
+          <span class="round-arrow" aria-hidden="true"><svg class="arrow" viewBox="0 0 16 16"><path d="M3 13 13 3M5 3h8v8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        </a>
+      </li>
+      <li>
+        <a class="project" href="#aura" data-index="2">
+          <span class="project__num">03 /</span>
+          <span class="project__body">
+            <span class="project__name">AURA</span>
+            <span class="project__type">Arte e movimento</span>
+          </span>
+          <span class="round-arrow" aria-hidden="true"><svg class="arrow" viewBox="0 0 16 16"><path d="M3 13 13 3M5 3h8v8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+        </a>
+      </li>
+    </ol>
+
+    <div class="showcase__strip">
+      <p class="showcase__tagline">Explore novas perspectivas.</p>
+      <a class="cta" href="#todos">
+        Ver todos os projetos
+        <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M5 3h8v8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <main>
+    <section class="work" id="todos">
+      <h2 class="work__title">Todos</h2>
+
+      <ul class="work__list">
+        <li class="work__row" id="nexo">
+          <span class="work__name">Nexo</span>
+          <span class="work__type">Identidade e estratégia</span>
+          <span class="work__year">2026</span>
+        </li>
+        <li class="work__row" id="fluxo">
+          <span class="work__name">Fluxo</span>
+          <span class="work__type">Experiência digital</span>
+          <span class="work__year">2026</span>
+        </li>
+        <li class="work__row" id="aura">
+          <span class="work__name">Aura</span>
+          <span class="work__type">Arte e movimento</span>
+          <span class="work__year">2025</span>
+        </li>
+        <li class="work__row">
+          <span class="work__name">Nébula</span>
+          <span class="work__type">Identidade visual</span>
+          <span class="work__year">2025</span>
+        </li>
+        <li class="work__row">
+          <span class="work__name">Atlas Lab</span>
+          <span class="work__type">Site imersivo</span>
+          <span class="work__year">2025</span>
+        </li>
+        <li class="work__row">
+          <span class="work__name">Maré Alta</span>
+          <span class="work__type">Experiência 3D</span>
+          <span class="work__year">2024</span>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="contact" id="contato">
+    <p class="contact__lead">Tem uma ideia pedindo para sair de órbita?</p>
+    <a class="contact__mail" href="mailto:ola@seudominio.com.br">Vamos conversar</a>
+
+    <div class="contact__meta">
+      <a href="mailto:ola@seudominio.com.br">ola@seudominio.com.br</a>
+      <span>São Paulo, Brasil</span>
+      <span>© 2026 Orbita</span>
+    </div>
+  </footer>
+
+  <script type="module" src="projetos.js"></script>
+</body>
+</html>
