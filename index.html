@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orbita — Estúdio criativo independente</title>
+  <meta name="description" content="Orbita é um estúdio criativo independente. Design, tecnologia e imaginação em novas dimensões.">
+  <meta name="theme-color" content="#f8f0ea">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Inter+Tight:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js" } }
+  </script>
+</head>
+<body>
+
+  <section class="hero" id="topo">
+    <canvas class="hero__canvas" aria-hidden="true"></canvas>
+
+    <header class="nav">
+      <a class="logo" href="#topo" aria-label="Orbita — voltar ao topo">
+        <svg class="logo__mark" viewBox="0 0 76 48" aria-hidden="true">
+          <ellipse cx="38" cy="24" rx="33" ry="12.5" transform="rotate(-27 38 24)" fill="none" stroke="currentColor" stroke-width="4.6"/>
+          <circle cx="50" cy="24" r="6.6" fill="currentColor"/>
+          <circle cx="7" cy="37" r="3.4" fill="currentColor"/>
+        </svg>
+        <span class="logo__word">ORBITA</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Principal">
+        <a href="#estudio">Estúdio</a>
+        <a href="#projetos">Projetos</a>
+        <a href="#contato">Contato</a>
+      </nav>
+
+      <a class="pill" href="#contato">
+        Vamos conversar
+        <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M5 3h8v8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </header>
+
+    <p class="hero__label">Estúdio criativo independente</p>
+
+    <h1 class="headline" aria-label="Ideias fora de órbita.">
+      <span class="line" aria-hidden="true"><span class="piece">Ideias</span> <span class="piece">fora</span></span>
+      <span class="line" aria-hidden="true"><span class="piece">de</span> <span class="piece">ór</span><span class="piece">bita.</span></span>
+    </h1>
+
+    <div class="hero__bottom">
+      <p class="hero__lede">Design, tecnologia e imaginação em novas dimensões.</p>
+      <a class="cta" href="#projetos">
+        Explore nossos projetos
+        <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 13 13 3M5 3h8v8" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+
+    <div class="hero__strip">
+      <p class="hero__tags">Estratégia <span>/</span> Design <span>/</span> Experiências</p>
+      <a class="hero__scroll" href="#estudio">
+        Role para explorar
+        <svg class="arrow" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v12M3 9l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <main>
+    <section class="studio" id="estudio">
+      <h2 class="studio__statement">
+        Somos um estúdio independente que tira ideias da rota previsível e as coloca em movimento.
+      </h2>
+
+      <div class="studio__pillars">
+        <article class="pillar">
+          <h3>Estratégia</h3>
+          <p>Posicionamento, narrativa e direção criativa para marcas que querem ocupar um lugar só delas.</p>
+        </article>
+        <article class="pillar">
+          <h3>Design</h3>
+          <p>Identidades visuais, interfaces e sistemas de design feitos para durar e continuar evoluindo.</p>
+        </article>
+        <article class="pillar">
+          <h3>Experiências</h3>
+          <p>Sites imersivos, 3D em tempo real e interações que as pessoas lembram depois de fechar a aba.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="work" id="projetos">
+      <h2 class="work__title">Projetos</h2>
+
+      <ul class="work__list">
+        <li class="work__row">
+          <span class="work__name">Nébula</span>
+          <span class="work__type">Identidade visual</span>
+          <span class="work__year">2026</span>
+        </li>
+        <li class="work__row">
+          <span class="work__name">Atlas Lab</span>
+          <span class="work__type">Site imersivo</span>
+          <span class="work__year">2026</span>
+        </li>
+        <li class="work__row">
+          <span class="work__name">Maré Alta</span>
+          <span class="work__type">Experiência 3D</span>
+          <span class="work__year">2025</span>
+        </li>
+        <li class="work__row">
+          <span class="work__name">Faísca</span>
+          <span class="work__type">Plataforma digital</span>
+          <span class="work__year">2025</span>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="contact" id="contato">
+    <p class="contact__lead">Tem uma ideia pedindo para sair de órbita?</p>
+    <a class="contact__mail" href="mailto:ola@seudominio.com.br">Vamos conversar</a>
+
+    <div class="contact__meta">
+      <a href="mailto:ola@seudominio.com.br">ola@seudominio.com.br</a>
+      <span>São Paulo, Brasil</span>
+      <span>© 2026 Orbita</span>
+    </div>
+  </footer>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
