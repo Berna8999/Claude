@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --sky-top: #c9f1ff; --sky-bottom: #7fd6f2;
+    --teal: #13a5c4; --teal-dark: #0b7f99; --deep: #0a5a6e;
+    --yellow: #ffc61a; --yellow-dark: #e8a300; --pink: #ff7eb6; --wa: #0f7a3d;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #333; font-family: "Fredoka", sans-serif; }
+  .post {
+    position: relative; width: 1080px; height: 1350px; overflow: hidden;
+    background: linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
+    display: flex; flex-direction: column; align-items: center;
+    padding: 90px 80px 80px; margin-bottom: 40px;
+  }
+  .cloud { position: absolute; background: #fff; border-radius: 999px; box-shadow: 0 16px 0 -6px rgba(10,90,110,.12); }
+  .cloud::before, .cloud::after { content: ""; position: absolute; background: #fff; border-radius: 50%; }
+  .cloud::before { width: 55%; height: 140%; left: 14%; top: -70%; }
+  .cloud::after { width: 40%; height: 110%; right: 14%; top: -45%; }
+  .sun { position: absolute; width: 170px; height: 170px; }
+  .post > :not(.cloud):not(.sun):not(.handle):not(.tag) { position: relative; z-index: 2; }
+  .tag, .handle { z-index: 2; }
+  .big {
+    color: #fff; text-align: center; font-weight: 700; line-height: 1.05;
+    -webkit-text-stroke: 4px var(--teal-dark); paint-order: stroke fill;
+    text-shadow: 0 10px 0 var(--teal-dark), 0 22px 30px rgba(10,90,110,.3);
+  }
+  .pill {
+    display: inline-block; background: var(--yellow); color: var(--deep);
+    border-radius: 999px; padding: 4px 44px 14px; -webkit-text-stroke: 0; text-shadow: none;
+    box-shadow: 0 12px 0 var(--yellow-dark), 0 24px 36px rgba(232,163,0,.4);
+  }
+  .sub { color: var(--deep); font-weight: 600; text-align: center; }
+  .handle { position: absolute; bottom: 46px; left: 0; right: 0; text-align: center;
+    color: var(--deep); font-size: 36px; font-weight: 600; opacity: .85; }
+  .tag { position: absolute; top: 46px; left: 60px; background: #fff; color: var(--teal-dark);
+    font-weight: 700; font-size: 30px; padding: 10px 26px; border-radius: 999px;
+    box-shadow: 0 6px 0 rgba(10,90,110,.15); }
+
+  /* Post 1 */
+  #p1 .logo { width: 640px; height: 640px; border-radius: 64px; margin-top: 40px;
+    box-shadow: 0 36px 70px rgba(10,90,110,.35); }
+  #p1 h1 { font-size: 92px; margin-top: 56px; }
+  #p1 .sub { font-size: 44px; margin-top: 40px; max-width: 860px; line-height: 1.25; }
+
+  /* Post 2 */
+  #p2 h1 { font-size: 88px; margin-top: 40px; }
+  .grid { display: grid; grid-template-columns: 410px 410px; gap: 36px; margin-top: 70px; }
+  .card { height: 380px; border-radius: 56px; background: var(--teal);
+    border: 8px solid rgba(255,255,255,.35);
+    box-shadow: 0 16px 0 var(--teal-dark), 0 32px 46px rgba(10,90,110,.28);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; }
+  .card svg { width: 170px; height: 170px; }
+  .card b { color: #fff; font-size: 50px; font-weight: 700; }
+  .card small { color: #dff7ff; font-size: 30px; font-weight: 500; margin-top: -14px; }
+
+  /* Post 3 */
+  #p3 .heart { width: 230px; height: 210px; margin-top: 50px; }
+  #p3 h1 { font-size: 108px; margin-top: 40px; }
+  #p3 h1 + h1 { margin-top: 24px; }
+  .checks { margin-top: 60px; }
+  .check { display: flex; align-items: center; gap: 28px; width: 760px; background: #fff;
+    border-radius: 36px; padding: 20px 34px; margin: 14px 0; color: var(--deep);
+    font-size: 44px; font-weight: 600; box-shadow: 0 10px 0 rgba(10,90,110,.16); }
+  .check i { flex: 0 0 72px; height: 72px; border-radius: 50%; background: var(--yellow);
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 0 var(--yellow-dark); }
+  .check i svg { width: 42px; height: 42px; }
+  .cta { margin-top: 56px; display: flex; align-items: center; gap: 24px; background: var(--wa);
+    color: #fff; font-size: 54px; font-weight: 700; padding: 26px 64px; border-radius: 999px;
+    box-shadow: 0 14px 0 #0a5a2c, 0 28px 46px rgba(10,90,44,.35); }
+  .cta svg { width: 72px; height: 72px; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="sunG">
+      <g stroke="#ffc61a" stroke-width="7" stroke-linecap="round">
+        <line x1="50" y1="4" x2="50" y2="16"/><line x1="50" y1="84" x2="50" y2="96"/>
+        <line x1="4" y1="50" x2="16" y2="50"/><line x1="84" y1="50" x2="96" y2="50"/>
+        <line x1="17" y1="17" x2="25" y2="25"/><line x1="75" y1="75" x2="83" y2="83"/>
+        <line x1="17" y1="83" x2="25" y2="75"/><line x1="75" y1="25" x2="83" y2="17"/>
+      </g>
+      <circle cx="50" cy="50" r="24" fill="#ffc61a" stroke="#e8a300" stroke-width="3"/>
+    </g>
+    <path id="heartP" d="M50 86 C10 58 0 36 8 20 C18 0 42 2 50 20 C58 2 82 0 92 20 C100 36 90 58 50 86Z"/>
+    <path id="tick" d="M10 26 L21 37 L41 14" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </defs>
+</svg>
+
+<!-- POST 1: Apresentação -->
+<section class="post" id="p1">
+  <div class="cloud" style="width:260px;height:86px;left:-40px;top:200px"></div>
+  <div class="cloud" style="width:200px;height:66px;right:40px;top:860px"></div>
+  <div class="cloud" style="width:230px;height:76px;left:50px;bottom:170px"></div>
+  <svg class="sun" style="right:60px;top:60px" viewBox="0 0 100 100"><use href="#sunG"/></svg>
+  <div class="tag">Muito prazer!</div>
+  <img class="logo" src="logo.png" alt="Kid+ Hotel Infantil" />
+  <h1 class="big">Olá, somos o <span class="pill">Kid+</span></h1>
+  <p class="sub">O hotelzinho onde seu filho brinca, se diverte e é cuidado com muito carinho.</p>
+  <div class="handle">@hotelzinhoespacokidmais</div>
+</section>
+
+<!-- POST 2: O que oferecemos -->
+<section class="post" id="p2">
+  <div class="cloud" style="width:240px;height:80px;left:-30px;top:130px"></div>
+  <div class="cloud" style="width:200px;height:66px;right:-20px;bottom:40px"></div>
+  <svg class="sun" style="right:50px;top:40px;width:140px;height:140px" viewBox="0 0 100 100"><use href="#sunG"/></svg>
+  <h1 class="big">Um dia cheio de<br/><span class="pill">diversão!</span></h1>
+  <div class="grid">
+    <div class="card">
+      <svg viewBox="0 0 100 100"><rect x="8" y="52" width="40" height="40" rx="8" fill="#9b6bff" stroke="#fff" stroke-width="4"/><rect x="52" y="52" width="40" height="40" rx="8" fill="#ff7eb6" stroke="#fff" stroke-width="4"/><rect x="30" y="8" width="40" height="40" rx="8" fill="#ffc61a" stroke="#fff" stroke-width="4"/></svg>
+      <b>Brincadeiras</b><small>criatividade e alegria</small>
+    </div>
+    <div class="card">
+      <svg viewBox="0 0 100 100"><path d="M50 30 C30 16 6 26 10 54 C14 82 34 96 50 86 C66 96 86 82 90 54 C94 26 70 16 50 30Z" fill="#ff5a5a" stroke="#fff" stroke-width="4"/><path d="M50 30 C50 18 54 10 62 6" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M54 18 C64 8 78 10 80 14 C72 24 60 24 54 18Z" fill="#25d366" stroke="#fff" stroke-width="3"/></svg>
+      <b>Lanchinho</b><small>na hora certinha</small>
+    </div>
+    <div class="card">
+      <svg viewBox="0 0 100 100"><path d="M62 10 C36 14 20 36 24 60 C28 84 54 96 78 86 C56 82 42 62 46 40 C48 26 54 16 62 10Z" fill="#ffc61a" stroke="#fff" stroke-width="4"/><text x="64" y="44" font-size="22" font-weight="700" fill="#fff" font-family="Fredoka">z</text><text x="78" y="28" font-size="16" font-weight="700" fill="#fff" font-family="Fredoka">z</text></svg>
+      <b>Descanso</b><small>soninho tranquilo</small>
+    </div>
+    <div class="card">
+      <svg viewBox="0 0 100 100"><path d="M50 6 L62 36 L94 38 L69 58 L78 90 L50 72 L22 90 L31 58 L6 38 L38 36Z" fill="#ffc61a" stroke="#fff" stroke-width="4" stroke-linejoin="round"/></svg>
+      <b>Cuidado</b><small>atenção o tempo todo</small>
+    </div>
+  </div>
+  <div class="handle">@hotelzinhoespacokidmais</div>
+</section>
+
+<!-- POST 3: Emocional + CTA -->
+<section class="post" id="p3">
+  <div class="cloud" style="width:250px;height:82px;left:-40px;top:150px"></div>
+  <div class="cloud" style="width:210px;height:70px;right:20px;top:520px"></div>
+  <svg class="sun" style="right:60px;top:60px;width:150px;height:150px" viewBox="0 0 100 100"><use href="#sunG"/></svg>
+  <svg class="heart" viewBox="0 0 100 90"><use href="#heartP" fill="#ff7eb6" stroke="#fff" stroke-width="5"/></svg>
+  <h1 class="big">Seu filho feliz.</h1>
+  <h1 class="big"><span class="pill">Você tranquila.</span></h1>
+  <div class="checks">
+    <div class="check"><i><svg viewBox="0 0 50 50"><use href="#tick"/></svg></i>Equipe atenciosa</div>
+    <div class="check"><i><svg viewBox="0 0 50 50"><use href="#tick"/></svg></i>Ambiente seguro e limpinho</div>
+  </div>
+  <div class="cta">
+    <svg viewBox="0 0 100 100"><path d="M50 8 C27 8 8 26 8 49 C8 57 10 64 14 71 L9 92 L31 86 C37 89 43 91 50 91 C73 91 92 72 92 49 C92 26 73 8 50 8Z" fill="none" stroke="#fff" stroke-width="7"/><path d="M36 30 C33 30 30 34 31 40 C33 50 44 63 56 68 C62 70 66 68 68 64 L69 60 L59 54 L54 59 C47 56 42 51 39 44 L44 40 L39 30Z" fill="#fff"/></svg>
+    Agende pelo WhatsApp
+  </div>
+  <div class="handle">@hotelzinhoespacokidmais</div>
+</section>
+
+</body>
+</html>
