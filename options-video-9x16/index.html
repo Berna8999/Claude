@@ -319,6 +319,11 @@
         <div id="out-cta">Fale com a gente</div>
       </section>
 
+      <!-- LOGO FIXO: só durante os tópicos, por baixo das transições -->
+      <div id="logo-fixo" class="clip" data-start="5.75" data-duration="44.6" data-track-index="40" data-layout-allow-safe-zone data-layout-allow-occlusion>
+        <div id="logo-badge" data-layout-allow-safe-zone><img src="assets/logo.png" alt="Options Engenharia" /></div>
+      </div>
+
       <!-- TRANSIÇÕES -->
       <div id="wipe1" class="wipe clip" data-start="5.2" data-duration="1.2" data-track-index="8"></div>
       <div id="wipe2" class="wipe clip" data-start="28.7" data-duration="1.2" data-track-index="9"></div>
@@ -327,11 +332,6 @@
       <div id="wq3" class="wipe dark clip" data-start="41.3" data-duration="0.7" data-track-index="8"></div>
       <div id="wq4" class="wipe dark clip" data-start="45.7" data-duration="0.7" data-track-index="9"></div>
       <div id="wipe3" class="wipe clip" data-start="49.8" data-duration="1.2" data-track-index="8"></div>
-
-      <!-- LOGO FIXO (vídeo todo) -->
-      <div id="logo-fixo" class="clip" data-start="0" data-duration="55.5" data-track-index="40" data-layout-allow-safe-zone data-layout-allow-occlusion>
-        <div id="logo-badge" data-layout-allow-safe-zone><img src="assets/logo.png" alt="Options Engenharia" /></div>
-      </div>
 
       <!-- ÁUDIO -->
       <audio id="a-vo" src="assets/locucao.m4a" data-start="0.5" data-duration="52.56" data-track-index="10" data-volume="1"></audio>
@@ -813,6 +813,10 @@
       tl.fromTo("#out-chips .chip", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.1, ease: "power2.out" }, T8 + 0.6);
       tl.fromTo("#out-cta", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }, 51.95);
       tl.to("#out-cta", { scale: 1.05, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut" }, 52.8);
+
+      // logo reaparece com um leve "pop" depois de cada transição
+      [6.05, 29.6, 32.4, 37.25, 41.7, 46.1].forEach((at) =>
+        tl.fromTo("#logo-badge", { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2)", immediateRender: false }, at));
 
       window.__timelines = window.__timelines || {};
       window.__timelines["main"] = tl;
