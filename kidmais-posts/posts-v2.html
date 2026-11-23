@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --teal: #13a5c4; --teal-dark: #0b7f99; --deep: #0a4f61;
+    --yellow: #ffc61a; --yellow-dark: #e8a300; --pink: #ff7eb6; --cream: #fff8e6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #333; font-family: "Fredoka", sans-serif; }
+  .post { position: relative; width: 1080px; height: 1350px; overflow: hidden; margin-bottom: 40px; }
+  .post > * { position: relative; z-index: 2; }
+  .post > .deco { position: absolute; z-index: 1; }
+
+  /* ===== POST 2: 4 motivos (editorial, fundo turquesa) ===== */
+  #p2 {
+    background:
+      radial-gradient(circle at 20px 20px, rgba(255,255,255,.08) 6px, transparent 7px) 0 0 / 60px 60px,
+      linear-gradient(160deg, #19b3d1 0%, #0e93b1 100%);
+    padding: 90px 90px 0;
+  }
+  #p2 .kicker { display: inline-block; background: var(--yellow); color: var(--deep);
+    font-weight: 700; font-size: 30px; letter-spacing: .12em; padding: 10px 26px; border-radius: 14px;
+    transform: rotate(-2deg); }
+  #p2 h2 { color: #fff; font-size: 96px; line-height: .98; font-weight: 700; margin-top: 34px; max-width: 720px; }
+  #p2 h2 em { font-style: normal; color: var(--yellow); }
+  #p2 .list { margin-top: 56px; width: 900px; }
+  #p2 .row { display: flex; align-items: center; gap: 36px; padding: 26px 0;
+    border-top: 4px dashed rgba(255,255,255,.35); }
+  #p2 .row:last-child { border-bottom: 4px dashed rgba(255,255,255,.35); }
+  #p2 .n { flex: 0 0 150px; font-size: 118px; font-weight: 700; line-height: 1;
+    color: transparent; -webkit-text-stroke: 5px var(--yellow); }
+  #p2 .row b { display: block; color: #fff; font-size: 54px; font-weight: 600; line-height: 1.05; }
+  #p2 .row span { display: block; color: #d6f6ff; font-size: 34px; font-weight: 400; margin-top: 6px; }
+  #p2 .foot { position: absolute; left: 90px; bottom: 54px; color: #fff; font-size: 34px; font-weight: 500; opacity: .9; }
+  #p2 .plane { right: 50px; top: 40px; width: 180px; height: 180px; }
+  #p2 .crayons { right: -30px; bottom: 120px; width: 260px; height: 260px; transform: rotate(-18deg); }
+
+  /* ===== POST 3: Ticket de hospedagem (fundo amarelo, raios) ===== */
+  #p3 {
+    background:
+      repeating-conic-gradient(from 0deg at 50% 38%, rgba(255,255,255,.22) 0deg 9deg, transparent 9deg 18deg),
+      radial-gradient(circle at 50% 38%, #ffd84d 0%, #ffc61a 55%, #f5b400 100%);
+    display: flex; flex-direction: column; align-items: center; padding-top: 86px;
+  }
+  #p3 h2 { text-align: center; font-weight: 700; line-height: 1; }
+  #p3 h2 .a { display: block; font-size: 96px; color: var(--deep); }
+  #p3 h2 .b { display: block; font-size: 104px; color: #fff; margin-top: 10px;
+    -webkit-text-stroke: 4px var(--deep); paint-order: stroke fill; text-shadow: 0 9px 0 var(--deep); }
+
+  .ticket { margin-top: 64px; width: 900px; height: 520px; display: flex;
+    filter: drop-shadow(0 26px 30px rgba(120,70,0,.35)); transform: rotate(-2.5deg); }
+  .t-main, .t-stub {
+    background: #fff;
+    -webkit-mask: radial-gradient(circle 34px at 100% 50%, transparent 33px, #000 34px);
+            mask: radial-gradient(circle 34px at 100% 50%, transparent 33px, #000 34px);
+  }
+  .t-main { flex: 1; border-radius: 40px 0 0 40px; padding: 40px 46px; position: relative; }
+  .t-stub { flex: 0 0 230px; border-radius: 0 40px 40px 0; border-left: 6px dashed #d9eef3;
+    -webkit-mask: radial-gradient(circle 34px at 0 50%, transparent 33px, #000 34px);
+            mask: radial-gradient(circle 34px at 0 50%, transparent 33px, #000 34px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: var(--teal); }
+  .t-head { display: flex; align-items: center; gap: 18px; }
+  .t-head .logo-dot { width: 82px; height: 82px; border-radius: 22px; background: url(logo.png) center/cover; }
+  .t-head b { font-size: 44px; color: var(--deep); font-weight: 700; line-height: 1; }
+  .t-head small { display: block; font-size: 24px; color: var(--teal-dark); letter-spacing: .18em; font-weight: 600; }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 30px; margin-top: 40px; }
+  .f label { display: block; font-size: 22px; letter-spacing: .16em; color: #7fb3c0; font-weight: 600; }
+  .f p { font-size: 42px; color: var(--deep); font-weight: 600; line-height: 1.1; margin-top: 4px; }
+  .f.wide { grid-column: span 2; }
+  .stamp { position: absolute; right: 18px; bottom: 18px; width: 170px; height: 170px; border-radius: 50%;
+    border: 7px solid var(--pink); color: var(--pink); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; transform: rotate(-16deg); font-weight: 700; opacity: .9; }
+  .stamp b { font-size: 40px; line-height: 1; }
+  .stamp small { font-size: 20px; letter-spacing: .14em; margin-top: 6px; }
+  .t-stub .adm { color: #fff; font-size: 30px; font-weight: 700; letter-spacing: .14em; writing-mode: vertical-rl; transform: rotate(180deg); }
+  .t-stub .bar { width: 120px; height: 150px;
+    background: repeating-linear-gradient(90deg, #fff 0 6px, transparent 6px 10px, #fff 10px 12px, transparent 12px 18px); opacity: .9; }
+
+  .cta3 { margin-top: 86px; display: flex; align-items: center; gap: 22px; background: var(--deep); color: #fff;
+    font-size: 52px; font-weight: 600; padding: 26px 60px; border-radius: 26px;
+    box-shadow: 0 12px 0 #062f3a; }
+  .cta3 svg { width: 66px; height: 66px; }
+  #p3 .foot { margin-top: 30px; color: var(--deep); font-size: 34px; font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- POST 2 -->
+<section class="post" id="p2">
+  <svg class="deco plane" viewBox="0 0 120 120">
+    <path d="M10 70 C30 100 70 110 96 92" stroke="#fff" stroke-width="3" stroke-dasharray="7 7" fill="none" opacity=".7"/>
+    <path d="M38 52 L112 14 L80 92 L66 66Z" fill="#fff"/>
+    <path d="M38 52 L66 66 L112 14Z" fill="#d6f6ff"/>
+    <path d="M66 66 L70 86 L80 92Z" fill="#b5e9f6"/>
+  </svg>
+  <svg class="deco crayons" viewBox="0 0 120 120">
+    <g><rect x="14" y="30" width="20" height="74" rx="4" fill="#ff7eb6"/><path d="M14 30 L24 10 L34 30Z" fill="#ffb3d3"/><rect x="14" y="44" width="20" height="6" fill="#fff" opacity=".6"/></g>
+    <g><rect x="48" y="22" width="20" height="82" rx="4" fill="#ffc61a"/><path d="M48 22 L58 2 L68 22Z" fill="#ffe07a"/><rect x="48" y="36" width="20" height="6" fill="#fff" opacity=".6"/></g>
+    <g><rect x="82" y="34" width="20" height="70" rx="4" fill="#9b6bff"/><path d="M82 34 L92 14 L102 34Z" fill="#c4a8ff"/><rect x="82" y="48" width="20" height="6" fill="#fff" opacity=".6"/></g>
+  </svg>
+
+  <div class="kicker">POR QUE O KID+?</div>
+  <h2>4 motivos pro seu filho <em>amar</em> ficar aqui</h2>
+  <div class="list">
+    <div class="row"><div class="n">01</div><div><b>Brincadeiras</b><span>que despertam a criatividade</span></div></div>
+    <div class="row"><div class="n">02</div><div><b>Lanchinho gostoso</b><span>servido na hora certinha</span></div></div>
+    <div class="row"><div class="n">03</div><div><b>Cantinho do soninho</b><span>pra descansar tranquilo</span></div></div>
+    <div class="row"><div class="n">04</div><div><b>Equipe carinhosa</b><span>de olho em cada detalhe</span></div></div>
+  </div>
+  <div class="foot">@hotelzinhoespacokidmais</div>
+</section>
+
+<!-- POST 3 -->
+<section class="post" id="p3">
+  <h2><span class="a">Seu filho feliz.</span><span class="b">Você tranquila.</span></h2>
+
+  <div class="ticket">
+    <div class="t-main">
+      <div class="t-head"><div class="logo-dot"></div><div><b>Kid+ Hotel</b><small>RESERVA INFANTIL</small></div></div>
+      <div class="fields">
+        <div class="f"><label>HÓSPEDE</label><p>Seu pequeno</p></div>
+        <div class="f"><label>BAGAGEM</label><p>Muita alegria</p></div>
+        <div class="f wide"><label>INCLUSO</label><p>Brincadeiras, lanche<br/>e muito carinho</p></div>
+      </div>
+      <div class="stamp"><b>CHECK</b><b>IN</b><small>APROVADO</small></div>
+    </div>
+    <div class="t-stub"><div class="bar"></div><div class="adm">ENTRADA VIP</div></div>
+  </div>
+
+  <div class="cta3">
+    <svg viewBox="0 0 100 100"><path d="M50 8 C27 8 8 26 8 49 C8 57 10 64 14 71 L9 92 L31 86 C37 89 43 91 50 91 C73 91 92 72 92 49 C92 26 73 8 50 8Z" fill="none" stroke="#fff" stroke-width="7"/><path d="M36 30 C33 30 30 34 31 40 C33 50 44 63 56 68 C62 70 66 68 68 64 L69 60 L59 54 L54 59 C47 56 42 51 39 44 L44 40 L39 30Z" fill="#fff"/></svg>
+    Reserve pelo WhatsApp
+  </div>
+  <div class="foot">@hotelzinhoespacokidmais</div>
+</section>
+
+</body>
+</html>
