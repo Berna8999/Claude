@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=block"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --blue: #0033a0;
+        --blue-deep: #001f6b;
+        --teal: #00657f;
+        --green: #07995a;
+        --green-light: #19c06a;
+        --paper: #f3f7fc;
+        --ink: #0b1b3f;
+        --muted: #4a5a7a;
+        --white: #ffffff;
+        --grad: linear-gradient(100deg, #07995a 0%, #00657f 50%, #0033a0 100%);
+        --font: "Poppins", "Montserrat", Arial, sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1080px; height: 1920px; overflow: hidden;
+        background: var(--paper); font-family: var(--font); color: var(--ink);
+      }
+      #root { position: relative; width: 1080px; height: 1920px; overflow: hidden; }
+      .clip { position: absolute; inset: 0; width: 1080px; height: 1920px; overflow: hidden; }
+      .scene { opacity: 0; }
+      .light { background: var(--paper); }
+      .dark { background: radial-gradient(130% 90% at 50% 20%, #0a46c4 0%, var(--blue) 40%, var(--blue-deep) 100%); color: var(--white); }
+
+      /* decorative bubbles (from the logo) */
+      .bubble { position: absolute; border-radius: 50%; background: var(--green); }
+
+      .center { position: absolute; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+      .kicker { font-size: 34px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; }
+      .grad-text { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .pill {
+        display: inline-flex; align-items: center; gap: 14px; padding: 16px 34px; border-radius: 999px;
+        font-size: 32px; font-weight: 600;
+      }
+
+      /* corner logo badge */
+      #badge {
+        position: absolute; top: 70px; left: 390px; right: auto; bottom: auto; width: 300px; height: 104px; z-index: 50;
+        background: var(--white); border-radius: 26px; box-shadow: 0 12px 34px rgba(0, 31, 107, 0.18);
+        display: flex; align-items: center; justify-content: center;
+      }
+      #badge img { width: 240px; }
+
+      /* S1 intro */
+      #s1-logo { position: absolute; left: 140px; top: 760px; width: 800px; }
+      #s1-sub { top: 1100px; color: var(--teal); }
+
+      /* S2 hero */
+      #s2 .tag { top: 360px; }
+      #s2-word { top: 580px; font-size: 140px; font-weight: 900; letter-spacing: -0.04em; line-height: 1; }
+      #s2-year { top: 760px; font-size: 330px; font-weight: 900; letter-spacing: -0.05em; line-height: 1; color: var(--white); }
+      #s2-year span { color: var(--green-light); }
+      #s2-line { position: absolute; top: 1150px; left: 240px; width: 600px; height: 10px; border-radius: 10px; background: var(--green-light); transform-origin: left center; }
+      #s2-text { top: 1240px; padding: 0 110px; font-size: 54px; font-weight: 500; line-height: 1.3; }
+      #s2-text b { color: var(--green-light); font-weight: 700; }
+
+      /* S3 problem */
+      #s3-title { top: 290px; padding: 0 90px; font-size: 74px; font-weight: 800; line-height: 1.12; letter-spacing: -0.02em; }
+      #s3-title em { font-style: normal; color: #c0392b; }
+      .pipe {
+        position: absolute; left: 90px; width: 900px; height: 300px; border-radius: 150px;
+        background: linear-gradient(180deg, #c9d3e2 0%, #eef2f8 30%, #d5dde9 70%, #a9b6ca 100%);
+        box-shadow: inset 0 0 0 14px #8796ad, 0 20px 40px rgba(11, 27, 63, 0.18); overflow: hidden;
+      }
+      .pipe .inner { position: absolute; inset: 34px; border-radius: 120px; background: linear-gradient(180deg, #e7d9b4, #d9c48f); overflow: hidden; }
+      .yeast { position: absolute; width: 34px; height: 34px; border-radius: 50%; background: #b5651d; box-shadow: inset -5px -5px 0 rgba(0,0,0,0.18); }
+      #s3-pipe { top: 780px; }
+      #s3-labels { position: absolute; top: 1180px; left: 90px; width: 900px; display: flex; justify-content: space-between; }
+      #s3-labels .pill { background: var(--white); color: var(--ink); box-shadow: 0 8px 22px rgba(11,27,63,0.12); font-size: 30px; padding: 14px 26px; }
+      #s3-types { top: 1360px; padding: 0 80px; font-size: 44px; font-weight: 500; line-height: 1.35; color: var(--muted); }
+      #s3-types b { color: var(--ink); }
+      #s3-warn { top: 1580px; }
+      #s3-warn .pill { background: #fdecea; color: #a5281b; font-size: 34px; }
+
+      /* S4 solution */
+      #s4 .tag { top: 300px; }
+      #s4-title { top: 380px; font-size: 104px; font-weight: 900; line-height: 1.02; letter-spacing: -0.03em; }
+      .prod {
+        position: absolute; width: 400px; height: 400px; border-radius: 44px; color: var(--white);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+        box-shadow: 0 24px 50px rgba(0, 31, 107, 0.28);
+      }
+      .prod .code { font-size: 104px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+      .prod .wz { font-size: 40px; font-weight: 700; opacity: 0.85; }
+      .prod .name { margin-top: 14px; font-size: 32px; font-weight: 600; line-height: 1.2; padding: 0 30px; }
+      #p5592 { left: 80px; top: 720px; background: linear-gradient(150deg, var(--blue), var(--blue-deep)); }
+      #p5590 { left: 600px; top: 720px; background: linear-gradient(150deg, var(--green), var(--teal)); }
+      #s4-plus { position: absolute; left: 490px; top: 870px; width: 100px; height: 100px; border-radius: 50%; background: var(--white); color: var(--blue); font-size: 80px; font-weight: 800; line-height: 96px; text-align: center; box-shadow: 0 10px 26px rgba(0,0,0,0.2); z-index: 2; }
+      #s4-result { top: 1200px; font-size: 56px; font-weight: 800; color: var(--ink); }
+      #s4-when { position: absolute; top: 1330px; left: 90px; width: 900px; display: flex; flex-direction: column; gap: 22px; }
+      .when { display: flex; align-items: center; gap: 26px; background: var(--white); border-radius: 26px; padding: 24px 32px; box-shadow: 0 8px 22px rgba(11,27,63,0.1); font-size: 36px; font-weight: 500; }
+      .when .n { flex: none; width: 64px; height: 64px; border-radius: 50%; background: var(--grad); color: var(--white); font-weight: 800; font-size: 34px; display: flex; align-items: center; justify-content: center; }
+      .when.hl { background: var(--blue); color: var(--white); }
+      .when.hl .n { background: var(--green-light); }
+
+      /* S5 / S6 product detail */
+      .detail-head { position: absolute; top: 250px; left: 80px; right: 80px; height: 420px; border-radius: 48px; color: var(--white); padding: 56px 60px; }
+      .detail-head .wz { font-size: 44px; font-weight: 700; opacity: 0.85; }
+      .detail-head .code { font-size: 190px; font-weight: 900; line-height: 0.95; letter-spacing: -0.04em; }
+      .detail-head .name { font-size: 40px; font-weight: 600; margin-top: 10px; }
+      #s5 .detail-head { background: linear-gradient(140deg, var(--blue) 0%, var(--blue-deep) 100%); }
+      #s6 .detail-head { background: linear-gradient(140deg, var(--green) 0%, var(--teal) 100%); }
+      .feats { position: absolute; top: 730px; left: 80px; right: 80px; display: flex; flex-direction: column; gap: 26px; }
+      .feat { display: flex; align-items: center; gap: 30px; background: var(--white); border-radius: 30px; padding: 30px 36px; box-shadow: 0 10px 26px rgba(11,27,63,0.1); }
+      .feat .ic { flex: none; width: 88px; height: 88px; border-radius: 24px; display: flex; align-items: center; justify-content: center; }
+      .feat .ic svg { width: 52px; height: 52px; }
+      #s5 .feat .ic { background: #e3ebfa; color: var(--blue); }
+      #s6 .feat .ic { background: #e0f4ea; color: var(--green); }
+      .feat .t { font-size: 38px; font-weight: 700; line-height: 1.15; }
+      .feat .d { font-size: 29px; font-weight: 400; color: var(--muted); line-height: 1.3; margin-top: 4px; }
+      .pack { position: absolute; bottom: 120px; left: 0; right: 0; text-align: center; font-size: 28px; color: var(--muted); font-weight: 500; }
+
+      /* S7 cleaning */
+      #s7-title { top: 300px; padding: 0 80px; font-size: 80px; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
+      #s7-pipe { top: 800px; }
+      #s7-flow { position: absolute; top: 34px; bottom: 34px; left: -900px; width: 900px; border-radius: 120px; background: linear-gradient(90deg, rgba(25,192,106,0) 0%, rgba(25,192,106,0.85) 40%, rgba(0,101,127,0.95) 75%, rgba(0,51,160,1) 100%); }
+      #s7-clean { position: absolute; inset: 34px; border-radius: 120px; background: linear-gradient(180deg, #f7fbff, #dfe9f6); opacity: 0; }
+      #s7-shine { position: absolute; top: 70px; left: 120px; width: 660px; height: 26px; border-radius: 20px; background: rgba(255,255,255,0.85); opacity: 0; }
+      #s7-check { top: 1220px; }
+      #s7-check .big { width: 190px; height: 190px; border-radius: 50%; background: var(--grad); display: flex; align-items: center; justify-content: center; box-shadow: 0 18px 40px rgba(0,51,160,0.3); }
+      #s7-check .big svg { width: 110px; height: 110px; }
+      #s7-ok { top: 1450px; font-size: 74px; font-weight: 900; letter-spacing: -0.02em; }
+      #s7-ok-sub { top: 1560px; padding: 0 100px; font-size: 38px; color: var(--muted); font-weight: 500; line-height: 1.35; }
+
+      /* S8 benefits */
+      #s8 .tag { top: 290px; color: var(--green-light); }
+      #s8-title { top: 360px; font-size: 92px; font-weight: 900; letter-spacing: -0.03em; line-height: 1.05; }
+      .bens { position: absolute; top: 640px; left: 70px; right: 70px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+      .ben { background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.22); border-radius: 36px; padding: 40px 34px; height: 430px; }
+      .ben .ic { width: 96px; height: 96px; border-radius: 28px; background: var(--green-light); display: flex; align-items: center; justify-content: center; margin-bottom: 30px; }
+      .ben .ic svg { width: 56px; height: 56px; }
+      .ben .t { font-size: 42px; font-weight: 800; line-height: 1.12; }
+      .ben .d { font-size: 28px; line-height: 1.35; opacity: 0.85; margin-top: 14px; }
+
+      /* S9 CTA */
+      #s9 .tag { top: 330px; color: var(--teal); }
+      #s9-title { top: 410px; font-size: 96px; font-weight: 900; line-height: 1.02; letter-spacing: -0.03em; }
+      #s9-year { top: 630px; }
+      #s9-year .pill { font-size: 120px; font-weight: 900; padding: 20px 70px; color: var(--white); background: var(--grad); letter-spacing: -0.03em; box-shadow: 0 22px 46px rgba(0,51,160,0.3); }
+      #s9-logo { position: absolute; left: 190px; top: 960px; width: 700px; }
+      #s9-cta { top: 1290px; padding: 0 100px; font-size: 42px; font-weight: 500; line-height: 1.35; color: var(--ink); }
+      #s9-cta b { color: var(--blue); }
+      #s9-contact { top: 1530px; }
+      #s9-contact .pill { background: var(--blue); color: var(--white); font-size: 40px; font-weight: 700; }
+      #s9-addr { top: 1650px; font-size: 28px; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="55" data-width="1080" data-height="1920">
+
+      <!-- S1 · Intro logo (0–4.4) -->
+      <section id="s1" class="clip scene light" data-start="0" data-duration="4.4" data-track-index="0">
+        <div class="bubble b1" style="width:46px;height:46px;left:150px;top:640px"></div>
+        <div class="bubble b1" style="width:30px;height:30px;left:220px;top:600px"></div>
+        <div class="bubble b1" style="width:70px;height:70px;left:820px;top:1250px;background:var(--blue)"></div>
+        <div class="bubble b1" style="width:36px;height:36px;left:910px;top:1210px;background:var(--teal)"></div>
+        <img id="s1-logo" src="assets/logo.png" alt="Waze Química" />
+        <div id="s1-sub" class="center kicker">apresenta</div>
+      </section>
+
+      <!-- S2 · ENTRESSAFRA 26/27 (4–10.4) -->
+      <section id="s2" class="clip scene dark" data-start="4" data-duration="6.4" data-track-index="0">
+        <div class="bubble" style="width:260px;height:260px;left:-80px;top:180px;opacity:.12;background:var(--green-light)"></div>
+        <div class="bubble" style="width:380px;height:380px;left:820px;top:1480px;opacity:.10;background:var(--green-light)"></div>
+        <div class="center tag"><span class="pill" style="background:rgba(255,255,255,.14);color:#fff">Preparação de safra</span></div>
+        <div id="s2-word" class="center">ENTRESSAFRA</div>
+        <div id="s2-year" class="center"><div>26<span>/</span>27</div></div>
+        <div id="s2-line"></div>
+        <div id="s2-text" class="center">É agora que a sua fermentação <b>começa a vencer</b> a próxima safra.</div>
+      </section>
+
+      <!-- S3 · Problema (10–17.4) -->
+      <section id="s3" class="clip scene light" data-start="10" data-duration="7.4" data-track-index="0">
+        <div id="s3-title" class="center">Leveduras <em>indesejáveis</em> se escondem nas tubulações</div>
+        <div id="s3-pipe" class="pipe"><div class="inner" id="s3-inner"></div></div>
+        <div id="s3-labels"><span class="pill">Tubulações</span><span class="pill">Pontos mortos</span><span class="pill">Ranhuras</span></div>
+        <div id="s3-types" class="center"><div>Leveduras <b>nativas</b>, <b>dominantes</b> e <b>selvagens</b> competem com a sua levedura de trabalho.</div></div>
+        <div id="s3-warn" class="center"><span class="pill">⚠ Risco para o processo fermentativo</span></div>
+      </section>
+
+      <!-- S4 · Solução (17–23.4) -->
+      <section id="s4" class="clip scene light" data-start="17" data-duration="6.4" data-track-index="0">
+        <div class="center tag kicker grad-text" style="top:300px">A solução Waze</div>
+        <div id="s4-title" class="center"><div>Boilout<br /><span class="grad-text">Leveduricida</span></div></div>
+        <div id="p5592" class="prod"><div class="wz">WZ</div><div class="code">5592</div><div class="name">Agente de limpeza</div></div>
+        <div id="s4-plus">+</div>
+        <div id="p5590" class="prod"><div class="wz">WZ</div><div class="code">5590</div><div class="name">Leveduricida</div></div>
+        <div id="s4-result" class="center">Quando usar:</div>
+        <div id="s4-when">
+          <div class="when hl"><span class="n">1</span>Assepsia completa antes da safra</div>
+          <div class="when"><span class="n">2</span>Limpeza sanitizante no fim da safra</div>
+          <div class="when"><span class="n">3</span>Troca total da levedura durante a safra</div>
+        </div>
+      </section>
+
+      <!-- S5 · WZ 5592 (23–30.4) -->
+      <section id="s5" class="clip scene light" data-start="23" data-duration="7.4" data-track-index="0">
+        <div class="detail-head"><div class="wz">WZ</div><div class="code">5592</div><div class="name">Agente de limpeza alcalino</div></div>
+        <div class="feats">
+          <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div><div class="t">Alto desempenho</div><div class="d">Alcalino, pH &gt; 10 (solução a 0,1%)</div></div></div>
+          <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 8 8 8M16 8l-8 8"/></svg></div><div><div class="t">Remoção total de leveduras</div><div class="d">Nativas, dominantes e selvagens</div></div></div>
+          <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div><div><div class="t">Chega aos pontos críticos</div><div class="d">Tubulações, pontos mortos e ranhuras</div></div></div>
+          <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4z"/><path d="m9 12 2 2 4-4"/></svg></div><div><div class="t">Base do sistema Boilout</div><div class="d">Com o WZ 5590: assepsia completa</div></div></div>
+        </div>
+        <div class="pack">Bombonas de 50 L e 200 L · IBC de 1.000 L</div>
+      </section>
+
+      <!-- S6 · WZ 5590 (30–37.4) -->
+      <section id="s6" class="clip scene light" data-start="30" data-duration="7.4" data-track-index="0">
+        <div class="detail-head"><div class="wz">WZ</div><div class="code">5590</div><div class="name">Leveduricida · Fungicida e Bactericida</div></div>
+        <div class="feats">
+          <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="5"/><circle cx="15" cy="12" r="5"/></svg></div><div><div class="t">Sinergia de 2 ativos</div><div class="d">Amplo espectro: fungos, leveduras e bactérias</div></div></div>
+          <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2 2M9 2h6"/></svg></div><div><div class="t">Ação rápida</div><div class="d">Controla o limo microbiológico</div></div></div>
+          <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5S5 10 5 14.5a7 7 0 0 0 14 0C19 10 12 2.5 12 2.5z"/></svg></div><div><div class="t">Emulsionável em água</div><div class="d">Trabalha em ampla faixa de pH</div></div></div>
+          <div class="feat"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2h12.4a1.5 1.5 0 0 0 1.3-2L14 9V3"/><path d="M7 15h10"/></svg></div><div><div class="t">0,25% a 1% na limpeza</div><div class="d">Diluído em água nas soluções de limpeza</div></div></div>
+        </div>
+        <div class="pack">Bombonas de 50 kg · Tambores de 200 kg · IBC de 1.000 kg</div>
+      </section>
+
+      <!-- S7 · Limpeza da tubulação (37–43.4) -->
+      <section id="s7" class="clip scene light" data-start="37" data-duration="6.4" data-track-index="0">
+        <div id="s7-title" class="center"><div>5592 + 5590 em ação <span class="grad-text">dentro da tubulação</span></div></div>
+        <div id="s7-pipe" class="pipe">
+          <div class="inner" id="s7-inner"></div>
+          <div id="s7-clean"></div>
+          <div id="s7-flow"></div>
+          <div id="s7-shine"></div>
+        </div>
+        <div id="s7-check" class="center"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div></div>
+        <div id="s7-ok" class="center grad-text">Assepsia completa</div>
+        <div id="s7-ok-sub" class="center">Sistema limpo para a levedura de trabalho começar forte.</div>
+      </section>
+
+      <!-- S8 · Benefícios (43–49.4) -->
+      <section id="s8" class="clip scene dark" data-start="43" data-duration="6.4" data-track-index="0">
+        <div class="center tag kicker">Benefícios</div>
+        <div id="s8-title" class="center"><div>Por que usar<br />Waze Química?</div></div>
+        <div class="bens">
+          <div class="ben"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4z"/></svg></div><div class="t">Protege a levedura de trabalho</div><div class="d">Sem competição de leveduras indesejáveis</div></div>
+          <div class="ben"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div><div class="t">Fermentação mais estável</div><div class="d">Maior estabilidade do processo fermentativo</div></div>
+          <div class="ben"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></div><div class="t">Menos paradas para limpeza</div><div class="d">Evita perdas na produção</div></div>
+          <div class="ben"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c4-1 7-4 9-8l3-7 4 4-7 3c-4 2-7 5-8 9"/></svg></div><div class="t">Safra começa segura</div><div class="d">Assepsia completa antes da partida</div></div>
+        </div>
+      </section>
+
+      <!-- S9 · CTA (49–55) -->
+      <section id="s9" class="clip scene light" data-start="49" data-duration="6" data-track-index="0">
+        <div class="center tag kicker">Prepare sua usina na</div>
+        <div id="s9-title" class="center">ENTRESSAFRA</div>
+        <div id="s9-year" class="center"><span class="pill">26/27</span></div>
+        <img id="s9-logo" src="assets/logo.png" alt="Waze Química" />
+        <div id="s9-cta" class="center"><div>Fale com o <b>responsável técnico Waze Química</b> da sua região.</div></div>
+        <div id="s9-contact" class="center"><span class="pill">(16) 3945-0000</span></div>
+        <div id="s9-addr" class="center">Sertãozinho/SP</div>
+      </section>
+
+      <!-- Logo badge across middle scenes -->
+      <div id="badge" class="clip" data-start="10" data-duration="39" data-track-index="1"><img src="assets/logo.png" alt="Waze Química" /></div>
+    </div>
+
+    <script>
+      // Deterministic yeast placement (seeded LCG, no Math.random)
+      let seed = 2627;
+      const rnd = () => ((seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648);
+      function fillYeast(id, n) {
+        const box = document.getElementById(id);
+        const els = [];
+        for (let i = 0; i < n; i++) {
+          const y = document.createElement("div");
+          y.className = "yeast";
+          const s = 22 + rnd() * 22;
+          y.style.width = y.style.height = s + "px";
+          y.style.left = 20 + rnd() * 780 + "px";
+          y.style.top = 10 + rnd() * 190 + "px";
+          y.style.background = ["#b5651d", "#8e4b12", "#c97b2a", "#a0522d"][i % 4];
+          box.appendChild(y);
+          els.push(y);
+        }
+        return els;
+      }
+      const y3 = fillYeast("s3-inner", 34);
+      const y7 = fillYeast("s7-inner", 34);
+
+      const tl = gsap.timeline({ paused: true });
+      const scene = (id, start, dur) => {
+        tl.fromTo(id, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, start);
+        if (dur) tl.to(id, { opacity: 0, duration: 0.4, ease: "power2.in" }, start + dur - 0.4);
+      };
+      const up = (t, at, d = 0.6, y = 60) => tl.from(t, { opacity: 0, y, duration: d, ease: "power3.out" }, at);
+      const pop = (t, at, d = 0.6) => tl.from(t, { opacity: 0, scale: 0.6, duration: d, ease: "back.out(1.8)" }, at);
+
+      // S1
+      tl.set("#s1", { opacity: 1 }, 0);
+      tl.to("#s1", { opacity: 0, duration: 0.4, ease: "power2.in" }, 4.0);
+      tl.from("#s1-logo", { scale: 0.9, y: 20, duration: 1.2, ease: "power3.out" }, 0);
+      tl.from("#s1 .b1", { opacity: 0, scale: 0, duration: 0.5, stagger: 0.1, ease: "back.out(2)" }, 0.5);
+      up("#s1-sub", 1.3);
+      tl.to("#s1-logo", { scale: 1.05, duration: 3, ease: "none" }, 1.2);
+
+      // S2 — ENTRESSAFRA 26/27
+      scene("#s2", 4, 6.4);
+      up("#s2 .tag", 4.3);
+      tl.from("#s2-word", { opacity: 0, y: 80, duration: 0.7, ease: "power4.out" }, 4.5);
+      tl.from("#s2-year", { opacity: 0, scale: 1.6, duration: 0.8, ease: "power4.out" }, 4.9);
+      tl.from("#s2-line", { scaleX: 0, duration: 0.7, ease: "power3.inOut" }, 5.6);
+      up("#s2-text", 6.1, 0.7);
+      tl.to("#s2-year", { scale: 1.06, duration: 4, ease: "none" }, 5.7);
+
+      // S3 — problem
+      scene("#s3", 10, 7.4);
+      up("#s3-title", 10.3, 0.7);
+      tl.from("#s3-pipe", { opacity: 0, x: -200, duration: 0.8, ease: "power3.out" }, 10.8);
+      tl.from(y3, { opacity: 0, scale: 0, duration: 0.35, stagger: 0.04, ease: "back.out(2)" }, 11.4);
+      tl.from("#s3-labels .pill", { opacity: 0, y: 30, duration: 0.5, stagger: 0.18, ease: "power3.out" }, 12.6);
+      up("#s3-types", 13.6);
+      pop("#s3-warn", 14.8);
+      tl.to(y3, { scale: 1.25, duration: 1.2, stagger: 0.02, ease: "sine.inOut", yoyo: true, repeat: 1 }, 14.4);
+
+      // S4 — solution
+      scene("#s4", 17, 6.4);
+      up("#s4 .tag", 17.3);
+      up("#s4-title", 17.5, 0.7);
+      tl.from("#p5592", { opacity: 0, x: -300, duration: 0.7, ease: "power3.out" }, 18.1);
+      tl.from("#p5590", { opacity: 0, x: 300, duration: 0.7, ease: "power3.out" }, 18.1);
+      pop("#s4-plus", 18.7, 0.5);
+      up("#s4-result", 19.4, 0.5);
+      tl.from("#s4-when .when", { opacity: 0, x: -80, duration: 0.5, stagger: 0.3, ease: "power3.out" }, 19.7);
+
+      // S5 — 5592
+      scene("#s5", 23, 7.4);
+      tl.from("#s5 .detail-head", { opacity: 0, y: -80, duration: 0.7, ease: "power3.out" }, 23.2);
+      tl.from("#s5 .feat", { opacity: 0, x: 120, duration: 0.6, stagger: 0.55, ease: "power3.out" }, 24);
+      up("#s5 .pack", 26.6, 0.5, 20);
+
+      // S6 — 5590
+      scene("#s6", 30, 7.4);
+      tl.from("#s6 .detail-head", { opacity: 0, y: -80, duration: 0.7, ease: "power3.out" }, 30.2);
+      tl.from("#s6 .feat", { opacity: 0, x: 120, duration: 0.6, stagger: 0.55, ease: "power3.out" }, 31);
+      up("#s6 .pack", 33.6, 0.5, 20);
+
+      // S7 — cleaning animation
+      scene("#s7", 37, 6.4);
+      up("#s7-title", 37.2, 0.7);
+      tl.from("#s7-pipe", { opacity: 0, duration: 0.5 }, 37.4);
+      tl.to("#s7-flow", { x: 1800, duration: 1.9, ease: "power1.inOut" }, 37.8);
+      tl.to(y7, { opacity: 0, scale: 0, duration: 0.3, stagger: { each: 0.04, from: "start" }, ease: "power2.in" }, 38.1);
+      tl.to("#s7-clean", { opacity: 1, duration: 0.8, ease: "power2.out" }, 39.1);
+      tl.to("#s7-shine", { opacity: 1, duration: 0.6 }, 39.5);
+      pop("#s7-check", 39.5, 0.6);
+      up("#s7-ok", 39.8, 0.6);
+      up("#s7-ok-sub", 40.1, 0.6);
+
+      // S8 — benefits
+      scene("#s8", 43, 6.4);
+      up("#s8 .tag", 43.2, 0.5);
+      up("#s8-title", 43.4, 0.7);
+      tl.from("#s8 .ben", { opacity: 0, y: 80, scale: 0.92, duration: 0.6, stagger: 0.35, ease: "power3.out" }, 44.1);
+
+      // S9 — CTA with 26/27 emphasis
+      scene("#s9", 49, 0);
+      up("#s9 .tag", 49.2, 0.5);
+      tl.from("#s9-title", { opacity: 0, y: 60, duration: 0.6, ease: "power4.out" }, 49.4);
+      tl.from("#s9-year", { opacity: 0, scale: 1.8, duration: 0.7, ease: "power4.out" }, 49.8);
+      tl.to("#s9-year", { scale: 1.06, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }, 50.6);
+      tl.from("#s9-logo", { opacity: 0, y: 40, duration: 0.7, ease: "power3.out" }, 50.6);
+      up("#s9-cta", 51.3);
+      pop("#s9-contact", 51.9);
+      up("#s9-addr", 52.3, 0.5, 20);
+
+      // badge
+      tl.fromTo("#badge", { opacity: 0, y: -40 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 10.2);
+      tl.to("#badge", { opacity: 0, duration: 0.4 }, 42.9);
+      tl.to("#badge", { opacity: 1, duration: 0.4 }, 43.3);
+      tl.to("#badge", { opacity: 0, duration: 0.4 }, 48.6);
+
+      tl.set({}, {}, 55);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
