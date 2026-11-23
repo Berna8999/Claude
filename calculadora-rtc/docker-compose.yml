@@ -1,0 +1,65 @@
+# Sobe o sistema completo:
+#   app               -> http://localhost:3000  (tela inicial + API do sistema)
+#   regime-regular    -> http://localhost:8080/api/swagger-ui.html
+#   simples-nacional  -> http://localhost:8082/api/swagger-ui.html
+#
+# Para atualizar uma calculadora, troque a versão (REF) e rode:
+#   docker compose build --no-cache <servico> && docker compose up -d
+
+services:
+  regime-regular:
+    build:
+      context: ./docker
+      dockerfile: calculadora.Dockerfile
+      args:
+        REPO: https://github.com/ReceitaFederal/calculadora-rtc-regime-regular.git
+        REF: "1.7.2"
+        JAR: api-regime-geral
+        PORTA: "8080"
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8080'"]
+      interval: 10s
+      timeout: 3s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
+  simples-nacional:
+    build:
+      context: ./docker
+      dockerfile: calculadora.Dockerfile
+      args:
+        REPO: https://github.com/ReceitaFederal/calculadora-rtc-simples-nacional.git
+        REF: "1.0.2"
+        JAR: api-simples-nacional
+        PORTA: "8082"
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8082'"]
+      interval: 10s
+      timeout: 3s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+
+  app:
+    build: ./app
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: "3000"
+      REGIME_REGULAR_URL: http://regime-regular:8080/api
+      SIMPLES_NACIONAL_URL: http://simples-nacional:8082/api
+      DB_PATH: /data/sistema.db
+    volumes:
+      - dados-app:/data
+    depends_on:
+      - regime-regular
+      - simples-nacional
+    restart: unless-stopped
+
+volumes:
+  dados-app:

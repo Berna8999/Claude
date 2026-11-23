@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Início · Calculadora RTC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="layout">
+    <!-- ============ Menu lateral ============ -->
+    <aside class="sidebar" id="sidebar">
+      <div class="marca">
+        <span class="marca-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 4h14v16H5z M8 8h8 M8 12h3 M13 12h3 M8 16h3 M13 16h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div>
+          <strong>Calculadora RTC</strong>
+          <small>Reforma Tributária</small>
+        </div>
+      </div>
+
+      <nav class="menu" aria-label="Principal">
+        <a href="#" class="ativo" aria-current="page">
+          <svg viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></svg>Início
+        </a>
+        <a href="#" data-em-breve>
+          <svg viewBox="0 0 24 24"><path d="M4 20V8l6-4v16M10 20h10V10l-10-2M14 13h2M14 16h2"/></svg>Empresas
+        </a>
+        <a href="#" data-em-breve>
+          <svg viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 7h6M9 11h6M9 15h3"/></svg>Cálculos
+        </a>
+        <a href="#" data-em-breve>
+          <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM4 10h16M10 10v9"/></svg>Tabelas oficiais
+        </a>
+        <a href="#" data-em-breve>
+          <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 100-6 3 3 0 000 6zM19 12l2-1-1-3-2 .5-1.5-1.5.5-2-3-1-1 2h-2l-1-2-3 1 .5 2L6 9.5 4 9l-1 3 2 1v2l-2 1 1 3 2-.5 1.5 1.5-.5 2 3 1 1-2h2l1 2 3-1-.5-2 1.5-1.5 2 .5 1-3-2-1z"/></svg>Configurações
+        </a>
+      </nav>
+
+      <div class="sidebar-rodape">
+        Motor de cálculo oficial da<br>Receita Federal · LC 214/2025
+      </div>
+    </aside>
+
+    <!-- ============ Conteúdo ============ -->
+    <main class="conteudo">
+      <header class="topo">
+        <button class="botao-icone so-mobile" id="abrir-menu" aria-label="Abrir menu">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <div>
+          <p class="saudacao" id="saudacao">Olá</p>
+          <h1>Painel de tributos</h1>
+        </div>
+        <div class="acoes">
+          <button class="botao secundario" id="btn-nova-empresa">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>Cadastrar empresa
+          </button>
+          <button class="botao primario" id="btn-novo-calculo">
+            <svg viewBox="0 0 24 24"><path d="M6 3h12v18H6zM9 7h6M9 11h1M12 11h1M15 11h0M9 15h1M12 15h1M15 15h0"/></svg>Novo cálculo
+          </button>
+        </div>
+      </header>
+
+      <!-- Status das calculadoras -->
+      <section class="status-faixa" aria-label="Situação das calculadoras">
+        <article class="status-card" id="status-regular">
+          <span class="ponto" aria-hidden="true"></span>
+          <div class="status-texto">
+            <strong>Regime Regular</strong>
+            <span class="status-detalhe">Verificando…</span>
+          </div>
+          <span class="status-versao"></span>
+        </article>
+        <article class="status-card" id="status-simples">
+          <span class="ponto" aria-hidden="true"></span>
+          <div class="status-texto">
+            <strong>Simples Nacional</strong>
+            <span class="status-detalhe">Verificando…</span>
+          </div>
+          <span class="status-versao"></span>
+        </article>
+        <button class="botao-icone" id="btn-atualizar-status" aria-label="Verificar novamente" title="Verificar novamente">
+          <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 11-2.3-5.6M20 4v5h-5"/></svg>
+        </button>
+      </section>
+
+      <!-- Indicadores -->
+      <section class="kpis" aria-label="Resumo do mês">
+        <article class="kpi">
+          <span class="kpi-rotulo">Empresas cadastradas</span>
+          <strong class="kpi-valor" id="kpi-empresas">–</strong>
+          <span class="kpi-sub" id="kpi-empresas-sub">&nbsp;</span>
+        </article>
+        <article class="kpi">
+          <span class="kpi-rotulo">Cálculos no mês</span>
+          <strong class="kpi-valor" id="kpi-calculos">–</strong>
+          <span class="kpi-sub" id="kpi-calculos-sub">&nbsp;</span>
+        </article>
+        <article class="kpi">
+          <span class="kpi-rotulo">CBS calculada <abbr title="Contribuição sobre Bens e Serviços (federal)">?</abbr></span>
+          <strong class="kpi-valor dinheiro" id="kpi-cbs">–</strong>
+          <span class="kpi-sub">no mês, todas as empresas</span>
+        </article>
+        <article class="kpi">
+          <span class="kpi-rotulo">IBS calculado <abbr title="Imposto sobre Bens e Serviços (estados e municípios)">?</abbr></span>
+          <strong class="kpi-valor dinheiro" id="kpi-ibs">–</strong>
+          <span class="kpi-sub">no mês, todas as empresas</span>
+        </article>
+      </section>
+
+      <div class="grade">
+        <!-- Últimos cálculos -->
+        <section class="painel painel-largo">
+          <header class="painel-topo">
+            <h2>Últimos cálculos</h2>
+            <a href="#" class="link" data-em-breve>Ver todos</a>
+          </header>
+          <div id="calculos-conteudo">
+            <div class="carregando">Carregando…</div>
+          </div>
+        </section>
+
+        <!-- Coluna lateral -->
+        <div class="coluna">
+          <section class="painel">
+            <header class="painel-topo">
+              <h2>Empresas</h2>
+              <a href="#" class="link" data-em-breve>Gerenciar</a>
+            </header>
+            <ul class="lista-empresas" id="lista-empresas"></ul>
+          </section>
+
+          <section class="painel">
+            <header class="painel-topo"><h2>Transição da reforma</h2></header>
+            <ol class="linha-tempo" id="linha-tempo">
+              <li data-ano="2026"><strong>2026</strong><span>Ano de teste: CBS 0,9% e IBS 0,1%, compensáveis</span></li>
+              <li data-ano="2027"><strong>2027</strong><span>CBS integral, fim do PIS/Cofins, início do Imposto Seletivo</span></li>
+              <li data-ano="2029"><strong>2029–2032</strong><span>IBS sobe e ICMS/ISS caem gradualmente</span></li>
+              <li data-ano="2033"><strong>2033</strong><span>Fim do ICMS e do ISS: modelo novo completo</span></li>
+            </ol>
+          </section>
+
+          <aside class="aviso">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l10 18H2zM12 10v5M12 18v.01"/></svg>
+            <p><strong>Simples Nacional:</strong> a calculadora usa a linha de alíquotas efetivas que você informa no cadastro da empresa. A integração com o PGDAS-D está prevista para a Release 16.</p>
+          </aside>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============ Modal: cadastrar empresa ============ -->
+  <dialog class="modal" id="modal-empresa">
+    <form method="dialog" id="form-empresa" novalidate>
+      <header class="modal-topo">
+        <h2>Cadastrar empresa</h2>
+        <button type="button" class="botao-icone" data-fechar aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </header>
+      <div class="modal-corpo">
+        <label class="campo">Razão social
+          <input name="razaoSocial" required autocomplete="organization">
+        </label>
+        <div class="linha-campos">
+          <label class="campo">CNPJ
+            <input name="cnpj" required inputmode="numeric" placeholder="00.000.000/0000-00" maxlength="18">
+          </label>
+          <label class="campo">Regime
+            <select name="regime">
+              <option value="regular">Regime Regular</option>
+              <option value="simples">Simples Nacional</option>
+            </select>
+          </label>
+        </div>
+        <div class="linha-campos">
+          <label class="campo campo-uf">UF
+            <select name="uf" id="select-uf"></select>
+          </label>
+          <label class="campo">Município (código IBGE)
+            <input name="municipioIbge" required inputmode="numeric" maxlength="7" placeholder="3550308">
+          </label>
+        </div>
+        <fieldset class="grupo-simples" id="grupo-simples" hidden>
+          <legend>Alíquotas efetivas (Anexo I – Comércio)</legend>
+          <p class="dica">Valores em pontos percentuais vindos do PGDAS-D. Os demais anexos poderão ser preenchidos na tela de Empresas.</p>
+          <div class="linha-campos">
+            <label class="campo">CBS (%)<input name="pCBSSN" inputmode="decimal" placeholder="1.1612"></label>
+            <label class="campo">IBS (%)<input name="pIBSSN" inputmode="decimal" placeholder="0.0129"></label>
+          </div>
+        </fieldset>
+        <ul class="erros" id="erros-empresa" hidden></ul>
+      </div>
+      <footer class="modal-rodape">
+        <button type="button" class="botao secundario" data-fechar>Cancelar</button>
+        <button type="submit" class="botao primario">Salvar empresa</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <!-- ============ Modal: novo cálculo ============ -->
+  <dialog class="modal modal-largo" id="modal-calculo">
+    <form method="dialog" id="form-calculo" novalidate>
+      <header class="modal-topo">
+        <h2>Novo cálculo</h2>
+        <button type="button" class="botao-icone" data-fechar aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </header>
+      <div class="modal-corpo">
+        <div class="linha-campos tres">
+          <label class="campo">Empresa
+            <select name="empresaId" id="select-empresa" required></select>
+          </label>
+          <label class="campo">Data do fato gerador
+            <input type="date" name="data" required>
+          </label>
+          <label class="campo">Documento
+            <select name="tpDoc">
+              <option value="55">NF-e (55)</option>
+              <option value="65">NFC-e (65)</option>
+              <option value="91">NFS-e (91)</option>
+            </select>
+          </label>
+        </div>
+
+        <fieldset id="grupo-aliquotas" hidden>
+          <legend>Alíquotas nominais</legend>
+          <p class="dica">Obrigatórias a partir de 2027 no Regime Regular: a tabela oficial de referência só tem 2026.</p>
+          <div class="linha-campos tres">
+            <label class="campo">CBS (%)<input name="aliqCbs" inputmode="decimal" value="8.8"></label>
+            <label class="campo">IBS estadual (%)<input name="aliqIbsUf" inputmode="decimal" value="0.05"></label>
+            <label class="campo">IBS municipal (%)<input name="aliqIbsMun" inputmode="decimal" value="0.05"></label>
+          </div>
+        </fieldset>
+
+        <div class="itens-topo">
+          <h3>Itens</h3>
+          <button type="button" class="link" id="btn-add-item">+ Adicionar item</button>
+        </div>
+        <div class="itens" id="itens"></div>
+        <template id="tpl-item">
+          <div class="item">
+            <label class="campo">Descrição<input name="descricao" placeholder="Ex.: Arroz 5 kg"></label>
+            <label class="campo">NCM / NBS<input name="codigo" inputmode="numeric" placeholder="10063021"></label>
+            <label class="campo so-regular">CST<input name="cst" inputmode="numeric" maxlength="3" placeholder="000"></label>
+            <label class="campo">cClassTrib<input name="cClassTrib" inputmode="numeric" maxlength="6" placeholder="000001"></label>
+            <label class="campo so-simples">Atividade SN<input name="cAtivSN" inputmode="numeric" maxlength="2" placeholder="01"></label>
+            <label class="campo">Valor (R$)<input name="valor" inputmode="decimal" placeholder="100,00"></label>
+            <button type="button" class="botao-icone remover" aria-label="Remover item"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+          </div>
+        </template>
+
+        <ul class="erros" id="erros-calculo" hidden></ul>
+        <div class="resultado" id="resultado-calculo" hidden></div>
+      </div>
+      <footer class="modal-rodape">
+        <button type="button" class="botao secundario" data-fechar>Fechar</button>
+        <button type="submit" class="botao primario" id="btn-calcular">Calcular</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
