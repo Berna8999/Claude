@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="pt-BR" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --sky-top: #c9f1ff;
+        --sky-bottom: #7fd6f2;
+        --teal: #13a5c4;
+        --teal-dark: #0b7f99;
+        --yellow: #ffc61a;
+        --yellow-dark: #e8a300;
+        --ink: #ffffff;
+        --deep: #0a5a6e;
+        --pink: #ff7eb6;
+        --purple: #9b6bff;
+        --green: #25d366;
+        --font-display: "Fredoka", sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1080px; height: 1920px; overflow: hidden;
+        background: var(--sky-bottom);
+      }
+      #root {
+        position: relative; width: 100%; height: 100%;
+        font-family: var(--font-display);
+        background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-bottom) 100%);
+        overflow: hidden;
+      }
+      .clip { position: absolute; inset: 0; }
+      .scene { padding: 120px 120px 340px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+      /* Decor: clouds, sun */
+      .cloud { position: absolute; background: #fff; border-radius: 999px; box-shadow: 0 18px 0 -6px rgba(10,90,110,.12); }
+      .cloud::before, .cloud::after { content: ""; position: absolute; background: #fff; border-radius: 50%; }
+      .cloud::before { width: 55%; height: 140%; left: 14%; top: -70%; }
+      .cloud::after { width: 40%; height: 110%; right: 14%; top: -45%; }
+      #c1 { width: 300px; height: 100px; left: -40px; top: 220px; }
+      #c2 { width: 220px; height: 74px; right: 40px; top: 420px; }
+      #c3 { width: 260px; height: 86px; left: 120px; bottom: 210px; }
+      #sun { position: absolute; right: 90px; top: 120px; width: 170px; height: 170px; }
+
+      /* Shared type */
+      .big {
+        color: var(--ink); text-align: center; font-weight: 700; line-height: 1.02;
+        text-shadow: 0 10px 0 var(--teal-dark), 0 22px 30px rgba(10,90,110,.35);
+        -webkit-text-stroke: 4px var(--teal-dark); paint-order: stroke fill;
+      }
+      .pill {
+        display: inline-block; background: var(--yellow); color: var(--deep);
+        border-radius: 999px; padding: 6px 46px 16px;
+        box-shadow: 0 12px 0 var(--yellow-dark), 0 26px 40px rgba(232,163,0,.45);
+        -webkit-text-stroke: 0; text-shadow: none;
+      }
+      .sub { color: var(--deep); font-weight: 600; font-size: 54px; text-align: center; }
+
+      /* Scene 1 */
+      #s1-q { font-size: 280px; color: var(--yellow); font-weight: 700; margin-bottom: 10px;
+        -webkit-text-stroke: 8px var(--deep); paint-order: stroke fill;
+        text-shadow: 0 16px 0 var(--deep); }
+      #s1-l1 { font-size: 96px; }
+      #s1-l2 { font-size: 108px; margin: 26px 0; }
+      #s1-l3 { font-size: 92px; }
+
+      /* Scene 2 */
+      #s2-logo { width: 600px; height: 600px; border-radius: 60px;
+        box-shadow: 0 40px 80px rgba(10,90,110,.35); }
+      #s2-t1 { font-size: 84px; margin-top: 50px; }
+      #s2-t2 { font-size: 96px; margin-top: 22px; }
+      .heart { position: absolute; width: 120px; height: 120px; }
+
+      /* Scene 3 */
+      #s3-title { font-size: 88px; margin-bottom: 50px; }
+      .grid { display: grid; grid-template-columns: 360px 360px; gap: 36px; }
+      .card {
+        width: 360px; height: 360px; border-radius: 56px; background: var(--teal);
+        box-shadow: 0 18px 0 var(--teal-dark), 0 36px 50px rgba(10,90,110,.3);
+        display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px;
+        border: 8px solid rgba(255,255,255,.35);
+      }
+      .card svg { width: 170px; height: 170px; }
+      .card span { color: #fff; font-size: 48px; font-weight: 700; }
+
+      /* Scene 4 */
+      #s4-shield { width: 240px; height: 264px; margin-bottom: 30px; }
+      #s4-title { font-size: 88px; margin-bottom: 40px; }
+      .check {
+        display: flex; align-items: center; gap: 34px; width: 740px;
+        background: #fff; border-radius: 40px; padding: 20px 36px; margin: 12px 0;
+        box-shadow: 0 12px 0 rgba(10,90,110,.18);
+        color: var(--deep); font-size: 50px; font-weight: 600;
+      }
+      .check i { flex: 0 0 84px; height: 84px; border-radius: 50%; background: var(--yellow);
+        display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 0 var(--yellow-dark); }
+      .check i svg { width: 50px; height: 50px; }
+
+      /* Scene 5 */
+      #s5-t1 { font-size: 112px; }
+      #s5-t2 { font-size: 104px; margin-top: 30px; }
+      #s5-big-heart { width: 300px; height: 300px; margin-bottom: 50px; }
+
+      /* Scene 6 */
+      #s6-logo { width: 640px; height: 640px; border-radius: 70px; box-shadow: 0 40px 80px rgba(10,90,110,.35); }
+      #s6-cta {
+        margin-top: 60px; display: flex; align-items: center; gap: 24px;
+        background: #0f7a3d; color: #fff; font-size: 56px; font-weight: 700;
+        padding: 30px 70px; border-radius: 999px;
+        box-shadow: 0 14px 0 #0a5a2c, 0 30px 50px rgba(10,90,44,.4);
+      }
+      #s6-cta svg { width: 76px; height: 76px; }
+      #s6-handle { margin-top: 44px; font-size: 46px; color: var(--deep); font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="32" data-width="1080" data-height="1920">
+
+      <!-- Persistent decor -->
+      <div id="decor" class="clip" data-start="0" data-duration="32" data-track-index="0">
+        <div data-layout-allow-overflow class="cloud" id="c1"></div>
+        <div data-layout-allow-overflow class="cloud" id="c2"></div>
+        <div data-layout-allow-overflow class="cloud" id="c3"></div>
+        <svg id="sun" viewBox="0 0 100 100">
+          <g id="sun-rays" stroke="#ffc61a" stroke-width="7" stroke-linecap="round">
+            <line x1="50" y1="4" x2="50" y2="16"/><line x1="50" y1="84" x2="50" y2="96"/>
+            <line x1="4" y1="50" x2="16" y2="50"/><line x1="84" y1="50" x2="96" y2="50"/>
+            <line x1="17" y1="17" x2="25" y2="25"/><line x1="75" y1="75" x2="83" y2="83"/>
+            <line x1="17" y1="83" x2="25" y2="75"/><line x1="75" y1="25" x2="83" y2="17"/>
+          </g>
+          <circle cx="50" cy="50" r="24" fill="#ffc61a" stroke="#e8a300" stroke-width="3"/>
+        </svg>
+      </div>
+
+      <!-- Scene 1: hook -->
+      <div id="s1" class="clip scene" data-start="0" data-duration="5" data-track-index="1">
+        <div id="s1-q">?</div>
+        <div id="s1-l1" class="big">Precisa de alguém</div>
+        <div id="s1-l2" class="big"><span class="pill">de confiança</span></div>
+        <div id="s1-l3" class="big">pra cuidar do<br/>seu filho?</div>
+      </div>
+
+      <!-- Scene 2: carinho -->
+      <div id="s2" class="clip scene" data-start="5" data-duration="5" data-track-index="1">
+        <img id="s2-logo" src="assets/logo.png" alt="Kid+ Hotel Infantil" />
+        <div id="s2-t1" class="big">Recebido com</div>
+        <div id="s2-t2" class="big"><span class="pill">muito carinho</span></div>
+        <svg class="heart" id="h1" style="left:70px;top:260px" viewBox="0 0 100 90"><path d="M50 86 C10 58 0 36 8 20 C18 0 42 2 50 20 C58 2 82 0 92 20 C100 36 90 58 50 86Z" fill="#ff7eb6" stroke="#e05596" stroke-width="5"/></svg>
+        <svg class="heart" id="h2" style="right:70px;top:620px" viewBox="0 0 100 90"><path d="M50 86 C10 58 0 36 8 20 C18 0 42 2 50 20 C58 2 82 0 92 20 C100 36 90 58 50 86Z" fill="#ffc61a" stroke="#e8a300" stroke-width="5"/></svg>
+      </div>
+
+      <!-- Scene 3: atividades -->
+      <div id="s3" class="clip scene" data-start="10" data-duration="6" data-track-index="1">
+        <div id="s3-title" class="big">Um dia cheio de<br/><span class="pill">diversão!</span></div>
+        <div class="grid">
+          <div class="card" id="k1">
+            <svg viewBox="0 0 100 100"><rect x="8" y="52" width="40" height="40" rx="8" fill="#9b6bff" stroke="#fff" stroke-width="4"/><rect x="52" y="52" width="40" height="40" rx="8" fill="#ff7eb6" stroke="#fff" stroke-width="4"/><rect x="30" y="8" width="40" height="40" rx="8" fill="#ffc61a" stroke="#fff" stroke-width="4"/></svg>
+            <span>Brincadeiras</span>
+          </div>
+          <div class="card" id="k2">
+            <svg viewBox="0 0 100 100"><path d="M50 30 C30 16 6 26 10 54 C14 82 34 96 50 86 C66 96 86 82 90 54 C94 26 70 16 50 30Z" fill="#ff5a5a" stroke="#fff" stroke-width="4"/><path d="M50 30 C50 18 54 10 62 6" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M54 18 C64 8 78 10 80 14 C72 24 60 24 54 18Z" fill="#25d366" stroke="#fff" stroke-width="3"/></svg>
+            <span>Lanchinho</span>
+          </div>
+          <div class="card" id="k3">
+            <svg viewBox="0 0 100 100"><path d="M62 10 C36 14 20 36 24 60 C28 84 54 96 78 86 C56 82 42 62 46 40 C48 26 54 16 62 10Z" fill="#ffc61a" stroke="#fff" stroke-width="4"/><text x="66" y="40" font-size="20" font-weight="700" fill="#fff" font-family="Fredoka, sans-serif">z</text><text x="78" y="26" font-size="14" font-weight="700" fill="#fff" font-family="Fredoka, sans-serif">z</text></svg>
+            <span>Descanso</span>
+          </div>
+          <div class="card" id="k4">
+            <svg viewBox="0 0 100 100"><path d="M50 6 L62 36 L94 38 L69 58 L78 90 L50 72 L22 90 L31 58 L6 38 L38 36Z" fill="#ffc61a" stroke="#fff" stroke-width="4" stroke-linejoin="round"/></svg>
+            <span>Diversão</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scene 4: seguranca -->
+      <div id="s4" class="clip scene" data-start="16" data-duration="5" data-track-index="1">
+        <svg id="s4-shield" viewBox="0 0 100 110"><path d="M50 4 L92 18 C92 60 76 90 50 106 C24 90 8 60 8 18Z" fill="#13a5c4" stroke="#fff" stroke-width="6" stroke-linejoin="round"/><path d="M30 56 L45 71 L72 40" stroke="#ffc61a" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div id="s4-title" class="big">Segurança e<br/><span class="pill">cuidado</span></div>
+        <div class="check" id="ch1"><i><svg viewBox="0 0 50 50"><path d="M10 26 L21 37 L41 14" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Equipe atenciosa</div>
+        <div class="check" id="ch2"><i><svg viewBox="0 0 50 50"><path d="M10 26 L21 37 L41 14" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Ambiente seguro</div>
+        <div class="check" id="ch3"><i><svg viewBox="0 0 50 50"><path d="M10 26 L21 37 L41 14" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></i>Tudo limpinho</div>
+      </div>
+
+      <!-- Scene 5: emocional -->
+      <div id="s5" class="clip scene" data-start="21" data-duration="4.6" data-track-index="1">
+        <svg id="s5-big-heart" viewBox="0 0 100 90"><path d="M50 86 C10 58 0 36 8 20 C18 0 42 2 50 20 C58 2 82 0 92 20 C100 36 90 58 50 86Z" fill="#ff7eb6" stroke="#fff" stroke-width="5"/></svg>
+        <div id="s5-t1" class="big">Seu filho feliz.</div>
+        <div id="s5-t2" class="big"><span class="pill">Você tranquila.</span></div>
+      </div>
+
+      <!-- Scene 6: CTA -->
+      <div id="s6" class="clip scene" data-start="25.6" data-duration="6.4" data-track-index="1">
+        <img id="s6-logo" src="assets/logo.png" alt="Kid+ Hotel Infantil" />
+        <div id="s6-cta">
+          <svg viewBox="0 0 100 100"><path d="M50 8 C27 8 8 26 8 49 C8 57 10 64 14 71 L9 92 L31 86 C37 89 43 91 50 91 C73 91 92 72 92 49 C92 26 73 8 50 8Z" fill="none" stroke="#fff" stroke-width="7"/><path d="M36 30 C33 30 30 34 31 40 C33 50 44 63 56 68 C62 70 66 68 68 64 L69 60 L59 54 L54 59 C47 56 42 51 39 44 L44 40 L39 30Z" fill="#fff"/></svg>
+          Agende pelo WhatsApp
+        </div>
+        <div id="s6-handle">@hotelzinhoespacokidmais</div>
+      </div>
+
+      <!-- Audio -->
+      <audio id="music" src="assets/music.wav" data-start="0" data-duration="32" data-volume="0.22" data-fade-in="0.5" data-fade-out="1.5" data-track-index="2"></audio>
+      <audio id="vo1" src="assets/vo1.wav" data-start="0.5" data-duration="3.35" data-volume="1" data-track-index="3"></audio>
+      <audio id="vo2" src="assets/vo2.wav" data-start="5.5" data-duration="3.33" data-volume="1" data-track-index="3"></audio>
+      <audio id="vo3" src="assets/vo3.wav" data-start="10.8" data-duration="3.09" data-volume="1" data-track-index="3"></audio>
+      <audio id="vo4" src="assets/vo4.wav" data-start="16.5" data-duration="2.54" data-volume="1" data-track-index="3"></audio>
+      <audio id="vo5" src="assets/vo5.wav" data-start="21.6" data-duration="2.05" data-volume="1" data-track-index="3"></audio>
+      <audio id="vo6" src="assets/vo6.wav" data-start="26.3" data-duration="3.39" data-volume="1" data-track-index="3"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const pop = { scale: 0, opacity: 0 };
+      const popTo = (d) => ({ scale: 1, opacity: 1, duration: d || 0.5, ease: "back.out(2)" });
+      const exitScene = (sel, t) => tl.to(sel, { opacity: 0, scale: 0.92, duration: 0.3, ease: "power2.in" }, t);
+
+      // Decor: gentle loops built from finite tweens
+      tl.fromTo("#c1", { x: -40 }, { x: 140, duration: 32, ease: "none" }, 0);
+      tl.fromTo("#c2", { x: 30 }, { x: -120, duration: 32, ease: "none" }, 0);
+      tl.fromTo("#c3", { x: 0 }, { x: 110, duration: 32, ease: "none" }, 0);
+      tl.fromTo("#sun-rays", { rotation: 0, transformOrigin: "50% 50%" }, { rotation: 180, duration: 32, ease: "none" }, 0);
+      tl.fromTo("#sun", { scale: 1 }, { scale: 1.08, duration: 1, ease: "sine.inOut", yoyo: true, repeat: 31 }, 0);
+
+      // Scene 1 (0-5)
+            tl.fromTo("#s1-q", { y: 0 }, { y: -24, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: 7 }, 0);
+      tl.fromTo("#s1-l1", { scale: 1 }, { scale: 1.06, duration: 0.3, ease: "sine.inOut", yoyo: true, repeat: 1 }, 0.5);
+      tl.fromTo("#s1-l2", pop, popTo(0.55), 1.2);
+      tl.fromTo("#s1-l3", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 2.2);
+      exitScene("#s1", 4.7);
+
+      // Scene 2 (5-10)
+      tl.fromTo("#s2-logo", { scale: 0, rotation: -8 }, { scale: 1, rotation: 0, duration: 0.7, ease: "back.out(1.8)" }, 5.05);
+      tl.to("#s2-logo", { scale: 1.04, duration: 1.2, ease: "sine.inOut", yoyo: true, repeat: 2 }, 5.8);
+      tl.fromTo("#s2-t1", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" }, 5.9);
+      tl.fromTo("#s2-t2", pop, popTo(), 6.6);
+      tl.fromTo("#h1", { scale: 0, y: 60 }, { scale: 1, y: -40, duration: 1.4, ease: "power2.out" }, 6.4);
+      tl.fromTo("#h2", { scale: 0, y: 60 }, { scale: 1, y: -60, duration: 1.4, ease: "power2.out" }, 6.9);
+      exitScene("#s2", 9.7);
+
+      // Scene 3 (10-16)
+      tl.fromTo("#s3-title", { y: -80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.6)" }, 10.1);
+      ["#k1", "#k2", "#k3", "#k4"].forEach((k, i) => {
+        tl.fromTo(k, { scale: 0, rotation: i % 2 ? 10 : -10 }, { scale: 1, rotation: 0, duration: 0.5, ease: "back.out(2)" }, 10.8 + i * 0.72);
+        tl.to(k + " svg", { y: -16, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 3 }, 11.4 + i * 0.72);
+      });
+      exitScene("#s3", 15.7);
+
+      // Scene 4 (16-21)
+      tl.fromTo("#s4-shield", { scale: 0, y: -60 }, { scale: 1, y: 0, duration: 0.6, ease: "back.out(2)" }, 16.1);
+      tl.fromTo("#s4-title", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 16.5);
+      ["#ch1", "#ch2", "#ch3"].forEach((c, i) => {
+        tl.fromTo(c, { x: i % 2 ? 900 : -900, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, 17.4 + i * 0.5);
+      });
+      exitScene("#s4", 20.7);
+
+      // Scene 5 (21-25.6)
+      tl.fromTo("#s5-big-heart", { scale: 0 }, { scale: 1, duration: 0.6, ease: "back.out(2.2)" }, 21.05);
+      tl.to("#s5-big-heart", { scale: 1.12, duration: 0.35, ease: "sine.inOut", yoyo: true, repeat: 5 }, 21.7);
+      tl.fromTo("#s5-t1", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }, 21.5);
+      tl.fromTo("#s5-t2", pop, popTo(), 22.6);
+      exitScene("#s5", 25.3);
+
+      // Scene 6 (25.6-32)
+      tl.fromTo("#s6-logo", { scale: 0, rotation: 8 }, { scale: 1, rotation: 0, duration: 0.8, ease: "back.out(1.7)" }, 25.65);
+      tl.fromTo("#s6-cta", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.8)" }, 26.8);
+      tl.to("#s6-cta", { scale: 1.06, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 5 }, 27.6);
+      tl.fromTo("#s6-handle", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 27.8);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
