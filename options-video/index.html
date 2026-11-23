@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Saira:wght@400;500;600&display=block"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --blue: #4a82c4;
+        --blue-deep: #2f5f99;
+        --ink: #0b0d10;
+        --steel: #12161c;
+        --paper: #ffffff;
+        --muted: #9aa6b4;
+        --fluo: #d4ff3a;
+        --font-display: "Saira Condensed", sans-serif;
+        --font-body: "Saira", sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px; height: 1080px; overflow: hidden;
+        background: var(--paper);
+        font-family: var(--font-body);
+      }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+      .clip { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+
+      /* ---------- Cena 1: logo ---------- */
+      #s-intro { background: var(--paper); }
+      #intro-grid {
+        position: absolute; inset: 0;
+        background-image:
+          linear-gradient(rgba(74,130,196,.10) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(74,130,196,.10) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+      #intro-logo {
+        position: absolute; left: 50%; top: 46%;
+        width: 640px; transform: translate(-50%, -50%);
+      }
+      #intro-tag {
+        position: absolute; left: 0; right: 0; top: 820px; text-align: center;
+        font-family: var(--font-display); font-weight: 500; font-size: 40px;
+        letter-spacing: .32em; text-transform: uppercase; color: var(--blue-deep);
+      }
+      #intro-line {
+        position: absolute; left: 50%; top: 800px; width: 520px; height: 3px;
+        margin-left: -260px; background: var(--blue); transform-origin: center;
+      }
+
+      /* ---------- Cena 2: partículas magnéticas ---------- */
+      #s-mt { background: #0a0c10; }
+      #mt-canvas { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+      #mt-vignette {
+        position: absolute; inset: 0; pointer-events: none;
+        background: radial-gradient(ellipse at 50% 58%, transparent 35%, rgba(0,0,0,.75) 100%);
+      }
+      #mt-head { position: absolute; left: 120px; top: 96px; width: 1100px; }
+      .kicker {
+        font-family: var(--font-display); font-weight: 600; font-size: 30px;
+        letter-spacing: .3em; text-transform: uppercase; color: var(--blue);
+        display: flex; align-items: center; gap: 20px;
+      }
+      .kicker::before { content: ""; width: 56px; height: 3px; background: var(--blue); }
+      #mt-title {
+        margin-top: 14px; font-family: var(--font-display); font-weight: 700;
+        font-size: 104px; line-height: .95; color: #fff; letter-spacing: -.005em;
+      }
+      #mt-title .hl { color: var(--fluo); }
+      #mt-sub {
+        margin-top: 26px; font-size: 32px; line-height: 1.35; color: #c9d2dc; max-width: 900px;
+      }
+      #mt-callout { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+      #mt-label {
+        position: absolute; left: 1300px; top: 852px;
+        font-family: var(--font-display); font-weight: 600; font-size: 38px;
+        letter-spacing: .12em; text-transform: uppercase; color: var(--fluo);
+      }
+      #mt-label small {
+        display: block; font-family: var(--font-body); font-weight: 400; font-size: 30px;
+        letter-spacing: 0; text-transform: none; color: #c9d2dc; margin-top: 6px;
+      }
+      #mt-uv {
+        position: absolute; right: 120px; top: 110px;
+        font-family: var(--font-display); font-weight: 600; font-size: 30px;
+        letter-spacing: .2em; color: #b98cff; border: 2px solid #b98cff;
+        padding: 10px 22px; border-radius: 6px;
+      }
+
+      /* ---------- Cena 3: serviços ---------- */
+      #s-serv { background: #0d1319; }
+      #serv-bg {
+        position: absolute; inset: 0;
+        background:
+          radial-gradient(circle at 85% 10%, rgba(74,130,196,.28), transparent 45%),
+          radial-gradient(circle at 5% 95%, rgba(74,130,196,.18), transparent 40%);
+      }
+      #serv-head { position: absolute; left: 120px; top: 110px; }
+      #serv-title {
+        margin-top: 12px; font-family: var(--font-display); font-weight: 700;
+        font-size: 96px; line-height: 1; color: #fff;
+      }
+      #serv-cards {
+        position: absolute; left: 120px; right: 120px; top: 380px;
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px;
+      }
+      .card {
+        position: relative; height: 560px; padding: 52px 46px;
+        background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+        border: 1px solid rgba(255,255,255,.12); border-radius: 18px; overflow: hidden;
+      }
+      .card .bar { position: absolute; left: 0; top: 0; height: 6px; width: 100%; background: var(--blue); transform-origin: left; }
+      .card .num {
+        position: absolute; right: 40px; top: 30px; font-family: var(--font-display);
+        font-weight: 700; font-size: 120px; line-height: 1; color: rgba(74,130,196,.22);
+      }
+      .card svg { width: 96px; height: 96px; }
+      .card h3 {
+        margin-top: 36px; font-family: var(--font-display); font-weight: 700;
+        font-size: 50px; line-height: 1.02; color: #fff;
+      }
+      .card p { margin-top: 24px; font-size: 29px; line-height: 1.45; color: #c3ccd6; }
+
+      /* ---------- Cena 4: encerramento ---------- */
+      #s-out { background: var(--paper); }
+      #out-logo { position: absolute; left: 50%; top: 40%; width: 560px; transform: translate(-50%, -50%); }
+      #out-chips {
+        position: absolute; left: 0; right: 0; top: 760px;
+        display: flex; justify-content: center; gap: 22px;
+      }
+      .chip {
+        font-family: var(--font-display); font-weight: 600; font-size: 30px; letter-spacing: .08em;
+        text-transform: uppercase; color: var(--blue-deep);
+        border: 2px solid var(--blue); border-radius: 999px; padding: 12px 30px;
+      }
+      #out-cta {
+        position: absolute; left: 0; right: 0; top: 880px; text-align: center;
+        font-size: 34px; color: #2a3138;
+      }
+      #out-cta b { color: var(--blue-deep); font-weight: 600; }
+
+      /* ---------- Transição ---------- */
+      .wipe { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; background: var(--blue); }
+      .wipe.dark { background: #0b0d10; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="28" data-width="1920" data-height="1080">
+
+      <!-- CENA 1 · LOGO -->
+      <section id="s-intro" class="clip" data-start="0" data-duration="5" data-track-index="0">
+        <div id="intro-grid"></div>
+        <img id="intro-logo" src="assets/logo.png" alt="Options Engenharia" />
+        <div id="intro-line"></div>
+        <div id="intro-tag">Engenharia · Inspeção · Segurança</div>
+      </section>
+
+      <!-- CENA 2 · ENSAIOS POR PARTÍCULAS MAGNÉTICAS -->
+      <section id="s-mt" class="clip" data-start="4.6" data-duration="8.4" data-track-index="1">
+        <canvas id="mt-canvas" width="1920" height="1080"></canvas>
+        <div id="mt-vignette" data-layout-allow-occlusion></div>
+        <svg id="mt-callout" viewBox="0 0 1920 1080">
+          <circle id="mt-ring" cx="1110" cy="700" r="120" fill="none" stroke="#d4ff3a" stroke-width="4" stroke-dasharray="754" stroke-dashoffset="754" />
+          <polyline id="mt-leader" points="1195,785 1235,880 1282,880" fill="none" stroke="#d4ff3a" stroke-width="3" stroke-dasharray="260" stroke-dashoffset="260" />
+        </svg>
+        <div id="mt-head">
+          <div class="kicker" id="mt-kicker">Ensaio não destrutivo</div>
+          <h1 id="mt-title">Ensaios por<br /><span class="hl">Partículas Magnéticas</span></h1>
+          <p id="mt-sub">Detecção de trincas e descontinuidades superficiais e subsuperficiais em soldas e materiais ferromagnéticos.</p>
+        </div>
+        <div id="mt-uv">LUZ UV · VIA ÚMIDA FLUORESCENTE</div>
+        <div id="mt-label">Descontinuidade revelada<small>Campo de fuga concentra as partículas</small></div>
+      </section>
+
+      <!-- CENA 3 · SERVIÇOS -->
+      <section id="s-serv" class="clip" data-start="12.6" data-duration="11.4" data-track-index="2">
+        <div id="serv-bg"></div>
+        <div id="serv-head">
+          <div class="kicker" id="serv-kicker">O que fazemos</div>
+          <h2 id="serv-title">Nossos principais serviços</h2>
+        </div>
+        <div id="serv-cards">
+          <article class="card" id="card1">
+            <div class="bar"></div><div class="num" data-layout-ignore>01</div>
+            <svg viewBox="0 0 96 96" fill="none" stroke="#4a82c4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M48 8 L82 20 V46 C82 68 66 82 48 88 C30 82 14 68 14 46 V20 Z" />
+              <path d="M32 48 L44 60 L66 36" />
+            </svg>
+            <h3>Normas NR e segurança industrial</h3>
+            <p>Adequação e conformidade às normas regulamentadoras.</p>
+          </article>
+          <article class="card" id="card2">
+            <div class="bar"></div><div class="num" data-layout-ignore>02</div>
+            <svg viewBox="0 0 96 96" fill="none" stroke="#4a82c4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="48" cy="48" r="14" />
+              <path d="M48 10v12M48 74v12M10 48h12M74 48h12M21 21l8.5 8.5M66.5 66.5L75 75M21 75l8.5-8.5M66.5 29.5L75 21" />
+              <circle cx="48" cy="48" r="28" />
+            </svg>
+            <h3>Inspeção e engenharia mecânica</h3>
+            <p>Inspeção em soldas, projetos mecânicos, dimensionamento, cálculos técnicos e calibração de válvulas industriais.</p>
+          </article>
+          <article class="card" id="card3">
+            <div class="bar"></div><div class="num" data-layout-ignore>03</div>
+            <svg viewBox="0 0 96 96" fill="none" stroke="#4a82c4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="18" y="10" width="60" height="76" rx="4" />
+              <path d="M18 35h60M18 60h60M42 22h12M42 47h12M42 72h12" />
+            </svg>
+            <h3>Projetos sob medida</h3>
+            <p>Soluções técnicas e estruturas organizacionais, como armários para documentos.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- CENA 4 · ENCERRAMENTO -->
+      <section id="s-out" class="clip" data-start="23.6" data-duration="4.4" data-track-index="3">
+        <img id="out-logo" src="assets/logo.png" alt="Options Engenharia" />
+        <div id="out-chips">
+          <span class="chip">Partículas magnéticas</span>
+          <span class="chip">Normas NR</span>
+          <span class="chip">Inspeção de soldas</span>
+          <span class="chip">Projetos sob medida</span>
+        </div>
+        <div id="out-cta">Fale com a <b>Options Engenharia</b></div>
+      </section>
+
+      <audio id="trilha" src="assets/trilha.m4a" data-start="0" data-duration="28" data-track-index="7" data-volume="0.9"></audio>
+
+      <!-- TRANSIÇÕES -->
+      <div id="wipe1" class="wipe clip" data-start="4" data-duration="1.2" data-track-index="4"></div>
+      <div id="wipe2" class="wipe clip" data-start="12" data-duration="1.2" data-track-index="5"></div>
+      <div id="wipe3" class="wipe clip" data-start="23" data-duration="1.2" data-track-index="6"></div>
+    </div>
+
+    <script>
+      /* ================= Partículas magnéticas (canvas determinístico) ================= */
+      (function () {
+        const W = 1920, H = 1080;
+        const cv = document.getElementById("mt-canvas");
+        const ctx = cv.getContext("2d");
+        let seed = 20261123;
+        const rnd = () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+
+        const WELD_Y = 700, CX = 1110, A = 420;
+        const POLE_L = CX - A, POLE_R = CX + A;
+
+        // Chapa de aço + cordão de solda (pré-renderizado)
+        const plate = document.createElement("canvas"); plate.width = W; plate.height = H;
+        const p = plate.getContext("2d");
+        const g = p.createLinearGradient(0, 0, 0, H);
+        g.addColorStop(0, "#1b2027"); g.addColorStop(1, "#0f1216");
+        p.fillStyle = g; p.fillRect(0, 0, W, H);
+        for (let i = 0; i < 1600; i++) {
+          const y = rnd() * H, x = rnd() * W, len = 60 + rnd() * 260;
+          p.strokeStyle = `rgba(${rnd() < .5 ? "255,255,255" : "0,0,0"},${0.02 + rnd() * 0.04})`;
+          p.lineWidth = 1; p.beginPath(); p.moveTo(x, y); p.lineTo(x + len, y + (rnd() - .5) * 2); p.stroke();
+        }
+        // cordão
+        const wg = p.createLinearGradient(0, WELD_Y - 46, 0, WELD_Y + 46);
+        wg.addColorStop(0, "#14181d"); wg.addColorStop(.35, "#3a414a"); wg.addColorStop(.5, "#4b535d"); wg.addColorStop(.65, "#30363e"); wg.addColorStop(1, "#14181d");
+        p.fillStyle = wg; p.fillRect(0, WELD_Y - 46, W, 92);
+        p.strokeStyle = "rgba(0,0,0,.35)"; p.lineWidth = 2;
+        for (let x = -40; x < W + 40; x += 22) {
+          p.beginPath(); p.moveTo(x, WELD_Y - 40); p.quadraticCurveTo(x + 26, WELD_Y, x, WELD_Y + 40); p.stroke();
+        }
+        p.strokeStyle = "rgba(255,255,255,.07)";
+        for (let x = -30; x < W + 40; x += 22) {
+          p.beginPath(); p.moveTo(x, WELD_Y - 38); p.quadraticCurveTo(x + 24, WELD_Y, x, WELD_Y + 38); p.stroke();
+        }
+
+        // Trinca (polilinha)
+        const crack = [];
+        for (let i = 0; i <= 14; i++) {
+          const t = i / 14;
+          crack.push([CX + Math.sin(t * 9.0) * 9 + (rnd() - .5) * 10, WELD_Y - 95 + t * 190]);
+        }
+        const onCrack = (s) => {
+          const f = s * (crack.length - 1), i = Math.min(Math.floor(f), crack.length - 2), k = f - i;
+          return [crack[i][0] + (crack[i + 1][0] - crack[i][0]) * k, crack[i][1] + (crack[i + 1][1] - crack[i][1]) * k];
+        };
+
+        // Partículas
+        const N = 2200, NC = 650, parts = [];
+        for (let i = 0; i < N; i++) {
+          const sx = 560 + rnd() * 1240, sy = 500 + rnd() * 480;
+          let tx, ty, ta;
+          if (i < N - NC) {
+            const k = (rnd() * 2 - 1) * 215;
+            const u = (rnd() * 2 - 1) * 0.96;
+            const s = Math.sqrt(1 - u * u);
+            tx = CX + A * u + (rnd() - .5) * 6;
+            ty = WELD_Y + k * s + (rnd() - .5) * 6;
+            ta = Math.atan2(-k * u / s, A);
+          } else {
+            const c = onCrack(rnd());
+            tx = c[0] + (rnd() - .5) * 22 * (0.4 + rnd());
+            ty = c[1] + (rnd() - .5) * 6;
+            ta = (rnd() - .5) * 0.5;
+          }
+          parts.push({ sx, sy, tx, ty, sa: rnd() * Math.PI, ta, d: rnd() * 0.3, len: 5 + rnd() * 7, crack: i >= N - NC, fall: 20 + rnd() * 60 });
+        }
+
+        const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        const clamp = (v) => Math.max(0, Math.min(1, v));
+
+        function drawYoke(alpha, drop) {
+          if (alpha <= 0) return;
+          ctx.save(); ctx.globalAlpha = alpha;
+          for (const [x, lbl] of [[POLE_L, "N"], [POLE_R, "S"]]) {
+            const top = WELD_Y - 200 - drop, bot = WELD_Y + 28 - drop;
+            const gg = ctx.createLinearGradient(x - 46, 0, x + 46, 0);
+            gg.addColorStop(0, "#2b3139"); gg.addColorStop(.5, "#5b6470"); gg.addColorStop(1, "#22272e");
+            ctx.fillStyle = gg; ctx.beginPath(); ctx.roundRect(x - 46, top, 92, bot - top, [18, 18, 0, 0]); ctx.fill();
+            ctx.fillStyle = "#4a82c4"; ctx.fillRect(x - 46, bot - 22, 92, 22);
+            ctx.fillStyle = "#e9eef4"; ctx.font = "600 40px 'Saira Condensed', sans-serif";
+            ctx.textAlign = "center"; ctx.fillText(lbl, x, bot - 60);
+          }
+          ctx.restore();
+        }
+
+        function draw(t) {
+          // t: segundos dentro da cena (0 … 8.4)
+          ctx.globalCompositeOperation = "source-over";
+          ctx.globalAlpha = 1;
+          ctx.drawImage(plate, 0, 0);
+
+          const uv = clamp((t - 3.6) / 0.9);          // escurece para luz UV
+          if (uv > 0) { ctx.fillStyle = `rgba(28,8,52,${0.62 * uv})`; ctx.fillRect(0, 0, W, H); }
+
+          const yokeIn = clamp((t - 0.8) / 0.8);
+          drawYoke(yokeIn, (1 - ease(yokeIn)) * 120);
+
+          // campo (linhas guia sutis)
+          const fieldA = clamp((t - 1.6) / 0.6) * (1 - uv * 0.7);
+          if (fieldA > 0) {
+            ctx.strokeStyle = `rgba(74,130,196,${0.35 * fieldA})`; ctx.lineWidth = 1.5; ctx.setLineDash([6, 10]);
+            ctx.lineDashOffset = -t * 40;
+            for (let k = -210; k <= 210; k += 42) {
+              if (k === 0) continue;
+              ctx.beginPath();
+              for (let u = -0.96; u <= 0.961; u += 0.04) {
+                const x = CX + A * u, y = WELD_Y + k * Math.sqrt(1 - u * u);
+                u === -0.96 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+              }
+              ctx.stroke();
+            }
+            ctx.setLineDash([]);
+          }
+
+          const sprinkle = clamp((t - 0.2) / 1.2);
+          const align = (t - 1.9) / 2.2;
+          const glow = clamp((t - 4.0) / 1.2);
+          ctx.globalCompositeOperation = "lighter";
+          ctx.lineCap = "round";
+          for (const q of parts) {
+            const a0 = clamp((sprinkle - q.d) / 0.7);
+            if (a0 <= 0) continue;
+            const m = ease(clamp((align - q.d) / 0.7));
+            const x = q.sx + (q.tx - q.sx) * m;
+            const y = q.sy + (q.ty - q.sy) * m - (1 - ease(a0)) * q.fall;
+            const ang = q.sa + (q.ta - q.sa) * m;
+            const L = q.len * (q.crack ? 1 + glow * 0.4 : 1);
+            const dx = Math.cos(ang) * L * .5, dy = Math.sin(ang) * L * .5;
+            let r, gch, b, al;
+            if (q.crack) {
+              r = 140 + 72 * uv; gch = 150 + 105 * uv; b = 150 - 92 * uv;
+              al = a0 * (0.55 + 0.45 * uv) * (0.8 + glow * 0.6);
+            } else {
+              r = 140 + 72 * uv; gch = 150 + 105 * uv; b = 150 - 92 * uv;
+              al = a0 * (0.5 + 0.2 * uv) * (1 - glow * 0.35);
+            }
+            ctx.strokeStyle = `rgba(${r | 0},${gch | 0},${b | 0},${Math.min(1, al)})`;
+            ctx.lineWidth = q.crack ? 2.4 : 1.8;
+            ctx.beginPath(); ctx.moveTo(x - dx, y - dy); ctx.lineTo(x + dx, y + dy); ctx.stroke();
+          }
+          // brilho da indicação
+          if (glow > 0) {
+            const rg = ctx.createRadialGradient(CX, WELD_Y, 0, CX, WELD_Y, 170);
+            rg.addColorStop(0, `rgba(212,255,58,${0.32 * glow})`);
+            rg.addColorStop(1, "rgba(212,255,58,0)");
+            ctx.fillStyle = rg; ctx.fillRect(CX - 200, WELD_Y - 200, 400, 400);
+          }
+          ctx.globalCompositeOperation = "source-over";
+        }
+
+        window.__mtDraw = draw;
+        draw(0);
+      })();
+
+      /* ================= Linha do tempo ================= */
+      const tl = gsap.timeline({ paused: true });
+
+      // Cena 1 — logo
+      tl.fromTo("#intro-grid", { opacity: 0.4 }, { opacity: 1, duration: 1.2, ease: "power2.out" }, 0);
+      tl.fromTo("#intro-logo", { opacity: 0.9, scale: 0.94, filter: "blur(2px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.2, ease: "power3.out" }, 0);
+      tl.fromTo("#intro-line", { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, 1.4);
+      tl.fromTo("#intro-tag", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 1.8);
+      tl.to("#intro-logo", { scale: 1.04, duration: 2.4, ease: "none" }, 1.6);
+
+      // Transição 1 (azul → cena escura)
+      tl.fromTo("#wipe1", { xPercent: -100 }, { xPercent: 0, duration: 0.55, ease: "power3.in" }, 4.0);
+      tl.to("#wipe1", { xPercent: 100, duration: 0.6, ease: "power3.out" }, 4.6);
+
+      // Cena 2 — partículas magnéticas
+      const T2 = 4.6, mt = { t: 0 };
+      tl.fromTo(mt, { t: 0 }, { t: 8.4, duration: 8.4, ease: "none", onUpdate: () => window.__mtDraw(mt.t) }, T2);
+      tl.fromTo("#mt-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }, T2 + 0.5);
+      tl.fromTo("#mt-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, T2 + 0.7);
+      tl.fromTo("#mt-sub", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, T2 + 1.2);
+      tl.fromTo("#mt-uv", { opacity: 0 }, { opacity: 1, duration: 0.5 }, T2 + 3.8);
+      tl.to("#mt-ring", { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, T2 + 5.0);
+      tl.to("#mt-leader", { strokeDashoffset: 0, duration: 0.5, ease: "power2.out" }, T2 + 5.6);
+      tl.fromTo("#mt-label", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }, T2 + 5.9);
+
+      // Transição 2
+      tl.fromTo("#wipe2", { xPercent: -100 }, { xPercent: 0, duration: 0.55, ease: "power3.in" }, 12.0);
+      tl.to("#wipe2", { xPercent: 100, duration: 0.6, ease: "power3.out" }, 12.6);
+
+      // Cena 3 — serviços
+      const T3 = 12.6;
+      tl.fromTo("#serv-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }, T3 + 0.4);
+      tl.fromTo("#serv-title", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, T3 + 0.55);
+      ["#card1", "#card2", "#card3"].forEach((id, i) => {
+        const at = T3 + 1.5 + i * 1.9;
+        tl.fromTo(id, { opacity: 0, y: 80 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, at);
+        tl.fromTo(`${id} .bar`, { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: "power3.inOut" }, at + 0.25);
+        tl.fromTo(`${id} svg`, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }, at + 0.35);
+        tl.fromTo(`${id} h3`, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, at + 0.45);
+        tl.fromTo(`${id} p`, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, at + 0.65);
+      });
+
+      // leve respiração dos cards enquanto o público lê
+      tl.to("#serv-cards", { y: -14, duration: 4.2, ease: "sine.inOut" }, T3 + 6.4);
+      tl.to("#serv-bg", { scale: 1.08, duration: 10, ease: "none" }, T3 + 0.4);
+      tl.to("#card2", { borderColor: "rgba(74,130,196,.6)", duration: 0.8, yoyo: true, repeat: 1 }, T3 + 7.3);
+      tl.to("#card3", { borderColor: "rgba(74,130,196,.6)", duration: 0.8, yoyo: true, repeat: 1 }, T3 + 8.9);
+
+      // Transição 3
+      tl.fromTo("#wipe3", { xPercent: -100 }, { xPercent: 0, duration: 0.55, ease: "power3.in" }, 23.0);
+      tl.to("#wipe3", { xPercent: 100, duration: 0.6, ease: "power3.out" }, 23.6);
+
+      // Cena 4 — encerramento
+      const T4 = 23.6;
+      tl.fromTo("#out-logo", { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 1.0, ease: "power3.out" }, T4 + 0.3);
+      tl.fromTo("#out-chips .chip", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.12, ease: "power2.out" }, T4 + 1.0);
+      tl.fromTo("#out-cta", { opacity: 0 }, { opacity: 1, duration: 0.6 }, T4 + 1.8);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
