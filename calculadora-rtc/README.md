@@ -73,10 +73,35 @@ calculadora-rtc/
     └── test/
 ```
 
+## Contas e convites
+
+- Cada pessoa cria a conta como **contador** (atende várias empresas) ou **empresa** (usa para o próprio CNPJ).
+- Cada conta só enxerga as empresas em que tem acesso. Dois contadores podem cadastrar o mesmo CNPJ, e um não vê o
+  do outro.
+- **Convite:** pelo ícone ao lado da empresa, gera-se um link para um e-mail. A empresa convida o contador, ou o
+  contador convida alguém da empresa. O link vale por 7 dias, só pode ser usado uma vez e só funciona para o e-mail
+  convidado. Por enquanto o sistema não envia e-mail: o link é copiado e mandado por WhatsApp ou e-mail.
+- Quem cadastrou a empresa pode apagá-la. Os demais só saem dela.
+- Senhas guardadas com scrypt; sessão em cookie `httpOnly` de 30 dias; até 10 tentativas de login a cada 15 minutos.
+
+Variáveis para produção:
+
+| Variável | Para quê |
+|---|---|
+| `APP_URL` | Endereço público, usado nos links de convite (ex.: `https://app.seudominio.com.br`). Começando com `https`, o cookie passa a ser só HTTPS |
+| `TRUST_PROXY` | `true` quando o sistema estiver atrás de um proxy (Caddy, Nginx) que faz o HTTPS |
+| `COOKIE_SEGURO` | Força o cookie só HTTPS (`true`) ou não (`false`), ignorando `APP_URL` |
+
 ## API do sistema
 
 | Método | Rota | Para quê |
 |---|---|---|
+| POST | `/api/auth/cadastro`, `/api/auth/entrar`, `/api/auth/sair` | Conta e sessão |
+| GET | `/api/eu` | Usuário logado |
+| GET | `/api/empresas/:id/pessoas` | Quem tem acesso e convites pendentes |
+| POST | `/api/empresas/:id/convites` | Gera o link de convite para um e-mail |
+| GET | `/api/convites/:token` | Dados do convite (público) |
+| POST | `/api/convites/:token/aceitar` | Aceita o convite (precisa estar logado com o e-mail convidado) |
 | GET | `/api/status` | Se as calculadoras estão no ar, e com qual versão |
 | GET | `/api/resumo` | Números da tela inicial: empresas e totais do mês |
 | GET/POST | `/api/empresas` | Lista e cadastra empresas (CNPJ, regime, UF, município IBGE) |
@@ -113,5 +138,7 @@ com erro não derruba a nota inteira. O cálculo fica salvo como `ok`, `parcial`
 - [ ] Tela de Cálculos (histórico com filtro, detalhe com a memória de cálculo)
 - [ ] Tabelas oficiais: busca de NCM, NBS e cClassTrib pelos dados abertos da calculadora
 - [ ] Importar itens de XML de NF-e ou de planilha
-- [ ] Login e separação dos dados por cliente (multiempresa)
+- [x] Login, separação dos dados por cliente e convite entre contador e empresa
+- [ ] Trocar o SQLite pelo PostgreSQL (Supabase)
+- [ ] Enviar o convite por e-mail e recuperar senha
 - [ ] Gerar o XML do grupo de tributação (`/calculadora/xml/generate`)

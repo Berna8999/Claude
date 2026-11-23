@@ -7,6 +7,7 @@ const dataBr = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digi
 const UFS = 'AC AL AM AP BA CE DF ES GO MA MG MS MT PA PB PE PI PR RJ RN RO RR RS SC SE SP TO'.split(' ');
 
 let empresas = [];
+let eu = null;
 
 // ---------- Utilidades ----------
 async function api(caminho, opcoes = {}) {
@@ -16,6 +17,7 @@ async function api(caminho, opcoes = {}) {
     body: opcoes.body ? JSON.stringify(opcoes.body) : undefined,
   });
   const corpo = resp.status === 204 ? null : await resp.json().catch(() => null);
+  if (resp.status === 401 && caminho !== '/auth/sair') { location.href = '/login.html'; throw new Error('Sessão encerrada'); }
   if (!resp.ok) throw Object.assign(new Error('Erro na API'), { erros: corpo?.erros ?? [`HTTP ${resp.status}`] });
   return corpo;
 }
@@ -49,7 +51,8 @@ function saudacao() {
   const h = new Date().getHours();
   const periodo = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
   const hoje = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
-  $('#saudacao').textContent = `${periodo} · ${hoje}`;
+  const primeiroNome = eu?.nome.split(' ')[0];
+  $('#saudacao').textContent = `${periodo}${primeiroNome ? `, ${primeiroNome}` : ''} · ${hoje}`;
 
   const ano = new Date().getFullYear();
   const itens = [...document.querySelectorAll('#linha-tempo li')];
@@ -110,7 +113,10 @@ async function carregarEmpresas() {
         <strong title="${esc(e.razaoSocial)}">${esc(e.razaoSocial)}</strong>
         <span>${formatarCnpj(e.cnpj)}</span>
       </div>
-      <span class="regime">${e.regime === 'simples' ? 'Simples' : 'Regular'}</span>
+      <span class="regime" title="${e.pessoas} ${e.pessoas === 1 ? 'pessoa tem' : 'pessoas têm'} acesso">${e.regime === 'simples' ? 'Simples' : 'Regular'}</span>
+      <button class="botao-convidar" data-convidar="${e.id}" aria-label="Convidar para ${esc(e.razaoSocial)}" title="${eu?.tipo === 'contador' ? 'Convidar a empresa' : 'Convidar o contador'}">
+        <svg viewBox="0 0 24 24"><path d="M15 19v-1a4 4 0 00-4-4H7a4 4 0 00-4 4v1M9 10a3 3 0 100-6 3 3 0 000 6M19 8v6M16 11h6"/></svg>
+      </button>
     </li>`).join('');
 }
 
@@ -123,12 +129,16 @@ async function carregarCalculos() {
 
   if (!calculos.length) {
     const temEmpresa = empresas.length > 0;
+    const contador = eu?.tipo === 'contador';
     alvo.innerHTML = `
       <div class="vazio">
-        <h3>Comece em dois passos</h3>
-        <p>Cadastre as empresas e calcule a CBS, o IBS e o Imposto Seletivo das operações com o motor oficial da Receita Federal.</p>
+        <h3>Comece em poucos passos</h3>
+        <p>${contador
+          ? 'Cadastre as empresas que você atende e calcule a CBS, o IBS e o Imposto Seletivo com o motor oficial da Receita Federal.'
+          : 'Cadastre sua empresa, convide seu contador e calcule a CBS, o IBS e o Imposto Seletivo com o motor oficial da Receita Federal.'}</p>
         <ol class="passos">
-          <li class="${temEmpresa ? 'feito' : ''}"><span><strong>Cadastre uma empresa</strong>: CNPJ, regime e município.</span></li>
+          <li class="${temEmpresa ? 'feito' : ''}"><span><strong>${contador ? 'Cadastre uma empresa' : 'Cadastre sua empresa'}</strong>: CNPJ, regime e município.</span></li>
+          ${contador ? '' : '<li><span><strong>Convide seu contador</strong>: pelo ícone ao lado da empresa. Ele vê os mesmos cálculos.</span></li>'}
           <li><span><strong>Faça o primeiro cálculo</strong>: informe os itens com NCM/NBS e cClassTrib.</span></li>
         </ol>
         <button class="botao primario" data-acao="${temEmpresa ? 'calculo' : 'empresa'}">
@@ -336,6 +346,84 @@ document.addEventListener('click', (e) => {
 });
 $('#select-uf').innerHTML = UFS.map((uf) => `<option ${uf === 'SP' ? 'selected' : ''}>${uf}</option>`).join('');
 
-saudacao();
-carregarStatus();
-recarregarPainel().catch(() => toast('Não foi possível carregar o painel.'));
+// ---------- Modal: convite ----------
+const modalConvite = $('#modal-convite');
+const formConvite = $('#form-convite');
+let empresaConvite = null;
+
+async function carregarPessoas() {
+  const { pessoas, convitesPendentes } = await api(`/empresas/${empresaConvite.id}/pessoas`);
+  const PAPEL = { dono: 'Dono', contador: 'Contador', membro: 'Membro' };
+  $('#lista-pessoas').innerHTML = [
+    ...pessoas.map((p) => `<li><span class="avatar">${esc(iniciais(p.nome))}</span>
+      <div class="info"><strong>${esc(p.nome)}${p.email === eu.email ? ' (você)' : ''}</strong><span>${esc(p.email)}</span></div>
+      <span class="regime">${PAPEL[p.papel]}</span></li>`),
+    ...convitesPendentes.map((c) => `<li><span class="avatar">?</span>
+      <div class="info"><strong>${esc(c.email)}</strong><span>convite enviado, aguardando</span></div>
+      <span class="selo parcial">Pendente</span></li>`),
+  ].join('');
+}
+
+async function abrirModalConvite(id) {
+  empresaConvite = empresas.find((e) => e.id === id);
+  if (!empresaConvite) return;
+  formConvite.reset();
+  mostrarErros($('#erros-convite'), []);
+  $('#resultado-convite').hidden = true;
+  $('#titulo-convite').textContent = `Convidar para ${empresaConvite.razaoSocial}`;
+  $('#dica-convite').textContent = eu.tipo === 'contador'
+    ? 'Convide alguém da empresa para acompanhar os cálculos com você.'
+    : 'Convide o contador da empresa. Ele vai ver e fazer os mesmos cálculos que você.';
+  $('#lista-pessoas').innerHTML = '<li class="dica">Carregando…</li>';
+  modalConvite.showModal();
+  formConvite.email.focus();
+  carregarPessoas();
+}
+
+formConvite.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  mostrarErros($('#erros-convite'), []);
+  try {
+    const r = await api(`/empresas/${empresaConvite.id}/convites`, { method: 'POST', body: { email: formConvite.email.value } });
+    $('#email-convidado').textContent = r.email;
+    $('#link-convite').value = r.link;
+    $('#resultado-convite').hidden = false;
+    formConvite.email.value = '';
+    carregarPessoas();
+  } catch (err) {
+    mostrarErros($('#erros-convite'), err.erros);
+  }
+});
+
+$('#btn-copiar').addEventListener('click', async () => {
+  const campo = $('#link-convite');
+  try { await navigator.clipboard.writeText(campo.value); } catch { campo.select(); document.execCommand('copy'); }
+  toast('Link copiado.');
+});
+
+document.addEventListener('click', (e) => {
+  const id = e.target.closest('[data-convidar]')?.dataset.convidar;
+  if (id) abrirModalConvite(Number(id));
+});
+
+$('#btn-sair').addEventListener('click', async () => {
+  await api('/auth/sair', { method: 'POST' }).catch(() => {});
+  location.href = '/login.html';
+});
+
+// ---------- Início ----------
+async function iniciar() {
+  eu = await api('/eu');
+  $('#usuario-nome').textContent = eu.nome;
+  $('#usuario-tipo').textContent = eu.tipo === 'contador' ? 'Contador' : 'Empresa';
+  $('#usuario-avatar').textContent = iniciais(eu.nome);
+  saudacao();
+  if (new URLSearchParams(location.search).has('bemvindo')) {
+    toast('Convite aceito. A empresa já aparece no seu painel.');
+    history.replaceState(null, '', '/');
+  }
+  carregarStatus();
+  await recarregarPainel();
+}
+
+iniciar().catch((e) => { if (e.message !== 'Sessão encerrada') toast('Não foi possível carregar o painel.'); });

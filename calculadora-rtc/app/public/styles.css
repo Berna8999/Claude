@@ -55,6 +55,7 @@
 
 /* ================= Base ================= */
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; }
 body {
   font-family: var(--fonte);
@@ -287,3 +288,62 @@ legend { font-size: 13px; font-weight: 600; padding: 0 6px; }
   .linha-campos { grid-template-columns: 1fr; }
   .topo h1 { font-size: 22px; }
 }
+
+/* ================= Usuário no menu ================= */
+.usuario { margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px 8px 4px; border-top: 1px solid rgba(255, 255, 255, .08); }
+.usuario .avatar { background: #1c3a30; color: #3cd096; }
+.usuario-info { min-width: 0; flex: 1; }
+.usuario-info strong { display: block; color: #fff; font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.usuario-info span { font-size: 12px; }
+.botao-sair { background: none; border: 0; color: var(--sidebar-texto); cursor: pointer; padding: 6px; border-radius: 6px; display: grid; place-items: center; }
+.botao-sair:hover { color: #fff; background: rgba(255, 255, 255, .06); }
+.sidebar-rodape { margin-top: 14px; }
+
+/* Botão convidar na lista de empresas */
+.botao-convidar { border: 1px solid var(--borda); background: var(--superficie); color: var(--texto-2); border-radius: 7px; width: 30px; height: 30px; display: grid; place-items: center; cursor: pointer; flex: none; }
+.botao-convidar svg { width: 16px; height: 16px; }
+.botao-convidar:hover { color: var(--primaria); border-color: var(--primaria); }
+.lista-empresas .pessoas { font-family: var(--fonte); }
+
+/* Modal de convite */
+.link-convite { display: flex; gap: 8px; }
+.link-convite input { flex: 1; min-width: 0; font-family: var(--mono); font-size: 12.5px; padding: 9px 11px; border-radius: 8px; border: 1px solid var(--borda); background: var(--superficie-2); color: var(--texto); }
+.caixa-sucesso { border: 1px solid color-mix(in srgb, var(--sucesso) 35%, transparent); background: color-mix(in srgb, var(--sucesso) 8%, transparent); border-radius: 10px; padding: 12px 14px; display: grid; gap: 10px; font-size: 14px; }
+.caixa-sucesso p { margin: 0; }
+.lista-pessoas { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.lista-pessoas li { display: flex; align-items: center; gap: 10px; padding: 8px 0; font-size: 14px; border-top: 1px solid var(--borda); }
+.lista-pessoas li:first-child { border-top: 0; }
+.lista-pessoas .avatar { width: 30px; height: 30px; font-size: 12px; }
+.lista-pessoas .info { flex: 1; min-width: 0; }
+.lista-pessoas .info strong { display: block; font-weight: 500; }
+.lista-pessoas .info span { color: var(--texto-3); font-size: 12.5px; }
+.subtitulo-modal { font-size: 13px; font-weight: 600; color: var(--texto-2); margin: 4px 0 0; }
+
+/* ================= Telas de acesso (login e convite) ================= */
+.pagina-acesso { min-height: 100vh; display: grid; place-items: center; padding: 24px 16px; background:
+  radial-gradient(1200px 500px at 50% -10%, color-mix(in srgb, var(--primaria) 14%, transparent), transparent), var(--fundo); }
+.acesso { width: min(420px, 100%); display: grid; gap: 20px; }
+.marca-acesso { justify-content: center; padding: 0; }
+.marca-acesso strong { color: var(--texto); }
+.marca-acesso small { color: var(--texto-2); }
+.cartao-acesso { background: var(--superficie); border: 1px solid var(--borda); border-radius: 16px; padding: 22px; box-shadow: var(--sombra); display: grid; gap: 16px; }
+.cartao-acesso form { display: grid; gap: 14px; }
+.abas { display: grid; grid-template-columns: 1fr 1fr; background: var(--superficie-2); border: 1px solid var(--borda); border-radius: 10px; padding: 4px; }
+.abas button { border: 0; background: none; padding: 8px; border-radius: 7px; font-weight: 500; font-size: 14px; color: var(--texto-2); cursor: pointer; }
+.abas button[aria-selected="true"] { background: var(--superficie); color: var(--texto); box-shadow: var(--sombra); }
+.botao.largo { width: 100%; justify-content: center; padding: 11px 16px; text-decoration: none; }
+.escolha-tipo { border: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.escolha-tipo legend { padding: 0; margin-bottom: 6px; font-size: 13px; font-weight: 500; color: var(--texto-2); }
+.opcao { position: relative; cursor: pointer; }
+.opcao input { position: absolute; opacity: 0; }
+.opcao span { display: grid; gap: 2px; padding: 12px; border: 1px solid var(--borda); border-radius: 10px; height: 100%; }
+.opcao strong { font-size: 14px; font-weight: 600; }
+.opcao small { font-size: 12.5px; color: var(--texto-3); }
+.opcao input:checked + span { border-color: var(--primaria); box-shadow: 0 0 0 3px var(--primaria-suave); }
+.opcao input:focus-visible + span { outline: 2px solid var(--primaria); outline-offset: 2px; }
+.aviso-convite { margin: 0; padding: 12px 14px; border-radius: 10px; background: var(--primaria-suave); font-size: 14px; }
+.titulo-acesso { font-size: 20px; font-weight: 600; }
+.texto-acesso { margin: 0; color: var(--texto-2); }
+.cartao-acesso p.erros { padding-left: 14px; }
+.link-convite input[type="email"] { font-family: var(--fonte); font-size: 14px; background: var(--superficie); }
+.toast { max-width: calc(100vw - 32px); text-align: center; }

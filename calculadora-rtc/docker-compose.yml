@@ -54,6 +54,9 @@ services:
       REGIME_REGULAR_URL: http://regime-regular:8080/api
       SIMPLES_NACIONAL_URL: http://simples-nacional:8082/api
       DB_PATH: /data/sistema.db
+      # Em produção, com HTTPS: APP_URL=https://app.seudominio.com.br e TRUST_PROXY=true
+      APP_URL: ${APP_URL:-}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
     volumes:
       - dados-app:/data
     depends_on:

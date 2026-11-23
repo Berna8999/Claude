@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Convite · Calculadora RTC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="pagina-acesso">
+  <main class="acesso">
+    <div class="marca marca-acesso">
+      <span class="marca-icone" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 4h14v16H5z M8 8h8 M8 12h3 M13 12h3 M8 16h3 M13 16h3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <div><strong>Calculadora RTC</strong><small>Convite</small></div>
+    </div>
+    <section class="cartao-acesso" id="convite">
+      <p class="carregando">Carregando convite…</p>
+    </section>
+  </main>
+  <script type="module">
+    const token = new URLSearchParams(location.search).get('token') ?? '';
+    const alvo = document.getElementById('convite');
+    const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    const [conviteResp, euResp] = await Promise.all([fetch(`/api/convites/${encodeURIComponent(token)}`), fetch('/api/eu')]);
+    const c = conviteResp.ok ? await conviteResp.json() : null;
+    const eu = euResp.ok ? await euResp.json() : null;
+
+    if (!c) {
+      alvo.innerHTML = '<h1 class="titulo-acesso">Convite não encontrado</h1><p class="texto-acesso">Confira o link ou peça um novo convite.</p>';
+    } else if (c.situacao !== 'pendente') {
+      alvo.innerHTML = `<h1 class="titulo-acesso">Convite ${c.situacao === 'aceito' ? 'já usado' : 'expirado'}</h1>
+        <p class="texto-acesso">${c.situacao === 'aceito' ? 'Este convite já foi aceito.' : 'Peça um convite novo para quem convidou você.'}</p>
+        <a class="botao primario largo" href="/">Ir para o painel</a>`;
+    } else {
+      alvo.innerHTML = `
+        <h1 class="titulo-acesso">Você foi convidado</h1>
+        <p class="texto-acesso"><strong>${esc(c.convidadoPor)}</strong> convidou você para acessar os cálculos de <strong>${esc(c.empresa)}</strong>.</p>
+        ${eu
+          ? (eu.email.toLowerCase() === c.email.toLowerCase()
+            ? '<button class="botao primario largo" id="aceitar">Aceitar convite</button>'
+            : `<p class="erros">Este convite é para ${esc(c.email)}, mas você entrou como ${esc(eu.email)}.</p>
+               <button class="botao secundario largo" id="trocar">Sair e entrar com outra conta</button>`)
+          : `<a class="botao primario largo" href="/login.html?convite=${encodeURIComponent(token)}">Entrar ou criar conta</a>`}
+        <ul class="erros" hidden></ul>`;
+
+      document.getElementById('aceitar')?.addEventListener('click', async () => {
+        const r = await fetch(`/api/convites/${encodeURIComponent(token)}/aceitar`, { method: 'POST' });
+        if (r.ok) { location.href = '/?bemvindo=1'; return; }
+        const erro = await r.json().catch(() => ({}));
+        const lista = alvo.querySelector('ul.erros');
+        lista.innerHTML = (erro.erros ?? ['Não foi possível aceitar.']).map((e) => `<li>${esc(e)}</li>`).join('');
+        lista.hidden = false;
+      });
+      document.getElementById('trocar')?.addEventListener('click', async () => {
+        await fetch('/api/auth/sair', { method: 'POST' });
+        location.href = `/login.html?convite=${encodeURIComponent(token)}`;
+      });
+    }
+  </script>
+</body>
+</html>

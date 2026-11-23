@@ -41,6 +41,16 @@
         </a>
       </nav>
 
+      <div class="usuario">
+        <span class="avatar" id="usuario-avatar"></span>
+        <div class="usuario-info">
+          <strong id="usuario-nome"></strong>
+          <span id="usuario-tipo"></span>
+        </div>
+        <button class="botao-sair" id="btn-sair" aria-label="Sair" title="Sair">
+          <svg viewBox="0 0 24 24"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg>
+        </button>
+      </div>
       <div class="sidebar-rodape">
         Motor de cálculo oficial da<br>Receita Federal · LC 214/2025
       </div>
@@ -259,6 +269,33 @@
         <button type="button" class="botao secundario" data-fechar>Fechar</button>
         <button type="submit" class="botao primario" id="btn-calcular">Calcular</button>
       </footer>
+    </form>
+  </dialog>
+
+  <!-- ============ Modal: convidar ============ -->
+  <dialog class="modal" id="modal-convite">
+    <form method="dialog" id="form-convite" novalidate>
+      <header class="modal-topo">
+        <h2 id="titulo-convite">Convidar</h2>
+        <button type="button" class="botao-icone" data-fechar aria-label="Fechar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </header>
+      <div class="modal-corpo">
+        <p class="dica" id="dica-convite"></p>
+        <div class="link-convite">
+          <input name="email" type="email" placeholder="email@escritorio.com.br" aria-label="E-mail de quem você vai convidar" required>
+          <button type="submit" class="botao primario">Gerar convite</button>
+        </div>
+        <ul class="erros" id="erros-convite" hidden></ul>
+        <div class="caixa-sucesso" id="resultado-convite" hidden>
+          <p>Convite criado. Envie este link para <strong id="email-convidado"></strong> (por WhatsApp ou e-mail). Vale por 7 dias.</p>
+          <div class="link-convite">
+            <input id="link-convite" readonly aria-label="Link do convite">
+            <button type="button" class="botao secundario" id="btn-copiar">Copiar</button>
+          </div>
+        </div>
+        <h3 class="subtitulo-modal">Quem tem acesso</h3>
+        <ul class="lista-pessoas" id="lista-pessoas"></ul>
+      </div>
     </form>
   </dialog>
 
