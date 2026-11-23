@@ -15,6 +15,9 @@
         --blue: #4a82c4;
         --blue-deep: #2f5f99;
         --fluo: #d4ff3a;
+        --red: #ff4a4a;
+        --amber: #ffd166;
+        --cyan: #5ce1e6;
         --font-display: "Saira Condensed", sans-serif;
         --font-body: "Saira", sans-serif;
       }
@@ -26,11 +29,11 @@
       .kicker {
         font-family: var(--font-display); font-weight: 600; font-size: 32px;
         letter-spacing: .28em; text-transform: uppercase; color: var(--blue);
-        display: flex; align-items: center; gap: 18px;
+        display: flex; align-items: center; gap: 18px; white-space: nowrap;
       }
       .kicker::before { content: ""; width: 56px; height: 3px; background: var(--blue); }
 
-      /* ---------- Cena 1: logo ---------- */
+      /* ---------- Logo ---------- */
       #s-intro { background: #fff; }
       #intro-grid {
         position: absolute; inset: 0;
@@ -48,47 +51,16 @@
       }
       #intro-tag span { display: block; }
 
-      /* ---------- Cena 2: partículas magnéticas ---------- */
-      #s-mt { background: #0a0c10; }
-      #mt-stage { position: absolute; inset: 0; transform-origin: 540px 900px; }
-      #mt-canvas { position: absolute; inset: 0; width: 1080px; height: 1920px; }
-      #mt-vignette {
-        position: absolute; inset: 0;
-        background: radial-gradient(ellipse at 50% 47%, transparent 30%, rgba(0,0,0,.78) 100%);
-      }
-      #mt-head { position: absolute; left: 130px; right: 130px; top: 290px; }
-      #mt-title {
-        margin-top: 18px; font-family: var(--font-display); font-weight: 700;
-        font-size: 104px; line-height: .93; color: #fff;
-      }
-      #mt-title .hl { color: var(--fluo); }
-      #mt-sub { position: absolute; left: 130px; right: 200px; top: 1100px; font-size: 34px; line-height: 1.36; color: #dfe6ee; text-align: center; }
-      #mt-callout { position: absolute; inset: 0; width: 1080px; height: 1920px; }
-      #mt-label {
-        position: absolute; left: 130px; right: 230px; top: 1095px; text-align: center;
-        font-family: var(--font-display); font-weight: 700; font-size: 46px;
-        letter-spacing: .1em; text-transform: uppercase; color: var(--fluo);
-      }
-      #mt-label small {
-        display: block; font-family: var(--font-body); font-weight: 400; font-size: 32px;
-        letter-spacing: 0; text-transform: none; color: #c9d2dc; margin-top: 8px;
-      }
-      #mt-uv {
-        position: absolute; left: 130px; top: 290px; white-space: nowrap;
-        font-family: var(--font-display); font-weight: 600; font-size: 30px;
-        letter-spacing: .2em; color: #b98cff; border: 2px solid #b98cff; padding: 10px 24px; border-radius: 6px;
-      }
-
-      /* ---------- Cena 3: serviços ---------- */
+      /* ---------- Serviços ---------- */
       #s-serv { background: #0d1319; }
-      #serv-bg {
+      .glow-bg {
         position: absolute; inset: 0;
         background:
           radial-gradient(circle at 90% 8%, rgba(74,130,196,.32), transparent 45%),
           radial-gradient(circle at 0% 100%, rgba(74,130,196,.2), transparent 45%);
       }
-      #serv-head { position: absolute; left: 130px; right: 130px; top: 290px; }
-      #serv-title {
+      .head { position: absolute; left: 130px; right: 130px; top: 290px; }
+      .head h2 {
         margin-top: 16px; font-family: var(--font-display); font-weight: 700;
         font-size: 92px; line-height: .98; color: #fff;
       }
@@ -105,153 +77,295 @@
         position: absolute; right: 44px; top: 30px; font-family: var(--font-display);
         font-weight: 700; font-size: 150px; line-height: 1; color: rgba(74,130,196,.22);
       }
-      .card .row { display: block; }
       .card svg { width: 120px; height: 120px; display: block; }
       .card h3 { margin-top: 40px; font-family: var(--font-display); font-weight: 700; font-size: 64px; line-height: 1; color: #fff; }
       .card p { margin-top: 28px; font-size: 34px; line-height: 1.42; color: #c9d2dc; }
 
-      /* ---------- Cena 4: encerramento ---------- */
+      /* ---------- Abertura dos ensaios ---------- */
+      #s-end { background: #0d1319; }
+      #end-list { position: absolute; left: 130px; width: 740px; top: 640px; display: flex; flex-direction: column; gap: 30px; }
+      .end-row {
+        display: flex; align-items: center; gap: 30px; padding: 22px 28px;
+        border: 2px solid rgba(255,255,255,.12); border-radius: 18px; background: rgba(255,255,255,.04);
+      }
+      .end-row .ic {
+        width: 92px; height: 92px; flex: none; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center; background: rgba(74,130,196,.16);
+      }
+      .end-row .ic svg { width: 56px; height: 56px; }
+      .end-row span { font-family: var(--font-display); font-weight: 700; font-size: 50px; color: #fff; }
+      .end-row b { margin-left: auto; font-family: var(--font-display); font-weight: 600; font-size: 34px; color: rgba(74,130,196,.8); }
+
+      /* ---------- Cenas de ensaio (comuns) ---------- */
+      .ndt { background: #0a0c10; }
+      .ndt canvas { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+      .ndt .stage { position: absolute; inset: 0; transform-origin: 540px 880px; }
+      .vignette {
+        position: absolute; inset: 0;
+        background: radial-gradient(ellipse at 50% 46%, transparent 30%, rgba(0,0,0,.8) 100%);
+      }
+      .ndt .head { top: 290px; }
+      .ndt h1 { margin-top: 18px; font-family: var(--font-display); font-weight: 700; font-size: 112px; line-height: .93; color: #fff; }
+      .caption { position: absolute; left: 130px; right: 260px; top: 1110px; text-align: center; font-size: 34px; line-height: 1.36; color: #dfe6ee; }
+      .tag-label {
+        position: absolute; left: 130px; right: 230px; top: 1100px; text-align: center;
+        font-family: var(--font-display); font-weight: 700; font-size: 46px; letter-spacing: .1em; text-transform: uppercase;
+      }
+      .tag-label small {
+        display: block; font-family: var(--font-body); font-weight: 400; font-size: 32px;
+        letter-spacing: 0; text-transform: none; color: #c9d2dc; margin-top: 8px;
+      }
+      .ndt svg.over { position: absolute; inset: 0; width: 1080px; height: 1920px; }
+
+      #mt-title .hl { color: var(--fluo); }
+      #mt-label { color: var(--fluo); }
+      #mt-uv {
+        position: absolute; left: 130px; top: 290px; white-space: nowrap;
+        font-family: var(--font-display); font-weight: 600; font-size: 30px;
+        letter-spacing: .2em; color: #b98cff; border: 2px solid #b98cff; padding: 10px 24px; border-radius: 6px;
+      }
+
+      #pt-title .hl { color: var(--red); }
+      #pt-steps { position: absolute; left: 130px; top: 580px; display: flex; gap: 14px; }
+      #pt-steps span {
+        font-family: var(--font-display); font-weight: 600; font-size: 28px; letter-spacing: .06em; text-transform: uppercase;
+        color: rgba(255,255,255,.45); border: 2px solid rgba(255,255,255,.18); border-radius: 999px; padding: 6px 18px;
+      }
+      #pt-label { color: var(--red); }
+
+      #vt-title .hl { color: var(--amber); }
+      #vt-checks { position: absolute; left: 160px; top: 1095px; display: flex; flex-direction: column; gap: 10px; }
+      #vt-checks div { display: flex; align-items: center; gap: 18px; font-family: var(--font-display); font-weight: 600; font-size: 38px; color: #fff; }
+      #vt-checks i {
+        width: 40px; height: 40px; border-radius: 50%; background: var(--amber); color: #0a0c10;
+        display: flex; align-items: center; justify-content: center; font-style: normal; font-size: 28px; font-weight: 700;
+      }
+
+      #ut-title .hl { color: var(--cyan); }
+      #ut-gauge {
+        position: absolute; left: 130px; width: 720px; top: 1090px; height: 150px; padding: 18px 30px;
+        border: 2px solid rgba(92,225,230,.45); border-radius: 18px; background: rgba(10,30,40,.75);
+        display: flex; align-items: center; gap: 26px;
+      }
+      #ut-gauge .lbl { font-family: var(--font-display); font-weight: 600; font-size: 28px; letter-spacing: .18em; color: rgba(92,225,230,.85); line-height: 1.2; }
+      #ut-value { font-family: var(--font-display); font-weight: 700; font-size: 92px; color: var(--cyan); min-width: 300px; line-height: 1; }
+      #ut-status {
+        margin-left: auto; font-family: var(--font-display); font-weight: 700; font-size: 30px; letter-spacing: .06em; text-transform: uppercase;
+        padding: 8px 16px; border-radius: 10px; color: #0a0c10; background: #7be39a; text-align: center; line-height: 1.1;
+      }
+
+      /* ---------- Encerramento ---------- */
       #s-out { background: #fff; }
       #out-logo { position: absolute; left: 50%; top: 590px; width: 620px; transform: translate(-50%, -50%); }
       #out-chips {
-        position: absolute; left: 140px; right: 240px; top: 890px;
-        display: flex; flex-wrap: wrap; justify-content: center; gap: 16px;
+        position: absolute; left: 140px; right: 240px; top: 860px;
+        display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
       }
       .chip {
         font-family: var(--font-display); font-weight: 600; font-size: 30px; letter-spacing: .05em;
         text-transform: uppercase; color: var(--blue-deep);
-        border: 2px solid var(--blue); border-radius: 999px; padding: 12px 30px;
+        border: 2px solid var(--blue); border-radius: 999px; padding: 12px 26px;
       }
       #out-cta {
-        position: absolute; left: 512px; top: 1120px; transform: translateX(-50%); white-space: nowrap;
-        font-family: var(--font-display); font-weight: 700; font-size: 56px; letter-spacing: .04em;
-        color: #fff; background: var(--blue); padding: 18px 56px; border-radius: 999px;
+        position: absolute; left: 512px; top: 1132px; transform: translateX(-50%); white-space: nowrap;
+        font-family: var(--font-display); font-weight: 700; font-size: 52px; letter-spacing: .04em;
+        color: #fff; background: var(--blue); padding: 14px 52px; border-radius: 999px;
       }
 
       .wipe { position: absolute; inset: 0; background: var(--blue); }
+      .wipe.dark { background: #16324f; }
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="44.5" data-width="1080" data-height="1920">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="55.5" data-width="1080" data-height="1920">
 
-      <!-- CENA 1 · LOGO -->
-      <section id="s-intro" class="clip" data-start="0" data-duration="6.2" data-track-index="0">
+      <!-- 1 · LOGO -->
+      <section id="s-intro" class="clip" data-start="0" data-duration="5.8" data-track-index="0">
         <div id="intro-grid"></div>
         <img id="intro-logo" src="assets/logo.png" alt="Options Engenharia" />
         <div id="intro-line"></div>
         <div id="intro-tag"><span>Engenharia</span><span>Inspeção</span><span>Segurança</span></div>
       </section>
 
-      <!-- CENA 2 · PARTÍCULAS MAGNÉTICAS -->
-      <section id="s-mt" class="clip" data-start="6.15" data-duration="10.3" data-track-index="1">
-        <div id="mt-stage">
-          <canvas id="mt-canvas" width="1080" height="1920"></canvas>
-          <svg id="mt-callout" viewBox="0 0 1080 1920">
-            <circle id="mt-ring" cx="540" cy="900" r="115" fill="none" stroke="#d4ff3a" stroke-width="5" stroke-dasharray="723" stroke-dashoffset="723" />
-            <line id="mt-leader" x1="540" y1="1015" x2="540" y2="1085" stroke="#d4ff3a" stroke-width="4" stroke-dasharray="70" stroke-dashoffset="70" />
-          </svg>
-        </div>
-        <div id="mt-vignette" data-layout-allow-occlusion></div>
-        <div id="mt-head">
-          <div class="kicker" id="mt-kicker">Ensaio não destrutivo</div>
-          <h1 id="mt-title">Ensaios por<br /><span class="hl">Partículas<br />Magnéticas</span></h1>
-        </div>
-        <p id="mt-sub">Revela trincas e descontinuidades em soldas e materiais ferromagnéticos.</p>
-        <div id="mt-label">Trinca revelada<small>O campo de fuga concentra as partículas</small></div>
-        <div id="mt-uv">LUZ UV · VIA ÚMIDA FLUORESCENTE</div>
-      </section>
-
-      <!-- CENA 3 · SERVIÇOS -->
-      <section id="s-serv" class="clip" data-start="16.4" data-duration="22.8" data-track-index="2">
-        <div id="serv-bg"></div>
-        <div id="serv-head">
+      <!-- 2 · SERVIÇOS (01 NR · 02 Projetos · 03 Inspeção) -->
+      <section id="s-serv" class="clip" data-start="5.75" data-duration="23.55" data-track-index="1">
+        <div class="glow-bg" id="serv-bg"></div>
+        <div class="head">
           <div class="kicker" id="serv-kicker">O que fazemos</div>
           <h2 id="serv-title">Nossos principais<br />serviços</h2>
         </div>
         <div id="serv-cards">
           <article class="card" id="card1">
             <div class="bar"></div><div class="num" data-layout-ignore>01</div>
-            <div class="row">
-              <svg viewBox="0 0 96 96" fill="none" stroke="#4a82c4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M48 8 L82 20 V46 C82 68 66 82 48 88 C30 82 14 68 14 46 V20 Z" /><path d="M32 48 L44 60 L66 36" />
-              </svg>
-              <h3>Normas NR e segurança industrial</h3>
-            </div>
+            <svg viewBox="0 0 96 96" fill="none" stroke="#4a82c4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M48 8 L82 20 V46 C82 68 66 82 48 88 C30 82 14 68 14 46 V20 Z" /><path d="M32 48 L44 60 L66 36" />
+            </svg>
+            <h3>Normas NR e segurança industrial</h3>
             <p>Adequação e conformidade às normas regulamentadoras.</p>
           </article>
           <article class="card" id="card2">
             <div class="bar"></div><div class="num" data-layout-ignore>02</div>
-            <div class="row">
-              <svg viewBox="0 0 96 96" fill="none" stroke="#4a82c4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="48" cy="48" r="14" /><path d="M48 10v12M48 74v12M10 48h12M74 48h12M21 21l8.5 8.5M66.5 66.5L75 75M21 75l8.5-8.5M66.5 29.5L75 21" /><circle cx="48" cy="48" r="28" />
-              </svg>
-              <h3>Inspeção e engenharia mecânica</h3>
-            </div>
-            <p>Inspeção em soldas, projetos mecânicos, dimensionamento, cálculos técnicos e calibração de válvulas industriais.</p>
+            <svg viewBox="0 0 96 96" fill="none" stroke="#4a82c4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="18" y="10" width="60" height="76" rx="4" /><path d="M18 35h60M18 60h60M42 22h12M42 47h12M42 72h12" />
+            </svg>
+            <h3>Projetos sob medida</h3>
+            <p>Soluções técnicas e estruturas organizacionais, como armários para documentos.</p>
           </article>
           <article class="card" id="card3">
             <div class="bar"></div><div class="num" data-layout-ignore>03</div>
-            <div class="row">
-              <svg viewBox="0 0 96 96" fill="none" stroke="#4a82c4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="18" y="10" width="60" height="76" rx="4" /><path d="M18 35h60M18 60h60M42 22h12M42 47h12M42 72h12" />
-              </svg>
-              <h3>Projetos sob medida</h3>
-            </div>
-            <p>Soluções técnicas e estruturas organizacionais, como armários para documentos.</p>
+            <svg viewBox="0 0 96 96" fill="none" stroke="#4a82c4" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="48" cy="48" r="14" /><path d="M48 10v12M48 74v12M10 48h12M74 48h12M21 21l8.5 8.5M66.5 66.5L75 75M21 75l8.5-8.5M66.5 29.5L75 21" /><circle cx="48" cy="48" r="28" />
+            </svg>
+            <h3>Inspeção e engenharia mecânica</h3>
+            <p>Inspeção em soldas, projetos mecânicos, dimensionamento, cálculos técnicos e calibração de válvulas industriais.</p>
           </article>
         </div>
         <div id="serv-dots"><i></i><i></i><i></i></div>
       </section>
 
-      <!-- CENA 4 · ENCERRAMENTO -->
-      <section id="s-out" class="clip" data-start="39.15" data-duration="5.35" data-track-index="3">
+      <!-- 3 · ABERTURA DOS ENSAIOS NÃO DESTRUTIVOS (parte do item 03) -->
+      <section id="s-end" class="clip" data-start="29.25" data-duration="3.1" data-track-index="2">
+        <div class="glow-bg"></div>
+        <div class="head">
+          <div class="kicker" id="end-kicker">03 · Inspeção</div>
+          <h2 id="end-title">Ensaios não<br />destrutivos</h2>
+        </div>
+        <div id="end-list">
+          <div class="end-row"><div class="ic"><svg viewBox="0 0 56 56" fill="none" stroke="#d4ff3a" stroke-width="5" stroke-linecap="round"><path d="M14 8v20a14 14 0 0 0 28 0V8" /><path d="M14 8h8M34 8h8" stroke="#4a82c4" /></svg></div><span>Partículas magnéticas</span><b>01</b></div>
+          <div class="end-row"><div class="ic"><svg viewBox="0 0 56 56" fill="none" stroke="#ff4a4a" stroke-width="5" stroke-linejoin="round"><path d="M28 6 C38 20 44 28 44 36 a16 16 0 0 1 -32 0 C12 28 18 20 28 6Z" /></svg></div><span>Líquido penetrante</span><b>02</b></div>
+          <div class="end-row"><div class="ic"><svg viewBox="0 0 56 56" fill="none" stroke="#ffd166" stroke-width="5" stroke-linecap="round"><path d="M4 28 C12 14 44 14 52 28 C44 42 12 42 4 28Z" /><circle cx="28" cy="28" r="7" /></svg></div><span>Inspeção visual</span><b>03</b></div>
+          <div class="end-row"><div class="ic"><svg viewBox="0 0 56 56" fill="none" stroke="#5ce1e6" stroke-width="5" stroke-linecap="round"><path d="M8 44h40M8 12h40" /><path d="M28 18v20M22 24l6-6 6 6M22 32l6 6 6-6" /></svg></div><span>Medição de espessura</span><b>04</b></div>
+        </div>
+      </section>
+
+      <!-- 4 · PARTÍCULAS MAGNÉTICAS -->
+      <section id="s-mt" class="clip ndt" data-start="32.3" data-duration="4.9" data-track-index="3">
+        <div class="stage" id="mt-stage">
+          <canvas id="mt-canvas" width="1080" height="1920"></canvas>
+          <svg class="over" viewBox="0 0 1080 1920">
+            <circle id="mt-ring" cx="540" cy="880" r="115" fill="none" stroke="#d4ff3a" stroke-width="5" stroke-dasharray="723" stroke-dashoffset="723" />
+            <line id="mt-leader" x1="540" y1="995" x2="540" y2="1085" stroke="#d4ff3a" stroke-width="4" stroke-dasharray="90" stroke-dashoffset="90" />
+          </svg>
+        </div>
+        <div class="vignette" data-layout-allow-occlusion></div>
+        <div class="head">
+          <div class="kicker" id="mt-kicker">Ensaio 01 / 04</div>
+          <h1 id="mt-title">Partículas<br /><span class="hl">Magnéticas</span></h1>
+        </div>
+        <div id="mt-uv">LUZ UV · VIA ÚMIDA FLUORESCENTE</div>
+        <p class="caption" id="mt-sub">Revelam trincas em soldas e materiais ferromagnéticos.</p>
+        <div class="tag-label" id="mt-label">Trinca revelada</div>
+      </section>
+
+      <!-- 5 · LÍQUIDO PENETRANTE -->
+      <section id="s-pt" class="clip ndt" data-start="37.15" data-duration="4.5" data-track-index="4">
+        <div class="stage" id="pt-stage"><canvas id="pt-canvas" width="1080" height="1920"></canvas></div>
+        <div class="vignette" data-layout-allow-occlusion></div>
+        <div class="head">
+          <div class="kicker" id="pt-kicker">Ensaio 02 / 04</div>
+          <h1 id="pt-title">Líquido<br /><span class="hl">Penetrante</span></h1>
+        </div>
+        <div id="pt-steps"><span>Penetrante</span><span>Limpeza</span><span>Revelador</span></div>
+        <p class="caption" id="pt-sub">Evidencia descontinuidades abertas à superfície.</p>
+        <div class="tag-label" id="pt-label">Indicação revelada</div>
+      </section>
+
+      <!-- 6 · INSPEÇÃO VISUAL -->
+      <section id="s-vt" class="clip ndt" data-start="41.6" data-duration="4.45" data-track-index="5">
+        <div class="stage" id="vt-stage"><canvas id="vt-canvas" width="1080" height="1920"></canvas></div>
+        <div class="vignette" data-layout-allow-occlusion></div>
+        <div class="head">
+          <div class="kicker" id="vt-kicker">Ensaio 03 / 04</div>
+          <h1 id="vt-title">Inspeção<br /><span class="hl">Visual</span></h1>
+        </div>
+        <div id="vt-checks">
+          <div><i>✓</i>Geometria do cordão</div>
+          <div><i>✓</i>Porosidade</div>
+          <div><i>✓</i>Mordedura e trincas</div>
+        </div>
+      </section>
+
+      <!-- 7 · MEDIÇÃO DE ESPESSURA -->
+      <section id="s-ut" class="clip ndt" data-start="46.0" data-duration="4.35" data-track-index="6">
+        <div class="stage" id="ut-stage"><canvas id="ut-canvas" width="1080" height="1920"></canvas></div>
+        <div class="vignette" data-layout-allow-occlusion></div>
+        <div class="head">
+          <div class="kicker" id="ut-kicker">Ensaio 04 / 04</div>
+          <h1 id="ut-title">Medição de<br /><span class="hl">Espessura</span></h1>
+        </div>
+        <div id="ut-gauge">
+          <div class="lbl">MEDIDOR<br />US</div>
+          <div id="ut-value">12,7 mm</div>
+          <div id="ut-status">Espessura<br />nominal</div>
+        </div>
+      </section>
+
+      <!-- 8 · ENCERRAMENTO -->
+      <section id="s-out" class="clip" data-start="50.35" data-duration="5.15" data-track-index="7">
         <img id="out-logo" src="assets/logo.png" alt="Options Engenharia" />
         <div id="out-chips">
-          <span class="chip">Partículas magnéticas</span>
           <span class="chip">Normas NR</span>
-          <span class="chip">Inspeção de soldas</span>
           <span class="chip">Projetos sob medida</span>
+          <span class="chip">Inspeção mecânica</span>
+          <span class="chip">Ensaios não destrutivos</span>
         </div>
         <div id="out-cta">Fale com a gente</div>
       </section>
 
       <!-- TRANSIÇÕES -->
-      <div id="wipe1" class="wipe clip" data-start="5.6" data-duration="1.2" data-track-index="4"></div>
-      <div id="wipe2" class="wipe clip" data-start="15.85" data-duration="1.2" data-track-index="5"></div>
-      <div id="wipe3" class="wipe clip" data-start="38.6" data-duration="1.2" data-track-index="6"></div>
+      <div id="wipe1" class="wipe clip" data-start="5.2" data-duration="1.2" data-track-index="8"></div>
+      <div id="wipe2" class="wipe clip" data-start="28.7" data-duration="1.2" data-track-index="9"></div>
+      <div id="wq1" class="wipe dark clip" data-start="32.0" data-duration="0.7" data-track-index="8"></div>
+      <div id="wq2" class="wipe dark clip" data-start="36.85" data-duration="0.7" data-track-index="9"></div>
+      <div id="wq3" class="wipe dark clip" data-start="41.3" data-duration="0.7" data-track-index="8"></div>
+      <div id="wq4" class="wipe dark clip" data-start="45.7" data-duration="0.7" data-track-index="9"></div>
+      <div id="wipe3" class="wipe clip" data-start="49.8" data-duration="1.2" data-track-index="8"></div>
 
       <!-- ÁUDIO -->
-      <audio id="a-vo" src="assets/locucao.m4a" data-start="0.5" data-duration="41.2" data-track-index="10" data-volume="1"></audio>
-      <audio id="a-music" src="assets/musica-bed.m4a" data-start="0" data-duration="44.5" data-track-index="11" data-volume="1"></audio>
+      <audio id="a-vo" src="assets/locucao.m4a" data-start="0.5" data-duration="52.56" data-track-index="10" data-volume="1"></audio>
+      <audio id="a-music" src="assets/musica-bed.m4a" data-start="0" data-duration="55.5" data-track-index="11" data-volume="1"></audio>
       <audio id="a-hit1" src="assets/impacto.m4a" data-start="0" data-duration="3" data-track-index="12" data-volume="0.7"></audio>
-      <audio id="a-wh1" src="assets/whoosh.m4a" data-start="5.55" data-duration="1.2" data-track-index="13" data-volume="0.55"></audio>
-      <audio id="a-lim" src="assets/limalha.m4a" data-start="6.35" data-duration="2" data-track-index="14" data-volume="3.5" data-fade-out="0.4"></audio>
-      <audio id="a-ima" src="assets/ima.m4a" data-start="6.95" data-duration="4" data-track-index="15" data-volume="0.9" data-fade-out="1"></audio>
-      <audio id="a-uv" src="assets/uv.m4a" data-start="9.65" data-duration="2.48" data-track-index="16" data-volume="0.9"></audio>
-      <audio id="a-wh2" src="assets/whoosh.m4a" data-start="15.8" data-duration="1.2" data-track-index="17" data-volume="0.55"></audio>
-      <audio id="a-c1" src="assets/card.m4a" data-start="18.4" data-duration="0.8" data-track-index="18" data-volume="0.6"></audio>
-      <audio id="a-c2" src="assets/card.m4a" data-start="24.1" data-duration="0.8" data-track-index="19" data-volume="0.6"></audio>
-      <audio id="a-c3" src="assets/card.m4a" data-start="33.0" data-duration="0.8" data-track-index="20" data-volume="0.6"></audio>
-      <audio id="a-wh3" src="assets/whoosh.m4a" data-start="38.55" data-duration="1.2" data-track-index="21" data-volume="0.55"></audio>
-      <audio id="a-hit2" src="assets/impacto.m4a" data-start="39.2" data-duration="3" data-track-index="22" data-volume="0.6"></audio>
+      <audio id="a-wh1" src="assets/whoosh.m4a" data-start="5.15" data-duration="1.2" data-track-index="13" data-volume="0.55"></audio>
+      <audio id="a-c1" src="assets/card.m4a" data-start="8.39" data-duration="0.8" data-track-index="14" data-volume="0.6"></audio>
+      <audio id="a-c2" src="assets/card.m4a" data-start="14.15" data-duration="0.8" data-track-index="15" data-volume="0.6"></audio>
+      <audio id="a-c3" src="assets/card.m4a" data-start="20.15" data-duration="0.8" data-track-index="16" data-volume="0.6"></audio>
+      <audio id="a-wh2" src="assets/whoosh.m4a" data-start="28.65" data-duration="1.2" data-track-index="17" data-volume="0.55"></audio>
+      <audio id="a-k1" src="assets/check.m4a" data-start="29.75" data-duration="0.48" data-track-index="18" data-volume="0.35"></audio>
+      <audio id="a-k2" src="assets/check.m4a" data-start="30.1" data-duration="0.48" data-track-index="19" data-volume="0.35"></audio>
+      <audio id="a-k3" src="assets/check.m4a" data-start="30.45" data-duration="0.48" data-track-index="20" data-volume="0.35"></audio>
+      <audio id="a-k4" src="assets/check.m4a" data-start="30.8" data-duration="0.48" data-track-index="21" data-volume="0.35"></audio>
+      <audio id="a-wq1" src="assets/whoosh.m4a" data-start="32.0" data-duration="1.2" data-track-index="22" data-volume="0.35"></audio>
+      <audio id="a-lim" src="assets/limalha.m4a" data-start="32.45" data-duration="2" data-track-index="23" data-volume="3.5" data-fade-out="0.4"></audio>
+      <audio id="a-ima" src="assets/ima.m4a" data-start="32.9" data-duration="3.6" data-track-index="24" data-volume="0.8" data-fade-out="1"></audio>
+      <audio id="a-uv" src="assets/uv.m4a" data-start="34.85" data-duration="2.48" data-track-index="25" data-volume="0.9"></audio>
+      <audio id="a-wq2" src="assets/whoosh.m4a" data-start="36.85" data-duration="1.2" data-track-index="26" data-volume="0.35"></audio>
+      <audio id="a-spr1" src="assets/spray.m4a" data-start="37.1" data-duration="1.4" data-track-index="27" data-volume="2.2" data-fade-out="0.2"></audio>
+      <audio id="a-pano" src="assets/pano.m4a" data-start="38.25" data-duration="1" data-track-index="28" data-volume="2.5"></audio>
+      <audio id="a-spr2" src="assets/spray.m4a" data-start="38.95" data-duration="1.4" data-track-index="29" data-volume="2.2" data-media-start="1.0" data-fade-out="0.3"></audio>
+      <audio id="a-wq3" src="assets/whoosh.m4a" data-start="41.3" data-duration="1.2" data-track-index="30" data-volume="0.35"></audio>
+      <audio id="a-lan" src="assets/lanterna.m4a" data-start="41.7" data-duration="2" data-track-index="31" data-volume="2.4"></audio>
+      <audio id="a-v1" src="assets/check.m4a" data-start="42.9" data-duration="0.48" data-track-index="32" data-volume="0.45"></audio>
+      <audio id="a-v2" src="assets/check.m4a" data-start="43.6" data-duration="0.48" data-track-index="33" data-volume="0.45"></audio>
+      <audio id="a-v3" src="assets/check.m4a" data-start="44.3" data-duration="0.48" data-track-index="34" data-volume="0.45"></audio>
+      <audio id="a-wq4" src="assets/whoosh.m4a" data-start="45.7" data-duration="1.2" data-track-index="35" data-volume="0.35"></audio>
+      <audio id="a-ut" src="assets/ultrassom.m4a" data-start="46.4" data-duration="3" data-track-index="36" data-volume="0.6"></audio>
+      <audio id="a-wh3" src="assets/whoosh.m4a" data-start="49.75" data-duration="1.2" data-track-index="37" data-volume="0.55"></audio>
+      <audio id="a-hit2" src="assets/impacto.m4a" data-start="50.4" data-duration="3" data-track-index="38" data-volume="0.6"></audio>
     </div>
 
     <script>
-      /* ================= Partículas magnéticas (canvas determinístico) ================= */
-      (function () {
-        const W = 1080, H = 1920;
-        const cv = document.getElementById("mt-canvas");
-        const ctx = cv.getContext("2d");
-        let seed = 20261123;
-        const rnd = () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+      /* ================= utilitários determinísticos ================= */
+      const W = 1080, H = 1920, WELD_Y = 880, CX = 540;
+      const mkRnd = (s) => () => { s |= 0; s = (s + 0x6d2b79f5) | 0; let t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+      const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const clamp = (v) => Math.max(0, Math.min(1, v));
 
-        const WELD_Y = 900, CX = 540, A = 300, KMAX = 150;
-        const POLE_L = CX - A, POLE_R = CX + A;
-
-        const plate = document.createElement("canvas"); plate.width = W; plate.height = H;
-        const p = plate.getContext("2d");
+      function makePlate(seed, top, bottom) {
+        const rnd = mkRnd(seed);
+        const c = document.createElement("canvas"); c.width = W; c.height = H;
+        const p = c.getContext("2d");
         const g = p.createLinearGradient(0, 0, 0, H);
-        g.addColorStop(0, "#1b2027"); g.addColorStop(1, "#0f1216");
+        g.addColorStop(0, top); g.addColorStop(1, bottom);
         p.fillStyle = g; p.fillRect(0, 0, W, H);
         for (let i = 0; i < 2200; i++) {
           const y = rnd() * H, x = rnd() * W, len = 60 + rnd() * 240;
@@ -261,21 +375,33 @@
         const wg = p.createLinearGradient(0, WELD_Y - 50, 0, WELD_Y + 50);
         wg.addColorStop(0, "#14181d"); wg.addColorStop(.35, "#3a414a"); wg.addColorStop(.5, "#4b535d"); wg.addColorStop(.65, "#30363e"); wg.addColorStop(1, "#14181d");
         p.fillStyle = wg; p.fillRect(0, WELD_Y - 50, W, 100);
-        for (const [c, o] of [["rgba(0,0,0,.35)", 0], ["rgba(255,255,255,.07)", 4]]) {
-          p.strokeStyle = c; p.lineWidth = 2;
+        for (const [col, o] of [["rgba(0,0,0,.35)", 0], ["rgba(255,255,255,.07)", 4]]) {
+          p.strokeStyle = col; p.lineWidth = 2;
           for (let x = -40 + o; x < W + 40; x += 22) { p.beginPath(); p.moveTo(x, WELD_Y - 44); p.quadraticCurveTo(x + 26, WELD_Y, x, WELD_Y + 44); p.stroke(); }
         }
+        return c;
+      }
+      function makeCrack(rnd, half) {
+        const pts = [];
+        for (let i = 0; i <= 14; i++) { const t = i / 14; pts.push([CX + Math.sin(t * 9.0) * 9 + (rnd() - .5) * 10, WELD_Y - half + t * half * 2]); }
+        return pts;
+      }
+      const strokePath = (ctx, pts) => { ctx.beginPath(); pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.stroke(); };
 
-        const crack = [];
-        for (let i = 0; i <= 14; i++) { const t = i / 14; crack.push([CX + Math.sin(t * 9.0) * 9 + (rnd() - .5) * 10, WELD_Y - 85 + t * 170]); }
+      /* ================= 4 · Partículas magnéticas ================= */
+      (function () {
+        const ctx = document.getElementById("mt-canvas").getContext("2d");
+        const rnd = mkRnd(20261123);
+        const A = 300, KMAX = 150, POLE_L = CX - A, POLE_R = CX + A;
+        const plate = makePlate(7, "#1b2027", "#0f1216");
+        const crack = makeCrack(rnd, 85);
         const onCrack = (s) => {
           const f = s * (crack.length - 1), i = Math.min(Math.floor(f), crack.length - 2), k = f - i;
           return [crack[i][0] + (crack[i + 1][0] - crack[i][0]) * k, crack[i][1] + (crack[i + 1][1] - crack[i][1]) * k];
         };
-
         const N = 2000, NC = 600, parts = [];
         for (let i = 0; i < N; i++) {
-          const sx = 140 + rnd() * 800, sy = 720 + rnd() * 360;
+          const sx = 140 + rnd() * 800, sy = 700 + rnd() * 360;
           let tx, ty, ta;
           if (i < N - NC) {
             const k = (rnd() * 2 - 1) * KMAX, u = (rnd() * 2 - 1) * 0.96, s = Math.sqrt(1 - u * u);
@@ -286,10 +412,6 @@
           }
           parts.push({ sx, sy, tx, ty, sa: rnd() * Math.PI, ta, d: rnd() * 0.3, len: 6 + rnd() * 8, crack: i >= N - NC, fall: 20 + rnd() * 60 });
         }
-
-        const ease = (t) => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        const clamp = (v) => Math.max(0, Math.min(1, v));
-
         function drawYoke(alpha, drop) {
           if (alpha <= 0) return;
           ctx.save(); ctx.globalAlpha = alpha;
@@ -304,19 +426,16 @@
           }
           ctx.restore();
         }
-
-        function draw(t) {
+        window.__mtDraw = function (t) {
           ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
           ctx.drawImage(plate, 0, 0);
           const uv = clamp((t - 3.6) / 0.9);
           if (uv > 0) { ctx.fillStyle = `rgba(28,8,52,${0.62 * uv})`; ctx.fillRect(0, 0, W, H); }
           const yokeIn = clamp((t - 0.8) / 0.8);
           drawYoke(yokeIn, (1 - ease(yokeIn)) * 140);
-
           const fieldA = clamp((t - 1.6) / 0.6) * (1 - uv * 0.7);
           if (fieldA > 0) {
-            ctx.strokeStyle = `rgba(74,130,196,${0.4 * fieldA})`; ctx.lineWidth = 2; ctx.setLineDash([7, 11]);
-            ctx.lineDashOffset = -t * 40;
+            ctx.strokeStyle = `rgba(74,130,196,${0.4 * fieldA})`; ctx.lineWidth = 2; ctx.setLineDash([7, 11]); ctx.lineDashOffset = -t * 40;
             for (let k = -KMAX; k <= KMAX + 1; k += 37.5) {
               if (Math.abs(k) < 1) continue;
               ctx.beginPath();
@@ -325,7 +444,6 @@
             }
             ctx.setLineDash([]);
           }
-
           const sprinkle = clamp((t - 0.2) / 1.2), align = (t - 1.9) / 2.2, glow = clamp((t - 4.0) / 1.2);
           ctx.globalCompositeOperation = "lighter"; ctx.lineCap = "round";
           const r = 140 + 72 * uv, gch = 150 + 105 * uv, b = 150 - 92 * uv;
@@ -333,10 +451,8 @@
             const a0 = clamp((sprinkle - q.d) / 0.7);
             if (a0 <= 0) continue;
             const m = ease(clamp((align - q.d) / 0.7));
-            const x = q.sx + (q.tx - q.sx) * m;
-            const y = q.sy + (q.ty - q.sy) * m - (1 - ease(a0)) * q.fall;
-            const ang = q.sa + (q.ta - q.sa) * m;
-            const L = q.len * (q.crack ? 1 + glow * 0.4 : 1);
+            const x = q.sx + (q.tx - q.sx) * m, y = q.sy + (q.ty - q.sy) * m - (1 - ease(a0)) * q.fall;
+            const ang = q.sa + (q.ta - q.sa) * m, L = q.len * (q.crack ? 1 + glow * 0.4 : 1);
             const dx = Math.cos(ang) * L * .5, dy = Math.sin(ang) * L * .5;
             const al = q.crack ? a0 * (0.55 + 0.45 * uv) * (0.8 + glow * 0.6) : a0 * (0.5 + 0.2 * uv) * (1 - glow * 0.35);
             ctx.strokeStyle = `rgba(${r | 0},${gch | 0},${b | 0},${Math.min(1, al)})`;
@@ -350,49 +466,269 @@
             ctx.fillStyle = rg; ctx.fillRect(CX - 200, WELD_Y - 200, 400, 400);
           }
           ctx.globalCompositeOperation = "source-over";
+        };
+        window.__mtDraw(0);
+      })();
+
+      /* ================= 5 · Líquido penetrante ================= */
+      (function () {
+        const ctx = document.getElementById("pt-canvas").getContext("2d");
+        const rnd = mkRnd(4242);
+        const plate = makePlate(11, "#22272e", "#13161b");
+        const crack = makeCrack(rnd, 80);
+        const X0 = 150, X1 = 930, Y0 = 690, Y1 = 1070;           // área de aplicação
+        const red = [], white = [];
+        for (let i = 0; i < 2600; i++) {
+          const x = X0 + rnd() * (X1 - X0), y = Y0 + rnd() * (Y1 - Y0);
+          red.push({ x, y, r: 3 + rnd() * 6, t: 0.05 + 0.8 * ((x - X0) / (X1 - X0)) * 0.85 + rnd() * 0.12 });
         }
-        window.__mtDraw = draw;
-        draw(0);
+        for (let i = 0; i < 3200; i++) {
+          const x = X0 + rnd() * (X1 - X0), y = Y0 + rnd() * (Y1 - Y0);
+          white.push({ x, y, r: 3 + rnd() * 7, t: 1.85 + 0.75 * ((x - X0) / (X1 - X0)) * 0.85 + rnd() * 0.12 });
+        }
+        const edgeFade = (x, y) => {                                 // bordas irregulares da aplicação
+          const ex = Math.min(x - X0, X1 - x) / 60, ey = Math.min(y - Y0, Y1 - y) / 60;
+          return clamp(Math.min(ex, ey));
+        };
+        window.__ptDraw = function (t) {
+          ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+          ctx.drawImage(plate, 0, 0);
+          // trinca fina (quase invisível)
+          ctx.strokeStyle = "rgba(0,0,0,.6)"; ctx.lineWidth = 2; strokePath(ctx, crack);
+
+          // 1 · penetrante vermelho
+          const wipeX = X0 - 40 + (X1 - X0 + 120) * ease(clamp((t - 1.1) / 0.6));
+          const wiping = t > 1.1;
+          for (const d of red) {
+            if (d.t > t) continue;
+            if (wiping && d.x < wipeX) continue;
+            const a = clamp((t - d.t) / 0.15) * 0.55 * edgeFade(d.x, d.y);
+            ctx.fillStyle = `rgba(214,28,40,${a})`;
+            ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2); ctx.fill();
+          }
+          const coat = clamp(t / 0.9) * 0.35;
+          if (coat > 0) {
+            const x0 = wiping ? Math.max(X0, wipeX) : X0;
+            if (x0 < X1) { ctx.fillStyle = `rgba(190,20,32,${coat})`; ctx.fillRect(x0, Y0 + 30, X1 - x0, Y1 - Y0 - 60); }
+          }
+          // penetrante retido na trinca após a limpeza
+          if (wiping) { ctx.strokeStyle = "rgba(200,20,30,.75)"; ctx.lineWidth = 3; strokePath(ctx, crack); }
+          // pano de limpeza
+          if (t > 1.05 && t < 1.85) {
+            ctx.save(); ctx.globalAlpha = clamp((1.85 - t) / 0.15) * clamp((t - 1.05) / 0.1);
+            ctx.fillStyle = "#e9e4da"; ctx.beginPath(); ctx.roundRect(wipeX - 40, Y0 + 10, 80, Y1 - Y0 - 20, 30); ctx.fill();
+            ctx.strokeStyle = "rgba(0,0,0,.15)"; ctx.lineWidth = 2;
+            for (let k = 0; k < 6; k++) { ctx.beginPath(); ctx.moveTo(wipeX - 30, Y0 + 40 + k * 60); ctx.lineTo(wipeX + 30, Y0 + 60 + k * 60); ctx.stroke(); }
+            ctx.restore();
+          }
+          // 2 · revelador branco
+          for (const d of white) {
+            if (d.t > t) continue;
+            const a = clamp((t - d.t) / 0.15) * 0.5 * edgeFade(d.x, d.y);
+            ctx.fillStyle = `rgba(246,246,242,${a})`;
+            ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2); ctx.fill();
+          }
+          const dev = clamp((t - 1.9) / 0.9);
+          if (dev > 0) {
+            const g = ctx.createRadialGradient(CX, WELD_Y, 60, CX, WELD_Y, 420);
+            g.addColorStop(0, `rgba(240,240,236,${0.85 * dev})`); g.addColorStop(1, `rgba(240,240,236,${0.55 * dev})`);
+            ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(X0 + 30, Y0 + 30, X1 - X0 - 60, Y1 - Y0 - 60, 40); ctx.fill();
+          }
+          // 3 · indicação (sangramento)
+          const b = ease(clamp((t - 2.6) / 1.3));
+          if (b > 0) {
+            ctx.lineCap = "round"; ctx.lineJoin = "round";
+            for (let k = 5; k >= 1; k--) {
+              ctx.strokeStyle = `rgba(222,24,38,${(0.1 + 0.16 * (6 - k)) * b})`;
+              ctx.lineWidth = 3 + k * 7 * b;
+              strokePath(ctx, crack);
+            }
+          }
+          // anel de destaque
+          const ring = ease(clamp((t - 3.3) / 0.6));
+          if (ring > 0) {
+            ctx.strokeStyle = "#ff4a4a"; ctx.lineWidth = 5;
+            ctx.beginPath(); ctx.arc(CX, WELD_Y, 125, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ring); ctx.stroke();
+          }
+        };
+        window.__ptDraw(0);
+      })();
+
+      /* ================= 6 · Inspeção visual ================= */
+      (function () {
+        const ctx = document.getElementById("vt-canvas").getContext("2d");
+        const rnd = mkRnd(9001);
+        const plate = makePlate(21, "#3d444e", "#2a3038");
+        const p = plate.getContext("2d");
+        // descontinuidades: poros e mordedura
+        for (let i = 0; i < 9; i++) {
+          const x = 300 + (rnd() - .5) * 70, y = WELD_Y + (rnd() - .5) * 50, r = 3 + rnd() * 6;
+          p.fillStyle = "rgba(0,0,0,.85)"; p.beginPath(); p.arc(x, y, r, 0, Math.PI * 2); p.fill();
+          p.strokeStyle = "rgba(255,255,255,.18)"; p.lineWidth = 1.5; p.beginPath(); p.arc(x - 1, y - 1, r, Math.PI, Math.PI * 1.6); p.stroke();
+        }
+        p.strokeStyle = "rgba(0,0,0,.8)"; p.lineWidth = 6; p.beginPath();
+        for (let x = 680; x <= 820; x += 4) { const y = WELD_Y - 50 + Math.sin(x * .2) * 2; x === 680 ? p.moveTo(x, y) : p.lineTo(x, y); } p.stroke();
+        const spotX = (t) => 160 + 760 * ease(clamp((t - 0.2) / 3.6));
+        window.__vtDraw = function (t) {
+          ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+          ctx.drawImage(plate, 0, 0);
+          const on = clamp((t - 0.1) / 0.25);
+          const sx = spotX(t), sy = WELD_Y;
+          // escuridão com foco da lanterna
+          const g = ctx.createRadialGradient(sx, sy, 40, sx, sy, 300);
+          g.addColorStop(0, `rgba(0,0,0,${0.85 - 0.85 * on})`);
+          g.addColorStop(0.6, `rgba(0,0,0,${0.85 - 0.55 * on})`);
+          g.addColorStop(1, "rgba(0,0,0,.86)");
+          ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+          const warm = ctx.createRadialGradient(sx, sy, 0, sx, sy, 260);
+          warm.addColorStop(0, `rgba(255,220,150,${0.16 * on})`); warm.addColorStop(1, "rgba(255,220,150,0)");
+          ctx.fillStyle = warm; ctx.fillRect(sx - 280, sy - 280, 560, 560);
+          // lupa
+          const lens = ease(clamp((t - 0.5) / 0.5));
+          if (lens > 0) {
+            const R = 120 * lens, Z = 2.1;
+            ctx.save(); ctx.beginPath(); ctx.arc(sx, sy, R, 0, Math.PI * 2); ctx.clip();
+            ctx.drawImage(plate, sx - sx * Z, sy - sy * Z, W * Z, H * Z);
+            const gl = ctx.createRadialGradient(sx - 40, sy - 50, 10, sx, sy, R);
+            gl.addColorStop(0, "rgba(255,255,255,.18)"); gl.addColorStop(1, "rgba(255,255,255,0)");
+            ctx.fillStyle = gl; ctx.fillRect(sx - R, sy - R, R * 2, R * 2);
+            ctx.restore();
+            ctx.strokeStyle = "#ffd166"; ctx.lineWidth = 8; ctx.beginPath(); ctx.arc(sx, sy, R, 0, Math.PI * 2); ctx.stroke();
+            ctx.strokeStyle = "#3a414a"; ctx.lineWidth = 22; ctx.lineCap = "round";
+            ctx.beginPath(); ctx.moveTo(sx + R * .72, sy + R * .72); ctx.lineTo(sx + R * 1.45, sy + R * 1.45); ctx.stroke();
+          }
+          // marcadores das descontinuidades encontradas
+          for (const [mx, at, txt] of [[300, 1.25, "POROS"], [750, 2.6, "MORDEDURA"]]) {
+            const a = ease(clamp((t - at) / 0.35));
+            if (a <= 0) continue;
+            ctx.globalAlpha = a;
+            ctx.strokeStyle = "#ffd166"; ctx.lineWidth = 3; ctx.setLineDash([8, 8]);
+            ctx.beginPath(); ctx.moveTo(mx, WELD_Y - 70); ctx.lineTo(mx, 760); ctx.stroke(); ctx.setLineDash([]);
+            ctx.fillStyle = "#ffd166"; ctx.font = "700 30px 'Saira Condensed', sans-serif"; ctx.textAlign = "center";
+            ctx.fillText(txt, mx, 745);
+            ctx.globalAlpha = 1;
+          }
+        };
+        window.__vtDraw(0);
+      })();
+
+      /* ================= 7 · Medição de espessura (ultrassom) ================= */
+      (function () {
+        const ctx = document.getElementById("ut-canvas").getContext("2d");
+        const rnd = mkRnd(777);
+        const TOP = 720, NOM = 240, MMPX = 12.7 / NOM;            // 240 px = 12,7 mm
+        const noise = []; for (let i = 0; i <= 108; i++) noise.push(rnd());
+        const back = (x) => {                                        // parede de fundo com corrosão à direita
+          const c = Math.exp(-Math.pow((x - 720) / 120, 2));
+          const n = noise[Math.max(0, Math.min(108, Math.round(x / 10)))];
+          return TOP + NOM - c * (95 + n * 12) - (c > .05 ? n * 6 : 0);
+        };
+        const bg = document.createElement("canvas"); bg.width = W; bg.height = H;
+        const b = bg.getContext("2d");
+        b.fillStyle = "#0b1218"; b.fillRect(0, 0, W, H);
+        b.strokeStyle = "rgba(92,225,230,.06)"; b.lineWidth = 1;
+        for (let x = 0; x < W; x += 40) { b.beginPath(); b.moveTo(x, 0); b.lineTo(x, H); b.stroke(); }
+        for (let y = 0; y < H; y += 40) { b.beginPath(); b.moveTo(0, y); b.lineTo(W, y); b.stroke(); }
+        // seção da chapa
+        b.save(); b.beginPath(); b.moveTo(0, TOP);
+        b.lineTo(W, TOP); for (let x = W; x >= 0; x -= 5) b.lineTo(x, back(x)); b.closePath();
+        const sg = b.createLinearGradient(0, TOP, 0, TOP + NOM);
+        sg.addColorStop(0, "#6b7480"); sg.addColorStop(1, "#3c434c");
+        b.fillStyle = sg; b.fill(); b.clip();
+        b.strokeStyle = "rgba(0,0,0,.18)"; b.lineWidth = 2;
+        for (let x = -300; x < W; x += 18) { b.beginPath(); b.moveTo(x, TOP + NOM); b.lineTo(x + NOM, TOP); b.stroke(); }
+        b.restore();
+        b.strokeStyle = "#c9d2dc"; b.lineWidth = 3; b.beginPath(); b.moveTo(0, TOP); b.lineTo(W, TOP); b.stroke();
+        b.strokeStyle = "#e0a458"; b.lineWidth = 3; b.beginPath();
+        for (let x = 0; x <= W; x += 5) { const y = back(x); x ? b.lineTo(x, y) : b.moveTo(x, y); } b.stroke();
+        b.fillStyle = "rgba(224,164,88,.9)"; b.font = "600 28px 'Saira Condensed', sans-serif"; b.textAlign = "center";
+        b.fillText("CORROSÃO", 720, TOP + NOM + 44);
+
+        const probeX = (t) => {
+          if (t < 0.4) return 230;
+          if (t < 1.3) return 230 + 160 * ease((t - 0.4) / 0.9);
+          if (t < 1.9) return 390;
+          if (t < 3.0) return 390 + 330 * ease((t - 1.9) / 1.1);
+          return 720;
+        };
+        const val = document.getElementById("ut-value"), st = document.getElementById("ut-status");
+        let lastBad = null;
+        window.__utDraw = function (t) {
+          ctx.drawImage(bg, 0, 0);
+          const px = probeX(t), bw = back(px), th = bw - TOP;
+          // pulsos
+          const live = clamp((t - 0.25) / 0.2);
+          if (live > 0) {
+            for (let k = 0; k < 3; k++) {
+              const ph = ((t * 1.8 + k / 3) % 1);
+              const down = ph < 0.5, f = down ? ph * 2 : 2 - ph * 2;
+              const y = TOP + th * f;
+              const a = live * (0.85 - Math.abs(f - 0.5) * 0.4);
+              ctx.strokeStyle = down ? `rgba(92,225,230,${a})` : `rgba(255,209,102,${a})`;
+              ctx.lineWidth = 4;
+              for (let j = 0; j < 3; j++) { ctx.beginPath(); ctx.arc(px, y + (down ? -j * 9 : j * 9) - (down ? 40 : -40), 40 + j * 6, down ? .25 * Math.PI : 1.25 * Math.PI, down ? .75 * Math.PI : 1.75 * Math.PI); ctx.stroke(); }
+            }
+            ctx.strokeStyle = `rgba(92,225,230,${0.35 * live})`; ctx.lineWidth = 2; ctx.setLineDash([6, 8]);
+            ctx.beginPath(); ctx.moveTo(px, TOP); ctx.lineTo(px, bw); ctx.stroke(); ctx.setLineDash([]);
+          }
+          // cabeçote
+          ctx.fillStyle = "#1f2a33"; ctx.strokeStyle = "#5ce1e6"; ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.roundRect(px - 44, TOP - 78, 88, 78, [16, 16, 4, 4]); ctx.fill(); ctx.stroke();
+          ctx.fillStyle = "#5ce1e6"; ctx.fillRect(px - 44, TOP - 10, 88, 10);
+          ctx.strokeStyle = "#3a4650"; ctx.lineWidth = 10; ctx.lineCap = "round";
+          ctx.beginPath(); ctx.moveTo(px, TOP - 78); ctx.bezierCurveTo(px, TOP - 160, px + 120, TOP - 120, px + 160, TOP - 220); ctx.stroke();
+          // A-scan
+          const AX = 150, AY = 1050, AW = 780;
+          ctx.strokeStyle = "rgba(92,225,230,.25)"; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(AX, AY); ctx.lineTo(AX + AW, AY); ctx.stroke();
+          if (live > 0) {
+            const e1 = AX + 40 + th * 1.4, e2 = AX + 40 + th * 2.8;
+            ctx.strokeStyle = "#5ce1e6"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(AX, AY);
+            for (let x = AX; x <= AX + AW; x += 2) {
+              const sp = (c, h, w) => h * Math.exp(-Math.pow((x - c) / w, 2)) * Math.cos((x - c) * 0.6);
+              const y = AY - live * (sp(AX + 40, 70, 9) + sp(e1, 55, 8) + sp(e2, 26, 8));
+              ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+          }
+          // leitura no medidor
+          const mm = th * MMPX;
+          val.textContent = mm.toFixed(1).replace(".", ",") + " mm";
+          const bad = mm < 11.0;
+          if (bad !== lastBad) {
+            lastBad = bad;
+            st.innerHTML = bad ? "Perda por<br>corrosão" : "Espessura<br>nominal";
+            st.style.background = bad ? "#ffb347" : "#7be39a";
+            val.style.color = bad ? "#ffb347" : "#5ce1e6";
+          }
+        };
+        window.__utDraw(0);
       })();
 
       /* ================= Linha do tempo ================= */
       const tl = gsap.timeline({ paused: true });
+      const wipe = (id, at, dur = 0.55) => {
+        tl.fromTo(id, { yPercent: 100 }, { yPercent: 0, duration: dur, ease: "power3.in" }, at);
+        tl.to(id, { yPercent: -100, duration: dur + 0.05, ease: "power3.out" }, at + dur);
+      };
+      const head = (k, h, at) => {
+        tl.fromTo(k, { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.5, ease: "power2.out" }, at);
+        tl.fromTo(h, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, at + 0.1);
+      };
+      const scene = (fn, obj, at, dur, speed = 1) =>
+        tl.fromTo(obj, { t: 0 }, { t: dur * speed, duration: dur, ease: "none", onUpdate: () => fn(obj.t) }, at);
 
-      // Cena 1 — logo (já visível no quadro 0)
+      // 1 · Logo
       tl.fromTo("#intro-grid", { opacity: 0.4 }, { opacity: 1, duration: 1.2, ease: "power2.out" }, 0);
       tl.fromTo("#intro-logo", { opacity: 0.9, scale: 0.92, filter: "blur(2px)" }, { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1.1, ease: "power3.out" }, 0);
-      tl.to("#intro-logo", { scale: 1.05, duration: 4.5, ease: "none" }, 1.1);
+      tl.to("#intro-logo", { scale: 1.05, duration: 4.2, ease: "none" }, 1.1);
       tl.fromTo("#intro-line", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 2.0);
       tl.fromTo("#intro-tag span", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.42, ease: "power2.out" }, 2.4);
+      wipe("#wipe1", 5.2);
 
-      const wipe = (id, at) => {
-        tl.fromTo(id, { yPercent: 100 }, { yPercent: 0, duration: 0.55, ease: "power3.in" }, at);
-        tl.to(id, { yPercent: -100, duration: 0.6, ease: "power3.out" }, at + 0.55);
-      };
-      wipe("#wipe1", 5.6);
-
-      // Cena 2 — partículas magnéticas
-      const T2 = 6.15, mt = { t: 0 };
-      tl.fromTo(mt, { t: 0 }, { t: 10.3, duration: 10.3, ease: "none", onUpdate: () => window.__mtDraw(mt.t) }, T2);
-      tl.fromTo("#mt-stage", { scale: 1 }, { scale: 1.07, duration: 10.3, ease: "none" }, T2);
-      tl.fromTo("#mt-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }, T2 + 0.4);
-      tl.fromTo("#mt-title", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, T2 + 0.55);
-      tl.fromTo("#mt-sub", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, T2 + 2.4);
-      tl.to("#mt-kicker", { opacity: 0, duration: 0.3 }, T2 + 3.5);
-      tl.fromTo("#mt-uv", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.5 }, T2 + 3.75);
-      tl.to("#mt-sub", { opacity: 0, y: -16, duration: 0.4 }, T2 + 5.5);
-      tl.to("#mt-ring", { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, T2 + 5.0);
-      tl.to("#mt-leader", { strokeDashoffset: 0, duration: 0.4, ease: "power2.out" }, T2 + 5.6);
-      tl.fromTo("#mt-label", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, T2 + 5.85);
-
-      wipe("#wipe2", 15.85);
-
-      // Cena 3 — serviços (cada cartão entra quando a locução o anuncia)
-      const T3 = 16.4;
-      tl.fromTo("#serv-kicker", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }, T3 + 0.1);
-      tl.fromTo("#serv-title", { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, T3 + 0.2);
-      tl.to("#serv-bg", { scale: 1.12, duration: 22, ease: "none" }, T3);
-      const cards = [["#card1", 18.4], ["#card2", 24.1], ["#card3", 33.0]];
+      // 2 · Serviços — cada cartão entra quando a locução o anuncia
+      head("#serv-kicker", "#serv-title", 5.85);
+      tl.to("#serv-bg", { scale: 1.12, duration: 23, ease: "none" }, 5.75);
+      const cards = [["#card1", 8.39], ["#card2", 14.15], ["#card3", 20.15]];
       cards.forEach(([id, at], i) => {
         tl.fromTo(id, { opacity: 0, x: 160 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, at);
         tl.fromTo(`${id} .bar`, { scaleY: 0 }, { scaleY: 1, duration: 0.8, ease: "power3.inOut" }, at + 0.2);
@@ -401,18 +737,70 @@
         tl.fromTo(`${id} p`, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, at + 0.6);
         tl.fromTo(`#serv-dots i:nth-child(${i + 1})`, { backgroundColor: "rgba(255,255,255,.18)" }, { backgroundColor: "#4a82c4", duration: 0.4 }, at);
         if (i > 0) tl.to(cards[i - 1][0], { opacity: 0, x: -160, duration: 0.55, ease: "power3.in" }, at - 0.45);
-        // leve deriva enquanto a locução descreve o cartão
         tl.to(`${id} svg`, { y: -8, duration: 1.6, yoyo: true, repeat: 1, ease: "sine.inOut" }, at + 1.4);
       });
+      tl.to("#card3", { borderColor: "rgba(74,130,196,.85)", duration: 0.6 }, 26.0);
+      wipe("#wipe2", 28.7);
 
-      wipe("#wipe3", 38.6);
+      // 3 · Abertura dos ensaios
+      head("#end-kicker", "#end-title", 29.3);
+      tl.fromTo("#end-list .end-row", { opacity: 0, x: 80 }, { opacity: 1, x: 0, duration: 0.45, stagger: 0.35, ease: "power3.out" }, 29.7);
+      tl.to("#end-list", { y: -10, duration: 2.6, ease: "none" }, 29.7);
+      wipe("#wq1", 32.0, 0.3);
 
-      // Cena 4 — encerramento
-      const T4 = 39.15;
-      tl.fromTo("#out-logo", { opacity: 0, scale: 0.88 }, { opacity: 1, scale: 1, duration: 0.9, ease: "power3.out" }, T4 + 0.05);
-      tl.fromTo("#out-chips .chip", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.1, ease: "power2.out" }, T4 + 0.6);
-      tl.fromTo("#out-cta", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }, 40.6);
-      tl.to("#out-cta", { scale: 1.05, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut" }, 41.4);
+      // 4 · Partículas magnéticas (sequência acelerada 1,35x para caber na locução)
+      const T4 = 32.3;
+      scene(window.__mtDraw, { t: 0 }, T4, 4.9, 1.35);
+      tl.fromTo("#mt-stage", { scale: 1 }, { scale: 1.06, duration: 4.9, ease: "none" }, T4);
+      head("#mt-kicker", "#mt-title", T4 + 0.3);
+      tl.fromTo("#mt-sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, T4 + 0.7);
+      tl.to("#mt-kicker", { opacity: 0, duration: 0.25 }, T4 + 2.55);
+      tl.fromTo("#mt-uv", { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.4 }, T4 + 2.75);
+      tl.to("#mt-ring", { strokeDashoffset: 0, duration: 0.6, ease: "power2.inOut" }, T4 + 3.3);
+      tl.to("#mt-sub", { opacity: 0, y: -14, duration: 0.3 }, T4 + 3.55);
+      tl.to("#mt-leader", { strokeDashoffset: 0, duration: 0.3, ease: "power2.out" }, T4 + 3.75);
+      tl.fromTo("#mt-label", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, T4 + 3.85);
+      wipe("#wq2", 36.85, 0.3);
+
+      // 5 · Líquido penetrante
+      const T5 = 37.15;
+      scene(window.__ptDraw, { t: 0 }, T5, 4.5, 1.0);
+      tl.fromTo("#pt-stage", { scale: 1 }, { scale: 1.06, duration: 4.5, ease: "none" }, T5);
+      head("#pt-kicker", "#pt-title", T5 + 0.25);
+      tl.fromTo("#pt-steps span", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, stagger: 0.08 }, T5 + 0.4);
+      [[0, 0.1], [1, 1.1], [2, 1.85]].forEach(([i, at]) => {
+        const el = `#pt-steps span:nth-child(${i + 1})`;
+        tl.to(el, { color: "#fff", borderColor: "#ff4a4a", backgroundColor: "rgba(255,74,74,.25)", duration: 0.25 }, T5 + Math.max(at, 0.75));
+        if (i < 2) tl.to(el, { color: "rgba(255,255,255,.45)", borderColor: "rgba(255,255,255,.18)", backgroundColor: "rgba(0,0,0,0)", duration: 0.25 }, T5 + [1.1, 1.85][i]);
+      });
+      tl.fromTo("#pt-sub", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, T5 + 0.7);
+      tl.to("#pt-sub", { opacity: 0, y: -14, duration: 0.3 }, T5 + 3.2);
+      tl.fromTo("#pt-label", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, T5 + 3.45);
+      wipe("#wq3", 41.3, 0.3);
+
+      // 6 · Inspeção visual
+      const T6 = 41.6;
+      scene(window.__vtDraw, { t: 0 }, T6, 4.45, 1.0);
+      tl.fromTo("#vt-stage", { scale: 1.04 }, { scale: 1, duration: 4.45, ease: "none" }, T6);
+      head("#vt-kicker", "#vt-title", T6 + 0.25);
+      tl.fromTo("#vt-checks div", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.35, stagger: 0.7, ease: "power2.out" }, T6 + 1.3);
+      tl.fromTo("#vt-checks i", { scale: 0 }, { scale: 1, duration: 0.35, stagger: 0.7, ease: "back.out(3)" }, T6 + 1.35);
+      wipe("#wq4", 45.7, 0.3);
+
+      // 7 · Medição de espessura
+      const T7 = 46.0;
+      scene(window.__utDraw, { t: 0 }, T7, 4.35, 1.0);
+      tl.fromTo("#ut-stage", { scale: 1 }, { scale: 1.05, duration: 4.35, ease: "none" }, T7);
+      head("#ut-kicker", "#ut-title", T7 + 0.25);
+      tl.fromTo("#ut-gauge", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, T7 + 0.5);
+      wipe("#wipe3", 49.8);
+
+      // 8 · Encerramento
+      const T8 = 50.35;
+      tl.fromTo("#out-logo", { opacity: 0, scale: 0.88 }, { opacity: 1, scale: 1, duration: 0.9, ease: "power3.out" }, T8 + 0.05);
+      tl.fromTo("#out-chips .chip", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.1, ease: "power2.out" }, T8 + 0.6);
+      tl.fromTo("#out-cta", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(2)" }, 51.95);
+      tl.to("#out-cta", { scale: 1.05, duration: 0.5, yoyo: true, repeat: 3, ease: "sine.inOut" }, 52.8);
 
       window.__timelines = window.__timelines || {};
       window.__timelines["main"] = tl;
