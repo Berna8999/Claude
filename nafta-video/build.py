@@ -92,6 +92,9 @@ html = f"""<!doctype html>
       #mist {{ position: absolute; left: {NOZ[0]-560}px; top: {NOZ[1]-260}px; width: 560px; height: 520px; transform-origin: 100% 50%; filter: blur(6px) drop-shadow(0 0 20px rgba(255,255,255,.8)); }}
       .spark {{ position: absolute; width: 140px; height: 140px; filter: drop-shadow(0 0 10px #3bb9e8) drop-shadow(0 0 22px #3bb9e8); }}
 
+      #footer-logo {{ position: absolute; left: 50%; bottom: 100px; width: 230px; margin-left: -115px; z-index: 8;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,.4)); }}
+
       /* S1 */
       #s1-q {{ position: absolute; left: 0; right: 0; bottom: 330px; padding: 0 90px; }}
       #s1-h {{ font-size: 84px; background: rgba(18,28,77,.92); border-radius: 40px; padding: 34px 40px 42px; box-shadow: 0 30px 60px rgba(0,0,0,.4); }}
@@ -155,6 +158,8 @@ html = f"""<!doctype html>
         <div class="leaf" id="lf3" style="width:180px;height:180px;right:60px;bottom:120px;background:var(--yellow);opacity:.18"></div>
         <div class="leaf" id="lf4" style="width:110px;height:110px;left:80px;bottom:300px;background:var(--cyan);opacity:.22"></div>
       </div>
+
+      <div id="footer" class="clip" data-start="0" data-duration="{TIMES['s8'] + 0.4}" data-track-index="5" style="z-index:8;pointer-events:none"><img id="footer-logo" src="assets/logo.png" alt="Nafta" /></div>
 
       <!-- S1: piso sujo em destaque -->
       <div id="s1" class="clip" {attrs("s1")} data-track-index="1">
@@ -345,6 +350,7 @@ html = f"""<!doctype html>
       tl.fromTo("#s8-h", {{ y: 60, opacity: 0 }}, {{ y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }}, t + 0.7);
       tl.fromTo("#s8-prods", {{ y: 300, opacity: 0 }}, {{ y: 0, opacity: 1, duration: 0.6, ease: "back.out(1.4)" }}, t + 1.1);
 
+      tl.to("#footer-logo", {{ opacity: 0, y: 30, duration: 0.35, ease: "power2.in" }}, T.s8);
       window.__timelines["main"] = tl;
       tl.seek(0);
     </script>
