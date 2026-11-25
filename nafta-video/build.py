@@ -26,8 +26,24 @@ vo_tags = "\n".join(
     for i, (st, ms, d) in enumerate(VO)
 )
 
-TILE_COUNT = 6 * 11
-tiles = "".join('<i></i>' for _ in range(TILE_COUNT))
+import random
+random.seed(11)
+NOZ = (652, 454)          # bico do borrifador (coordenadas do quadro)
+PUFFS = [1.2, 1.9, 2.6]   # borrifadas (s após início da cena 2)
+drops = []
+for p_i in range(len(PUFFS)):
+    for d in range(24):
+        ex = random.uniform(170, 560); ey = NOZ[1] + random.uniform(-230, 260) * (NOZ[0] - ex) / 480
+        r = random.uniform(6, 18)
+        drops.append((p_i, d, ex, ey, r))
+drops_html = "".join(
+    f'<i class="drop" id="dr{p}_{d}" style="left:{NOZ[0]-r}px;top:{NOZ[1]-r}px;width:{2*r:.0f}px;height:{2*r:.0f}px"></i>'
+    for p, d, ex, ey, r in drops)
+drops_js = json.dumps([[f"#dr{p}_{d}", round(ex - NOZ[0], 1), round(ey - NOZ[1], 1)] for p, d, ex, ey, r in drops])
+FOAM = [(330, 140, 360), (120, 330, 420), (300, 520, 400)]  # x, y, tamanho no piso
+foam_html = "".join(f'<i class="foam" id="fm{i}" style="left:{x}px;top:{y}px;width:{w}px;height:{w}px"></i>' for i, (x, y, w) in enumerate(FOAM))
+SFX = [("sfx-spray.wav", 3.6 + p, 0.42, 0.9) for p in PUFFS] + [("sfx-whoosh.wav", 3.6 + 3.9, 0.9, 0.6), ("sfx-brilho.wav", 3.6 + 5.3, 1.6, 0.7)]
+sfx_tags = "\n".join(f'      <audio id="fx{i}" src="assets/{f}" data-start="{round(st,2)}" data-duration="{d}" data-volume="{v}" data-track-index="4"></audio>' for i, (f, st, d, v) in enumerate(SFX))
 
 html = f"""<!doctype html>
 <html lang="pt-BR" data-resolution="portrait">
@@ -61,35 +77,33 @@ html = f"""<!doctype html>
       .chip.pink {{ background: #b84d8f; color: #fff; }}
       .chip.cyan {{ background: var(--cyan); color: var(--navy-deep); }}
 
-      /* tiles */
-      .tiles {{ position: absolute; left: 90px; top: 240px; width: 900px; height: 1210px; border-radius: 40px; overflow: hidden;
-        box-shadow: 0 40px 80px rgba(0,0,0,.35); }}
-      .grid {{ position: absolute; left: 0; top: 0; width: 900px; height: 1210px; display: grid;
-        grid-template-columns: repeat(6, 1fr); gap: 10px; padding: 10px; }}
-      .grid i {{ display: block; border-radius: 6px; }}
-      .dirty {{ background: #6e5a3e; }}
-      .dirty i {{ background:
-          radial-gradient(circle at 30% 40%, rgba(110,85,50,.55) 0 18%, transparent 30%),
-          radial-gradient(circle at 70% 75%, rgba(90,70,40,.5) 0 14%, transparent 26%),
-          linear-gradient(135deg, #b9c3b8, #a3ab9c); }}
-      .clean {{ background: #ffffff; }}
-      .clean i {{ background: linear-gradient(135deg, #e9f8ff 0%, #bfe6f7 55%, #d9f2fc 100%); }}
-      #wipe {{ position: absolute; left: 0; top: 0; height: 1210px; width: 0; overflow: hidden; }}
-      #wipe-edge {{ position: absolute; top: 0; width: 26px; height: 1210px; margin-left: -13px; left: 0;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,.95), transparent); }}
-      .spark {{ position: absolute; width: 110px; height: 110px; }}
+      /* piso grande */
+      .piso {{ position: absolute; left: 100px; top: 300px; width: 880px; height: 880px; border-radius: 30px; overflow: hidden;
+        box-shadow: 0 0 0 10px rgba(255,255,255,.08), 0 50px 90px rgba(0,0,0,.5); }}
+      .piso .img {{ position: absolute; left: 0; top: 0; width: 880px; height: 880px; background-size: 880px 880px; }}
+      .sujo {{ background-image: url(assets/piso-sujo.png); }}
+      .limpo {{ background-image: url(assets/piso-limpo.png); }}
+      #wipe {{ position: absolute; left: 0; top: 0; height: 880px; width: 0; overflow: hidden; }}
+      #glare {{ position: absolute; left: 0; top: -260px; width: 190px; height: 1400px; transform: rotate(18deg);
+        background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.95) 45%, rgba(255,255,255,.95) 55%, rgba(255,255,255,0)); }}
+      .foam {{ position: absolute; border-radius: 50%;
+        background: radial-gradient(circle, rgba(255,255,255,.75) 0%, rgba(235,248,255,.55) 45%, rgba(255,255,255,0) 70%); }}
+      .drop {{ position: absolute; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff 0%, rgba(210,240,255,.9) 50%, rgba(160,215,245,.6) 100%); }}
+      #mist {{ position: absolute; left: {NOZ[0]-560}px; top: {NOZ[1]-260}px; width: 560px; height: 520px; transform-origin: 100% 50%; filter: blur(6px) drop-shadow(0 0 20px rgba(255,255,255,.8)); }}
+      .spark {{ position: absolute; width: 140px; height: 140px; filter: drop-shadow(0 0 10px #3bb9e8) drop-shadow(0 0 22px #3bb9e8); }}
 
       /* S1 */
       #s1-q {{ position: absolute; left: 0; right: 0; bottom: 330px; padding: 0 90px; }}
       #s1-h {{ font-size: 84px; background: rgba(18,28,77,.92); border-radius: 40px; padding: 34px 40px 42px; box-shadow: 0 30px 60px rgba(0,0,0,.4); }}
 
       /* S2 */
-      #s2-title {{ position: absolute; top: 110px; left: 0; right: 0; text-align: center; z-index: 4; }}
-      #s2-title > .h {{ display: inline-block; background: rgba(18,28,77,.94); border-radius: 36px; padding: 22px 46px 30px; box-shadow: 0 24px 50px rgba(0,0,0,.4); }}
-      #s2-title .h {{ font-size: 74px; }}
-      #s2-spray {{ position: absolute; width: 360px; right: 40px; bottom: 360px; filter: drop-shadow(0 30px 40px rgba(0,0,0,.45)); }}
-      #s2-tags {{ position: absolute; left: 90px; bottom: 380px; display: flex; flex-direction: column; gap: 22px; align-items: flex-start; }}
-      #s2-tags .chip {{ font-size: 54px; }}
+      #s2-title {{ position: absolute; top: 100px; left: 0; right: 0; text-align: center; z-index: 4; }}
+      #s2-title > .h {{ display: inline-block; background: rgba(18,28,77,.94); border-radius: 36px; padding: 18px 46px 26px; box-shadow: 0 24px 50px rgba(0,0,0,.4); }}
+      #s2-title .h {{ font-size: 66px; }}
+      #s2-spray {{ position: absolute; height: 640px; left: 650px; top: 400px; z-index: 5; filter: drop-shadow(0 30px 40px rgba(0,0,0,.45)); transform-origin: 50% 90%; }}
+      #s2-tags {{ position: absolute; left: 60px; right: 60px; top: 1240px; display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; }}
+      #s2-tags .chip {{ font-size: 64px; }}
+      #fx-layer {{ position: absolute; inset: 0; z-index: 6; pointer-events: none; }}
 
       /* S3 */
       #s3-badge {{ width: 360px; height: 360px; border-radius: 50%; background: var(--yellow);
@@ -142,21 +156,23 @@ html = f"""<!doctype html>
         <div class="leaf" id="lf4" style="width:110px;height:110px;left:80px;bottom:300px;background:var(--cyan);opacity:.22"></div>
       </div>
 
-      <!-- S1: pergunta sobre piso sujo -->
+      <!-- S1: piso sujo em destaque -->
       <div id="s1" class="clip" {attrs("s1")} data-track-index="1">
-        <div class="tiles" id="s1-tiles"><div class="grid dirty">{tiles}</div></div>
+        <div class="piso" id="s1-piso"><div class="img sujo"></div></div>
         <div id="s1-q"><div id="s1-h" class="h">Seus pisos e rejuntes precisam de uma <span class="hl">limpeza profunda?</span></div></div>
       </div>
 
-      <!-- S2: produto + transformação -->
+      <!-- S2: borrifa, brilho, limpo -->
       <div id="s2" class="clip" {attrs("s2")} data-track-index="1">
-        <div class="tiles" id="s2-tiles">
-          <div class="grid dirty">{tiles}</div>
-          <div id="wipe"><div class="grid clean">{tiles}</div></div>
-          <div id="wipe-edge"></div>
-          <svg class="spark" id="sp1" style="left:120px;top:220px" viewBox="0 0 100 100"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="#fff"/></svg>
-          <svg class="spark" id="sp2" style="left:520px;top:520px;width:80px;height:80px" viewBox="0 0 100 100"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="#fff"/></svg>
-          <svg class="spark" id="sp3" style="left:260px;top:860px;width:90px;height:90px" viewBox="0 0 100 100"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="#fff"/></svg>
+        <div class="piso" id="s2-piso">
+          <div class="img sujo"></div>
+          {foam_html}
+          <div id="wipe"><div class="img limpo"></div></div>
+          <div id="glare"></div>
+          <svg class="spark" id="sp1" style="left:150px;top:140px" viewBox="0 0 100 100"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="#fff"/></svg>
+          <svg class="spark" id="sp2" style="left:600px;top:300px;width:90px;height:90px" viewBox="0 0 100 100"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="#fff"/></svg>
+          <svg class="spark" id="sp3" style="left:320px;top:620px;width:100px;height:100px" viewBox="0 0 100 100"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="#fff"/></svg>
+          <svg class="spark" id="sp4" style="left:700px;top:720px;width:70px;height:70px" viewBox="0 0 100 100"><path d="M50 0 C54 38 62 46 100 50 C62 54 54 62 50 100 C46 62 38 54 0 50 C38 46 46 38 50 0Z" fill="#fff"/></svg>
         </div>
         <div id="s2-title"><div class="h"><span class="chip">Limpa Rejuntes</span><br/>e Pisos Frios</div></div>
         <div id="s2-tags">
@@ -165,6 +181,10 @@ html = f"""<!doctype html>
           <span class="chip cyan" id="tg3">Ambientes renovados</span>
         </div>
         <img id="s2-spray" src="assets/spray.png" alt="Nafta Limpa Rejuntes 500ml" />
+        <div id="fx-layer">
+          <svg id="mist" viewBox="0 0 520 460"><defs><radialGradient id="mg" cx="1" cy="0.5" r="1"><stop offset="0" stop-color="#fff" stop-opacity="1"/><stop offset=".55" stop-color="#eaf8ff" stop-opacity=".75"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><path d="M520 230 L0 0 Q-40 230 0 460 Z" fill="url(#mg)"/></svg>
+          {drops_html}
+        </div>
       </div>
 
       <!-- S3: aplicação direta, 2 versões -->
@@ -213,6 +233,7 @@ html = f"""<!doctype html>
 
       <audio id="music" src="assets/music.wav" data-start="0" data-duration="{TOTAL}" data-volume="0.16" data-fade-in="0.3" data-fade-out="1.5" data-track-index="2"></audio>
 {vo_tags}
+{sfx_tags}
     </div>
 
     <script>
@@ -226,21 +247,42 @@ html = f"""<!doctype html>
       // decor leaves drift
       ["#lf1","#lf2","#lf3","#lf4"].forEach((l, i) => tl.fromTo(l, {{ rotation: 0, y: 0 }}, {{ rotation: i % 2 ? -40 : 40, y: i % 2 ? 60 : -60, duration: END, ease: "none" }}, 0));
 
-      // S1 — visible on frame 0
-      tl.fromTo("#s1-tiles", {{ scale: 1.0 }}, {{ scale: 1.08, duration: nextOf("s1"), ease: "none" }}, 0);
+      // S1 — piso sujo já visível no frame 0
+      tl.fromTo("#s1-piso", {{ scale: 1.0 }}, {{ scale: 1.04, duration: nextOf("s1"), ease: "none" }}, 0);
       tl.fromTo("#s1-h", {{ y: 0 }}, {{ y: -10, duration: 0.4, yoyo: true, repeat: 1, ease: "sine.inOut" }}, 0.8);
-      out("#s1", nextOf("s1"));
+      tl.to("#s1-q", {{ opacity: 0, y: 40, duration: 0.25 }}, nextOf("s1") - 0.25);
 
-      // S2 — wipe transformation
+      // S2 — borrifar, espuma, brilho, limpo
       let t = T.s2;
+      const PUFFS = {json.dumps(PUFFS)};
+      const DROPS = {drops_js};
+      tl.set("#s2-piso", {{ scale: 1.04 }}, t);
       tl.fromTo("#s2-title", {{ y: -120, opacity: 0 }}, {{ y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.7)" }}, t + 0.1);
-      tl.fromTo("#s2-spray", {{ x: 500, rotation: 20 }}, {{ x: 0, rotation: -8, duration: 0.7, ease: "back.out(1.4)" }}, t + 0.3);
-      tl.fromTo("#wipe", {{ width: 0 }}, {{ width: 900, duration: 4.4, ease: "power1.inOut" }}, t + 1.0);
-      tl.fromTo("#wipe-edge", {{ x: 0, opacity: 1 }}, {{ x: 900, duration: 4.4, ease: "power1.inOut" }}, t + 1.0);
-      tl.to("#wipe-edge", {{ opacity: 0, duration: 0.2 }}, t + 5.4);
-      tl.to("#s2-spray", {{ rotation: -14, duration: 0.25, yoyo: true, repeat: 9, ease: "sine.inOut" }}, t + 1.0);
-      ["#sp1","#sp2","#sp3"].forEach((s, i) => tl.fromTo(s, {{ scale: 0, rotation: 0 }}, {{ scale: 1, rotation: 90, duration: 0.6, ease: "back.out(3)", yoyo: true, repeat: 1 }}, t + 3.0 + i * 0.9));
-      [["#tg1",3.6],["#tg2",4.5],["#tg3",7.4]].forEach(([s, d]) => tl.fromTo(s, {{ x: -700, opacity: 0 }}, {{ x: 0, opacity: 1, duration: 0.45, ease: "back.out(1.6)" }}, t + d));
+      tl.fromTo("#s2-spray", {{ x: 600, rotation: 15 }}, {{ x: 0, rotation: 0, duration: 0.6, ease: "back.out(1.3)" }}, t + 0.3);
+      tl.set("#mist", {{ opacity: 0, scaleX: 0 }}, t);
+      DROPS.forEach(([id]) => tl.set(id, {{ opacity: 0 }}, t));
+      PUFFS.forEach((p, i) => {{
+        const k = t + p;
+        tl.to("#s2-spray", {{ rotation: -4, x: -10, duration: 0.08, ease: "power2.out" }}, k - 0.05);
+        tl.to("#s2-spray", {{ rotation: 0, x: 0, duration: 0.25, ease: "power2.out" }}, k + 0.05);
+        tl.fromTo("#mist", {{ opacity: 1, scaleX: 0.1, scaleY: 0.4 }}, {{ opacity: 0, scaleX: 1, scaleY: 1.15, duration: 0.7, ease: "power2.out", immediateRender: false }}, k);
+        DROPS.filter(d => d[0].startsWith("#dr" + i + "_")).forEach(([id, dx, dy], j) => {{
+          tl.fromTo(id, {{ x: 0, y: 0, opacity: 1, scale: 0.4 }}, {{ x: dx, y: dy, scale: 1, duration: 0.35 + (j % 4) * 0.05, ease: "power2.out", immediateRender: false }}, k);
+          tl.to(id, {{ opacity: 0, duration: 0.6 }}, k + 0.5 + (j % 5) * 0.05);
+        }});
+        tl.fromTo("#fm" + i, {{ scale: 0.2, opacity: 0 }}, {{ scale: 1, opacity: 1, duration: 0.5, ease: "power2.out" }}, k + 0.2);
+      }});
+      tl.to("#s2-spray", {{ x: 650, rotation: 12, duration: 0.5, ease: "power2.in" }}, t + 3.3);
+      // brilho varre e deixa limpo
+      tl.fromTo("#wipe", {{ width: 0 }}, {{ width: 880, duration: 1.4, ease: "power1.inOut" }}, t + 3.9);
+      tl.fromTo("#glare", {{ x: -260, opacity: 1 }}, {{ x: 1000, duration: 1.4, ease: "power1.inOut" }}, t + 3.9);
+      ["#fm0", "#fm1", "#fm2"].forEach(f => tl.to(f, {{ opacity: 0, duration: 0.6 }}, t + 4.5));
+      [["#sp1",5.3],["#sp2",5.5],["#sp3",5.7],["#sp4",5.9]].forEach(([s, d]) => {{
+        tl.fromTo(s, {{ scale: 0, rotation: 0 }}, {{ scale: 1, rotation: 90, duration: 0.5, ease: "back.out(3)" }}, t + d);
+        tl.to(s, {{ scale: 0.5, rotation: 180, opacity: 0.6, duration: 0.6, yoyo: true, repeat: 3, ease: "sine.inOut" }}, t + d + 0.5);
+      }});
+      tl.to("#s2-piso", {{ scale: 1.0, duration: 4, ease: "sine.inOut" }}, t + 5.3);
+      [["#tg1",3.6],["#tg2",4.5],["#tg3",7.4]].forEach(([s, d]) => tl.fromTo(s, {{ y: 80, opacity: 0 }}, {{ y: 0, opacity: 1, duration: 0.45, ease: "back.out(1.6)" }}, t + d));
       out("#s2", nextOf("s2"));
 
       // S3
