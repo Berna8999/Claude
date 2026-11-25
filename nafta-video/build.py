@@ -5,11 +5,11 @@ Ajuste TIMES (início de cada cena) e VO (trechos da locução) e rode:
 """
 import json, pathlib
 
-TOTAL = 36.0
+TOTAL = 35.5
 # início de cada cena (s); a cena termina quando a próxima começa
-TIMES = {"s1": 0.0, "s2": 3.6, "s3": 11.8, "s4": 15.6, "s5": 20.2, "s6": 24.8, "s7": 28.8, "s8": 30.8}
+TIMES = {"s1": 0.0, "s2": 3.6, "s3": 13.2, "s4": 17.0, "s5": 21.4, "s6": 25.0, "s7": 29.2, "s8": 30.8}
 # trechos da locução: (início no vídeo, início no arquivo, duração)
-VO = [(0.2, 0.0, TOTAL - 0.4)]
+VO = [(0.2, 0.0, 33.9)]
 
 order = list(TIMES)
 def span(k):
@@ -235,19 +235,19 @@ html = f"""<!doctype html>
       let t = T.s2;
       tl.fromTo("#s2-title", {{ y: -120, opacity: 0 }}, {{ y: 0, opacity: 1, duration: 0.5, ease: "back.out(1.7)" }}, t + 0.1);
       tl.fromTo("#s2-spray", {{ x: 500, rotation: 20 }}, {{ x: 0, rotation: -8, duration: 0.7, ease: "back.out(1.4)" }}, t + 0.3);
-      tl.fromTo("#wipe", {{ width: 0 }}, {{ width: 900, duration: 2.6, ease: "power2.inOut" }}, t + 1.0);
-      tl.fromTo("#wipe-edge", {{ x: 0, opacity: 1 }}, {{ x: 900, duration: 2.6, ease: "power2.inOut" }}, t + 1.0);
-      tl.to("#wipe-edge", {{ opacity: 0, duration: 0.2 }}, t + 3.6);
-      tl.to("#s2-spray", {{ rotation: -14, duration: 0.25, yoyo: true, repeat: 5, ease: "sine.inOut" }}, t + 1.0);
-      ["#sp1","#sp2","#sp3"].forEach((s, i) => tl.fromTo(s, {{ scale: 0, rotation: 0 }}, {{ scale: 1, rotation: 90, duration: 0.6, ease: "back.out(3)", yoyo: true, repeat: 1 }}, t + 2.2 + i * 0.5));
-      ["#tg1","#tg2","#tg3"].forEach((s, i) => tl.fromTo(s, {{ x: -700, opacity: 0 }}, {{ x: 0, opacity: 1, duration: 0.45, ease: "back.out(1.6)" }}, t + 3.9 + i * 0.6));
+      tl.fromTo("#wipe", {{ width: 0 }}, {{ width: 900, duration: 4.4, ease: "power1.inOut" }}, t + 1.0);
+      tl.fromTo("#wipe-edge", {{ x: 0, opacity: 1 }}, {{ x: 900, duration: 4.4, ease: "power1.inOut" }}, t + 1.0);
+      tl.to("#wipe-edge", {{ opacity: 0, duration: 0.2 }}, t + 5.4);
+      tl.to("#s2-spray", {{ rotation: -14, duration: 0.25, yoyo: true, repeat: 9, ease: "sine.inOut" }}, t + 1.0);
+      ["#sp1","#sp2","#sp3"].forEach((s, i) => tl.fromTo(s, {{ scale: 0, rotation: 0 }}, {{ scale: 1, rotation: 90, duration: 0.6, ease: "back.out(3)", yoyo: true, repeat: 1 }}, t + 3.0 + i * 0.9));
+      [["#tg1",3.6],["#tg2",4.5],["#tg3",7.4]].forEach(([s, d]) => tl.fromTo(s, {{ x: -700, opacity: 0 }}, {{ x: 0, opacity: 1, duration: 0.45, ease: "back.out(1.6)" }}, t + d));
       out("#s2", nextOf("s2"));
 
       // S3
       t = T.s3;
       tl.fromTo("#s3-badge", {{ scale: 0, rotation: -40 }}, {{ scale: 1, rotation: 0, duration: 0.6, ease: "back.out(2.2)" }}, t + 0.05);
       tl.to("#s3-badge", {{ scale: 1.06, duration: 0.4, yoyo: true, repeat: 3, ease: "sine.inOut" }}, t + 0.8);
-      tl.fromTo("#s3-h", {{ y: 80, opacity: 0 }}, {{ y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }}, t + 1.4);
+      tl.fromTo("#s3-h", {{ y: 80, opacity: 0 }}, {{ y: 0, opacity: 1, duration: 0.45, ease: "power3.out" }}, t + 1.9);
       out("#s3", nextOf("s3"));
 
       // S4
@@ -270,7 +270,7 @@ html = f"""<!doctype html>
       t = T.s6;
       tl.fromTo("#s6-gal", {{ x: -600 }}, {{ x: 0, duration: 0.6, ease: "power3.out" }}, t + 0.05);
       tl.fromTo("#s6-spr", {{ x: 600 }}, {{ x: 0, duration: 0.6, ease: "power3.out" }}, t + 0.15);
-      ["#b1","#b2","#b3"].forEach((s, i) => tl.fromTo(s, {{ scale: 0.4, opacity: 0 }}, {{ scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" }}, t + 0.5 + i * 0.9));
+      ["#b1","#b2","#b3"].forEach((s, i) => tl.fromTo(s, {{ scale: 0.4, opacity: 0 }}, {{ scale: 1, opacity: 1, duration: 0.4, ease: "back.out(2)" }}, t + 0.1 + i * 1.15));
       out("#s6", nextOf("s6"));
 
       // S7
